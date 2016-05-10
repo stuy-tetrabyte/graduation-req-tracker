@@ -1,4 +1,6 @@
-Client Meetin #1 -- 2016/05/10
+Client Meetin #1
+================
+2016/05/10
 
 - Required Features
     - Visualize if student is on track to graduate or missing/failed critical courses
