@@ -1,0 +1,30 @@
+{
+  "grad_requirements": [
+    {
+      "name": "Music Appreciation",
+      options: [
+        {
+          "course-name" : "Music Appreciation",
+          "terms-req" : 1,
+          "suggested-terms" : [1,2],
+          "course-code" : ["MAPP_TEMP"],
+          "pre-req" : null,
+          "regents" : false
+        }
+      ]
+    },
+    {
+      "name": "Art Appreciation",
+      options : [
+         {
+          "course_name" : "Music Appreciation",
+          "terms-req" : 1,
+          "suggested-terms" : [1,2],
+          "course-code" : ["MAPP_TEMP"],
+          "pre-req" : null,
+          "regents" : false
+        }
+      ]
+    }
+  ]
+}
