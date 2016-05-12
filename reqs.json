@@ -168,6 +168,35 @@
           "regents" : false
         }
       ]
+    },
+    {
+      "name": "10 Tech",
+      options : [
+        {
+          "course_name" : "AP Computer Science",
+          "terms-req" : 2,
+          "suggested-terms" : [5,6,7,8],
+          "course-code" : ["APCS_TEMP"],
+          "pre-req" : ["INTRO1_TEMP", "INTRO2_TEMP"],
+          "regents" : false
+        },
+        {
+          "course_name" : "Advanced Computer Technology, Networking & Internetworking - Cisco Networking Academy",
+          "terms-req" : 2,
+          "suggested-terms" : [7,8],
+          "course-code" : ["CISCO10_TEMP"],
+          "pre-req" : null,
+          "regents" : false
+        },
+        {
+          "course_name" : "Advanced Video Production",
+          "terms-req" : 2,
+          "suggested-terms" : [7,8],
+          "course-code" : ["AVID10_TEMP"],
+          "pre-req" : ["TQS21QVA","TQS22QVA"],
+          "regents" : false
+        }
+        ]
     }
   ]
 }
