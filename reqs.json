@@ -10,6 +10,30 @@
           "course-code" : ["MAPP_TEMP"],
           "pre-req" : null,
           "regents" : false
+        },
+        {
+          "course-name" : "Band",
+          "terms-req" : 3,
+          "suggested-terms" : [1,2,3],
+          "course-code" : ["BAND_TEMP"],
+          "pre-req" : null,
+          "regents" : false
+        },
+        {
+          "course-name" : "Orchestra",
+          "terms-req" : 3,
+          "suggested-terms" : [1,2,3],
+          "course-code" : ["ORCH_TEMP"],
+          "pre-req" : null,
+          "regents" : false
+        },
+        {
+          "course-name" : "Chorus",
+          "terms-req" : 3,
+          "suggested-terms" : [1,2,3],
+          "course-code" : ["CHOR_TEMP"],
+          "pre-req" : null,
+          "regents" : false
         }
       ]
     },
@@ -21,6 +45,125 @@
           "terms-req" : 1,
           "suggested-terms" : [1,2],
           "course-code" : ["MAPP_TEMP"],
+          "pre-req" : null,
+          "regents" : false
+        }
+      ]
+    },
+    {
+      "name": "Intro CS",
+      options : [
+         {
+          "course_name" : "Intro CompSci 1",
+          "terms-req" : 1,
+          "suggested-terms" : [3,4],
+          "course-code" : ["INTRO1_TEMP"],
+          "pre-req" : null,
+          "regents" : false
+        }
+      ]
+    },
+    {
+      "name": "Techncal Drawing",
+      options : [
+         {
+          "course_name" : "Drafting",
+          "terms-req" : 1,
+          "suggested-terms" : [3,4,5,6],
+          "course-code" : ["DRAFT_TEMP"],
+          "pre-req" : null,
+          "regents" : false
+        }
+      ]
+    },
+    {
+      "name": "5 Tech",
+      options : [
+         {
+          "course_name" : "Intro CS 2",
+          "terms-req" : 1,
+          "suggested-terms" : [4],
+          "course-code" : ["INTRO2_TEMP"],
+          "pre-req" : ["INTRO1_TEMP"],
+          "regents" : false
+        },
+        {
+          "course_name" : "Computer Technology",
+          "terms-req" : 1,
+          "suggested-terms" : [5,6],
+          "course-code" : ["CTECH5_TEMP"],
+          "pre-req" : null,
+          "regents" : false
+        },
+        {
+          "course_name" : "Digital Photography",
+          "terms-req" : 1,
+          "suggested-terms" : [5,6],
+          "course-code" : ["DPHOT5_TEMP"],
+          "pre-req" : null,
+          "regents" : false
+        },
+        {
+          "course_name" : "Graphic Arts Communication",
+          "terms-req" : 1,
+          "suggested-terms" : [5,6],
+          "course-code" : ["GART5_TEMP"],
+          "pre-req" : null,
+          "regents" : false
+        },
+        {
+          "course_name" : "Intro Architecture",
+          "terms-req" : 1,
+          "suggested-terms" : [5,6],
+          "course-code" : ["IARCH5_TEMP"],
+          "pre-req" : null,
+          "regents" : false
+        },
+        {
+          "course_name" : "Intro Interior Design",
+          "terms-req" : 1,
+          "suggested-terms" : [5,6],
+          "course-code" : ["INTD5_TEMP"],
+          "pre-req" : null,
+          "regents" : false
+        },
+        {
+          "course_name" : "Jewelry Design",
+          "terms-req" : 1,
+          "suggested-terms" : [5,6],
+          "course-code" : ["JWLD5_TEMP"],
+          "pre-req" : null,
+          "regents" : false
+        },
+        {
+          "course_name" : "Principles of Technology - Mechanisms",
+          "terms-req" : 1,
+          "suggested-terms" : [5,6],
+          "course-code" : ["TECHM5_TEMP"],
+          "pre-req" : null,
+          "regents" : false
+        },
+        {
+          "course_name" : "Robotics",
+          "terms-req" : 1,
+          "suggested-terms" : [5,6],
+          "course-code" : ["ROBO5_TEMP"],
+          "pre-req" : null,
+          "regents" : false
+        },
+        {
+          "course_name" : "Technical and Scientific Illust",
+          "terms-req" : 1,
+          "suggested-terms" : [5,6],
+          "course-code" : ["TSILL5_TEMP"],
+          "pre-req" : null,
+          "regents" : false
+        },
+        {
+          "course_name" : "Video Production",
+          "terms-req" : 1,
+          "suggested-terms" : [5,6],
+          "course-code" : ["VIDP5_TEMP"],
           "pre-req" : null,
           "regents" : false
         }
