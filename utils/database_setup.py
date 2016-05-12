@@ -76,3 +76,62 @@ def load_excel_file(datafile):
         create_project_table()
     # TODO: Fill in this part
 
+def main():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "-c",
+        "--create",
+        help="Creates the table",
+        action="store_true"
+    )
+
+    parser.add_argument(
+        "-d",
+        "--delete",
+        help="Deletes the table",
+        action="store_true"
+    )
+
+    parser.add_argument(
+        "-r",
+        "--reset",
+        help="Resets the table",
+        action="store_true"
+    )
+
+    parser.add_argument(
+        "-l",
+        "--load",
+        help="Load an Excel spreadsheet into the MySQL table",
+        action="append"
+    )
+
+    parser.add_argument(
+        "-t",
+        "--test",
+        help="Prints True if the table is set up, False otherwise",
+        action="store_true"
+    )
+
+    args = parser.parse_args()
+
+    if args.create:
+        create_project_table()
+    elif args.delete:
+        delete_project_table()
+    elif args.reset:
+        reset_project_table()
+
+    if args.test:
+        print(is_table_set_up())
+
+    if args.load == None:
+        return
+    else:
+        for f in args.load:
+            load_excel_file(f)
+
+if __name__ == "__main__":
+    main()
+
