@@ -73,3 +73,13 @@ Once the VagrantBox is up, do `vagrant ssh` to connect to the box.
 
 To turn off the VagrantBox, do `vagrant halt`.
 
+To clone the repository inside the VagrantBox, first install the latest version
+of Git:
+
+```
+$ sudo apt-add-repository ppa:git-core/ppa
+$ sudo apt-get update
+$ sudo apt-get install git
+$ git clone https://github.com/stuy-tetrabyte/graduation-req-tracker.git
+```
+
