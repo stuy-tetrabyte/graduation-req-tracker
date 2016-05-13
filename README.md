@@ -11,9 +11,6 @@ sudo apt-get install mysql-server
 sudo mysql_secure_installation
 sudo apt-get install python-mysqldb
 sudo apt-get install python-dev
-wget https://bootstrap.pypa.io/get-pip.py
-sudo python get-pip.py
-sudo pip install pandas xlrd
 ```
 
 Upon doing `sudo apt-get install mysql-server`, you must enter the password that
@@ -29,8 +26,17 @@ from earlier:
 - `y` when asked to remove test database and access to the test database
 - `y` when asked to reload the privelege table
 
-If the pip install fails, try to upgrade pip: `sudo pip install --upgrade pip`
-and run the pip install again.
+Installing other Python requirements:
+
+I originally installed Python Pandas via `pip`, but I ran into a multitude of
+issues. The Pandas site suggested that Pandas be installed using anaconda:
+
+```
+$ wget http://repo.continuum.io/archive/Anaconda2-4.0.0-Linux-x86_64.sh
+$ bash Anaconda2-4.0.0-Linux-x86_64.sh
+```
+
+This command will install Pandas, along with a whole bunch of other things.
 
 ## Setting up a Vagrant Box for a development environment
 
