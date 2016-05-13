@@ -10,7 +10,9 @@ sudo apt-get update
 sudo apt-get install mysql-server
 sudo mysql_secure_installation
 sudo apt-get install python-mysqldb
-sudo apt-get install python-pip
+sudo apt-get install python-dev
+wget https://bootstrap.pypa.io/get-pip.py
+sudo python get-pip.py
 sudo pip install pandas xlrd
 ```
 
@@ -26,6 +28,9 @@ from earlier:
 - `y` when asked to disable remote access to root
 - `y` when asked to remove test database and access to the test database
 - `y` when asked to reload the privelege table
+
+If the pip install fails, try to upgrade pip: `sudo pip install --upgrade pip`
+and run the pip install again.
 
 ## Setting up a Vagrant Box for a development environment
 
@@ -50,6 +55,8 @@ $ sudo apt-get install virtualbox-dkms
 After Vagrant and VirtualBox are installed, set up the development box:
 
 ```
+$ mkdir DevBox
+$ cd DevBox
 $ vagrant init ubuntu/trusty64
 $ vagrant up --provider virtualbox
 ```
