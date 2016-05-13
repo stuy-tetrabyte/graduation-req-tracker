@@ -36,7 +36,9 @@ $ wget http://repo.continuum.io/archive/Anaconda2-4.0.0-Linux-x86_64.sh
 $ bash Anaconda2-4.0.0-Linux-x86_64.sh
 ```
 
-This command will install Pandas, along with a whole bunch of other things.
+This command will install Pandas, along with a whole bunch of other things,
+including `xlrd`, which Pandas uses for opening Excel files. It also installs
+Python Flask with all of the dependencies.
 
 ## Setting up a Vagrant Box for a development environment
 
