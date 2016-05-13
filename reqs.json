@@ -41,10 +41,10 @@
       "name": "Art Appreciation",
       options : [
          {
-          "course_name" : "Music Appreciation",
+          "course_name" : "Art Appreciation",
           "terms-req" : 1,
           "suggested-terms" : [1,2],
-          "course-code" : ["MAPP_TEMP"],
+          "course-code" : ["ARTAP_TEMP"],
           "pre-req" : null,
           "regents" : false
         }
@@ -192,11 +192,94 @@
           "course_name" : "Advanced Video Production",
           "terms-req" : 2,
           "suggested-terms" : [7,8],
-          "course-code" : ["AVID10_TEMP"],
-          "pre-req" : ["TQS21QVA","TQS22QVA"],
+          "course-code" : ["TQS21QVA","TQS22QVA"],
+          "pre-req" : ["VID5_TEMP"],
+          "regents" : false
+        },
+        {
+          "course_name" : "Advanced Woodworking",
+          "terms-req" : 2,
+          "suggested-terms" : [7,8],
+          "course-code" : ["TMS21QWA","TMS22QWA"],
+          "pre-req" : null,
+          "regents" : false
+        },
+        {
+          "course_name" : "Architecture",
+          "terms-req" : 2,
+          "suggested-terms" : [7,8],
+          "course-code" : ["TDS21QAA","TDS22QAA"],
+          "pre-req" : ["DRAFT_TEMP"],
+          "regents" : false
+        },
+        {
+          "course_name" : "Ceramics",
+          "terms-req" : 2,
+          "suggested-terms" : [7,8],
+          "course-code" : ["TMS21QCA","TMS22QCA"],
+          "pre-req" : null,
+          "regents" : false
+        },
+        {
+          "course_name" : "Photography",
+          "terms-req" : 2,
+          "suggested-terms" : [7,8],
+          "course-code" : ["TAS21QPA","TAS22QPA"],
+          "pre-req" : null,
+          "regents" : false
+        },
+        {
+          "course_name" : "Robotics Engineering",
+          "terms-req" : 2,
+          "suggested-terms" : [7,8],
+          "course-code" : ["TQS21QBA"],
+          "pre-req" : ["DRAFT_TEMP"],
+          "regents" : false
+        },
+        {
+          "course_name" : "Acrylic Painting",
+          "terms-req" : 2,
+          "suggested-terms" : [7,8],
+          "course-code" : ["APS21QAP","APS22QAP"],
+          "pre-req" : ["ARTAP_TEMP"],
           "regents" : false
         }
         ]
-    }
+    },
+    {
+      "name": "Health",
+      options : [
+         {
+          "course_name" : "Health",
+          "terms-req" : 1,
+          "suggested-terms" : [5,6],
+          "course-code" : ["PHS11"],
+          "pre-req" : null,
+          "regents" : false
+        }
+      ]
+    },
+    {
+      "name": "Language",
+      options : [
+         {
+          "course_name" : "French 1-3",
+          "terms-req" : 6,
+          "suggested-terms" : [1,2,3,4,5,6],
+          "course-code" : ["FFS61","FFS62","FFS63","FFS64","FFS65","FFS66"],
+          "pre-req" : null,
+          "regents" : true
+        },
+        {
+          "course_name" : "French 2-AP",
+          "terms-req" : 6,
+          "suggested-terms" : [1,2,3,4,5,6],
+          "course-code" : ["FFS63","FFS64","FFS65","FFS66","FFS87X","FFS88X"],
+          "pre-req" : ["FFS61","FFS62"],
+          "regents" : true
+        }
+      ]
+    },
+    
   ]
 }
