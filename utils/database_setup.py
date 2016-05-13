@@ -27,13 +27,6 @@ def get_column_names(datafile):
     """
     return [ str(s) for s in datafile.columns ]
 
-def check_if_mysql_installed():
-    """
-    Verifies if MySQL is installed on the current system. Will throw an
-    error if MySQL fails to run
-    """
-    pass
-
 def is_table_set_up():
     """
     Returns True if this project's MySQL table is set up, False otherwise
