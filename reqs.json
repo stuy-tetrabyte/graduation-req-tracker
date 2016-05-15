@@ -7,7 +7,7 @@
           "course-name" : "Music Appreciation",
           "terms-req" : 1,
           "suggested-terms" : [1,2],
-          "course-code" : ["MAPP_TEMP"],
+          "course-code" : ["UAS11"],
           "pre-req" : null,
           "regents" : false
         },
@@ -44,7 +44,7 @@
           "course_name" : "Art Appreciation",
           "terms-req" : 1,
           "suggested-terms" : [1,2],
-          "course-code" : ["ARTAP_TEMP"],
+          "course-code" : ["AHS11"],
           "pre-req" : null,
           "regents" : false
         }
@@ -57,7 +57,7 @@
           "course_name" : "Intro CompSci 1",
           "terms-req" : 1,
           "suggested-terms" : [3,4],
-          "course-code" : ["INTRO1_TEMP"],
+          "course-code" : ["MKS21"],
           "pre-req" : null,
           "regents" : false
         }
@@ -70,7 +70,7 @@
           "course_name" : "Drafting",
           "terms-req" : 1,
           "suggested-terms" : [3,4,5,6],
-          "course-code" : ["DRAFT_TEMP"],
+          "course-code" : ["TDS11"],
           "pre-req" : null,
           "regents" : false
         }
@@ -83,15 +83,15 @@
           "course_name" : "Intro CS 2",
           "terms-req" : 1,
           "suggested-terms" : [4],
-          "course-code" : ["INTRO2_TEMP"],
-          "pre-req" : ["INTRO1_TEMP"],
+          "course-code" : ["MKS22"],
+          "pre-req" : ["MKS21"],
           "regents" : false
         },
         {
           "course_name" : "Computer Technology",
           "terms-req" : 1,
           "suggested-terms" : [5,6],
-          "course-code" : ["CTECH5_TEMP"],
+          "course-code" : ["TYS11QT5"],
           "pre-req" : null,
           "regents" : false
         },
@@ -99,7 +99,7 @@
           "course_name" : "Digital Photography",
           "terms-req" : 1,
           "suggested-terms" : [5,6],
-          "course-code" : ["DPHOT5_TEMP"],
+          "course-code" : ["TAS11QP5"],
           "pre-req" : null,
           "regents" : false
         },
@@ -107,7 +107,7 @@
           "course_name" : "Graphic Arts Communication",
           "terms-req" : 1,
           "suggested-terms" : [5,6],
-          "course-code" : ["GART5_TEMP"],
+          "course-code" : ["TZS11QG5"],
           "pre-req" : null,
           "regents" : false
         },
@@ -115,23 +115,23 @@
           "course_name" : "Intro Architecture",
           "terms-req" : 1,
           "suggested-terms" : [5,6],
-          "course-code" : ["IARCH5_TEMP"],
-          "pre-req" : null,
+          "course-code" : ["TDS11QA5"],
+          "pre-req" : ["TDS11"],
           "regents" : false
         },
         {
           "course_name" : "Intro Interior Design",
           "terms-req" : 1,
           "suggested-terms" : [5,6],
-          "course-code" : ["INTD5_TEMP"],
-          "pre-req" : null,
+          "course-code" : ["TDS11QD5"],
+          "pre-req" : ["TDS11"],
           "regents" : false
         },
         {
           "course_name" : "Jewelry Design",
           "terms-req" : 1,
           "suggested-terms" : [5,6],
-          "course-code" : ["JWLD5_TEMP"],
+          "course-code" : ["TMS11QD5"],
           "pre-req" : null,
           "regents" : false
         },
@@ -139,7 +139,7 @@
           "course_name" : "Principles of Technology - Mechanisms",
           "terms-req" : 1,
           "suggested-terms" : [5,6],
-          "course-code" : ["TECHM5_TEMP"],
+          "course-code" : ["TMS11QW5"],
           "pre-req" : null,
           "regents" : false
         },
@@ -147,7 +147,7 @@
           "course_name" : "Robotics",
           "terms-req" : 1,
           "suggested-terms" : [5,6],
-          "course-code" : ["ROBO5_TEMP"],
+          "course-code" : ["TQS11QB5"],
           "pre-req" : null,
           "regents" : false
         },
@@ -155,15 +155,15 @@
           "course_name" : "Technical and Scientific Illust",
           "terms-req" : 1,
           "suggested-terms" : [5,6],
-          "course-code" : ["TSILL5_TEMP"],
-          "pre-req" : null,
+          "course-code" : ["TCS11QT5"],
+          "pre-req" : ["TDS11"],
           "regents" : false
         },
         {
           "course_name" : "Video Production",
           "terms-req" : 1,
           "suggested-terms" : [5,6],
-          "course-code" : ["VIDP5_TEMP"],
+          "course-code" : ["TQS11QV5"],
           "pre-req" : null,
           "regents" : false
         }
@@ -176,15 +176,15 @@
           "course_name" : "AP Computer Science",
           "terms-req" : 2,
           "suggested-terms" : [5,6,7,8],
-          "course-code" : ["APCS_TEMP"],
-          "pre-req" : ["INTRO1_TEMP", "INTRO2_TEMP"],
+          "course-code" : ["MKS21X", "MKS22X"],
+          "pre-req" : ["MKS21", "MKS22"],
           "regents" : false
         },
         {
           "course_name" : "Advanced Computer Technology, Networking & Internetworking - Cisco Networking Academy",
           "terms-req" : 2,
           "suggested-terms" : [7,8],
-          "course-code" : ["CISCO10_TEMP"],
+          "course-code" : ["TES21QCA","TES22QCA"],
           "pre-req" : null,
           "regents" : false
         },
@@ -193,7 +193,7 @@
           "terms-req" : 2,
           "suggested-terms" : [7,8],
           "course-code" : ["TQS21QVA","TQS22QVA"],
-          "pre-req" : ["VID5_TEMP"],
+          "pre-req" : ["TQS11QV5"],
           "regents" : false
         },
         {
@@ -209,7 +209,7 @@
           "terms-req" : 2,
           "suggested-terms" : [7,8],
           "course-code" : ["TDS21QAA","TDS22QAA"],
-          "pre-req" : ["DRAFT_TEMP"],
+          "pre-req" : ["TDS11"],
           "regents" : false
         },
         {
@@ -233,7 +233,7 @@
           "terms-req" : 2,
           "suggested-terms" : [7,8],
           "course-code" : ["TQS21QBA"],
-          "pre-req" : ["DRAFT_TEMP"],
+          "pre-req" : ["TDS11"],
           "regents" : false
         },
         {
@@ -241,7 +241,7 @@
           "terms-req" : 2,
           "suggested-terms" : [7,8],
           "course-code" : ["APS21QAP","APS22QAP"],
-          "pre-req" : ["ARTAP_TEMP"],
+          "pre-req" : ["AHS11"],
           "regents" : false
         },
                 {
@@ -421,6 +421,32 @@
           "course-code" : ["FSS63","FSS64","FSS65","FSS66","FSS87X","FSS88X"],
           "pre-req" : ["FSS61","FSS62"],
           "regents" : true
+        }
+      ]
+    },
+    {
+      "name": "English 9",
+      options : [
+         {
+          "course_name" : "Freshman Composition",
+          "terms-req" : 2,
+          "suggested-terms" : [1,2],
+          "course-code" : ["EES81QFC","EES82QFC"],
+          "pre-req" : null,
+          "regents" : false
+        }
+      ]
+    },
+    {
+      "name": "English 10",
+      options : [
+         {
+          "course_name" : "European Literature",
+          "terms-req" : 2,
+          "suggested-terms" : [3,4],
+          "course-code" : ["EES83QEL","EES84QEL"],
+          "pre-req" : null,
+          "regents" : false
         }
       ]
     }
