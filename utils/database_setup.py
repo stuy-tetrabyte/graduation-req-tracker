@@ -75,9 +75,26 @@ def load_excel_file(datafile):
     Takes a Pandas datafile and inserts the data into the project's MySQL table.
     If the project's table is not yet created, this function will call 'create'.
     """
+    column_names = get_column_names(datafile)
     if not is_table_set_up():
-        create_project_table()
-    # TODO: Fill in this part
+        create_project_table(column_names)
+    rows, cols = datafile.shape
+    counter = 0
+    print "Inserting %d rows with %d data fields each" % (rows, cols)
+    for row in datafile.itertuples():
+        if counter % 50 == 0:
+            print "Progress: %d of %d" % (counter, rows)
+        data = list(row._asdict().values())[1:]
+        assert(len(data) == len(column_names))
+        # Generate query
+        query = "INSERT INTO %s (%s) VALUES (%s);"
+        schema = (("%s , " * len(column_names))[:-2]) % tuple(column_names)
+        values = (("'%s' , " * len(data))[:-2]) % tuple(( str(it) for it in data))
+        query = query % (Constants.PROJECT_TABLE_NAME, schema, values)
+        print query
+        SQLConnector.execute(query)
+        counter += 1
+    print "Done!"
 
 def main():
     parser = argparse.ArgumentParser()
@@ -134,7 +151,7 @@ def main():
         return
     else:
         for f in args.load:
-            load_excel_file(f)
+            load_excel_file(get_excel(f))
 
 if __name__ == "__main__":
     main()
