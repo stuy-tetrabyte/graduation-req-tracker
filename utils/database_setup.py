@@ -62,7 +62,8 @@ def delete_project_table():
     Deletes the table in MySQL that this project uses. Will do nothing if the
     table does not yet exist.
     """
-    pass
+    query = "DROP TABLE IF EXISTS %s;" % (Constants.PROJECT_TABLE_NAME,)
+    SQLConnector.execute(query)
 
 def reset_project_table():
     """
