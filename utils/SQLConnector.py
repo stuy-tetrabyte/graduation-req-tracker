@@ -10,14 +10,16 @@ class Connection:
         Sets up the MySQL connection and cursor variable
         """
         self.conn = mysql.connector.connect(user='root', password='test', database=db_name)
-        self.cursor = self.conn.cursor()
+        self.cursor = self.conn.cursor(buffered=True)
 
     def execute(self, *args):
         """
         Executes a query and returns all resulting rows if available
         """
         self.cursor.execute(*args)
-        retval = self.cursor.fetchall()
+        retval = None
+        if self.cursor.rowcount > 0:
+            retval = self.cursor.fetchall()
         self.conn.commit()
         return retval
 
