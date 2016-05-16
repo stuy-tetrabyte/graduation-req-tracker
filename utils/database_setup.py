@@ -68,7 +68,8 @@ def reset_project_table():
     Resets the table for this project by calling 'delete' and 'setup'
     """
     delete_project_table()
-    create_project_table()
+    df = get_excel("../sample_data/grad_req.xlsx")
+    create_project_table(get_column_names(df))
 
 def load_excel_file(datafile):
     """
