@@ -1,5 +1,6 @@
 import pandas
 import argparse
+import mysql.connector
 
 def get_excel(filepath):
     """
@@ -31,7 +32,12 @@ def is_table_set_up():
     """
     Returns True if this project's MySQL table is set up, False otherwise
     """
-    pass
+    cnx = mysql.connector.connect(user='root', password='test', database='coursedb')
+    cursor = cnx.cursor()
+    cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_schema='test' and table_name='mytable';")
+    retval = [ str(s) for s in cursor.fetchall() ]
+    cnx.close()
+    return len(retval) == 1
 
 def create_project_table(column_names):
     """
