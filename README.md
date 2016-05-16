@@ -26,6 +26,13 @@ from earlier:
 - `y` when asked to remove test database and access to the test database
 - `y` when asked to reload the privelege table
 
+To set up the MySQL installation, do
+
+```
+$ mysql -u root -p # Enter 'test' as your password
+mysql> CREATE DATABASE coursedb;
+```
+
 Installing other Python requirements:
 
 I originally installed Python Pandas via `pip`, but I ran into a multitude of
@@ -34,6 +41,7 @@ issues. The Pandas site suggested that Pandas be installed using anaconda:
 ```
 $ wget http://repo.continuum.io/archive/Anaconda2-4.0.0-Linux-x86_64.sh
 $ bash Anaconda2-4.0.0-Linux-x86_64.sh
+$ conda install -c anaconda mysql-connector-python
 ```
 
 This command will install Pandas, along with a whole bunch of other things,
