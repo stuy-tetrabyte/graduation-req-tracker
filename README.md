@@ -107,3 +107,12 @@ $ python database_setup.py -l ../sample_data/grad_req.xlsx
 Keep in mind that this is a rather large operation, inserting 16666 rows of 13
 columns each.
 
+## Using the Database Setup Script
+
+There is a database setup script located in the `utils` directory, called
+`database_setup.py`. For options, do:
+
+```
+$ python database_setup.py -h
+```
+
