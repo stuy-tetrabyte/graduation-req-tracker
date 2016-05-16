@@ -1,6 +1,7 @@
 import pandas
 import argparse
-import mysql.connector
+import SQLConnector
+import Constants
 
 def get_excel(filepath):
     """
@@ -32,11 +33,8 @@ def is_table_set_up():
     """
     Returns True if this project's MySQL table is set up, False otherwise
     """
-    cnx = mysql.connector.connect(user='root', password='test', database='coursedb')
-    cursor = cnx.cursor()
-    cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_schema='test' and table_name='mytable';")
-    retval = [ str(s) for s in cursor.fetchall() ]
-    cnx.close()
+    retval = SQLConnector.execute("SELECT table_name FROM information_schema.tables WHERE table_schema='test' and table_name='mytable';")
+    retval = [ str(s) for s in retval ]
     return len(retval) == 1
 
 def create_project_table(column_names):
@@ -50,7 +48,13 @@ def create_project_table(column_names):
     Returns:
         None
     """
-    pass
+    # Tons of format strings!
+    query = "CREATE TABLE IF NOT EXISTS %s (%s);"
+    # Sanitize the column names
+    column_names = [ s.replace(" ", "_") for s in column_names ]
+    schema = (("%s VARCHAR(64), " * len(column_names))[:-2]) % tuple(column_names)
+    query = query % (Constants.PROJECT_TABLE_NAME, schema)
+    SQLConnector.execute(query)
 
 def delete_project_table():
     """
@@ -116,7 +120,8 @@ def main():
     args = parser.parse_args()
 
     if args.create:
-        create_project_table()
+        df = get_excel("../sample_data/grad_req.xlsx")
+        create_project_table(get_column_names(df))
     elif args.delete:
         delete_project_table()
     elif args.reset:
