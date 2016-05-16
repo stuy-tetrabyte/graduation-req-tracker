@@ -27,7 +27,7 @@ def get_column_names(datafile):
     Returns:
         A list of strings
     """
-    return [ str(s) for s in datafile.columns ]
+    return [ str(s).replace(" ", "_") for s in datafile.columns ]
 
 def is_table_set_up():
     """
@@ -51,8 +51,6 @@ def create_project_table(column_names):
     """
     # Tons of format strings!
     query = "CREATE TABLE IF NOT EXISTS %s (%s);"
-    # Sanitize the column names
-    column_names = [ s.replace(" ", "_") for s in column_names ]
     schema = (("%s VARCHAR(64), " * len(column_names))[:-2]) % tuple(column_names)
     query = query % (Constants.PROJECT_TABLE_NAME, schema)
     SQLConnector.execute(query)
