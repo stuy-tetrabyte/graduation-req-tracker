@@ -19,7 +19,10 @@ class Connection:
         self.cursor.execute(*args)
         retval = None
         if self.cursor.rowcount > 0:
-            retval = self.cursor.fetchall()
+            try:
+                retval = self.cursor.fetchall()
+            except:
+                print "Failed to fetch rows"
         self.conn.commit()
         return retval
 
