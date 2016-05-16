@@ -33,9 +33,10 @@ def is_table_set_up():
     """
     Returns True if this project's MySQL table is set up, False otherwise
     """
-    retval = SQLConnector.execute("SELECT table_name FROM information_schema.tables WHERE table_schema='test' and table_name='mytable';")
-    retval = [ str(s) for s in retval ]
-    return len(retval) == 1
+    query = "SELECT table_name FROM information_schema.tables WHERE table_schema='%s' and table_name='%s';"
+    query = query % (Constants.PROJECT_DB_NAME, Constants.PROJECT_TABLE_NAME)
+    retval = SQLConnector.execute(query)
+    return retval != None and len(retval) == 1
 
 def create_project_table(column_names):
     """
