@@ -44,6 +44,9 @@ $ bash Anaconda2-4.0.0-Linux-x86_64.sh
 $ conda install -c anaconda mysql-connector-python
 ```
 
+During the installation, it may prompt you to append the path for Anaconda in
+your `.bashrc` file. You should answer `yes` to this prompt.
+
 This command will install Pandas, along with a whole bunch of other things,
 including `xlrd`, which Pandas uses for opening Excel files. It also installs
 Python Flask with all of the dependencies.
