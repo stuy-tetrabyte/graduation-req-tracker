@@ -6,11 +6,11 @@ Graduation Requirement Tracker
 You will need to install a few packages to get this project up and running.
 
 ```
-sudo apt-get update
-sudo apt-get install mysql-server
-sudo mysql_secure_installation
-sudo apt-get install python-mysqldb
-sudo apt-get install python-dev
+$ sudo apt-get update
+$ sudo apt-get install mysql-server
+$ sudo mysql_secure_installation
+$ sudo apt-get install python-mysqldb
+$ sudo apt-get install python-dev
 ```
 
 Upon doing `sudo apt-get install mysql-server`, you must enter the password that
@@ -90,4 +90,17 @@ $ sudo apt-get update
 $ sudo apt-get install git
 $ git clone https://github.com/stuy-tetrabyte/graduation-req-tracker.git
 ```
+
+Once you have cloned the repository, run the setup instructions for the server.
+
+After you run the setup instructions for the server, you can load in the
+sample data by doing:
+
+```
+$ cd utils
+$ python database_setup.py -l ../sample_data/grad_req.xlsx
+```
+
+Keep in mind that this is a rather large operation, inserting 16666 rows of 13
+columns each.
 
