@@ -22,7 +22,7 @@ class Connection:
             try:
                 retval = self.cursor.fetchall()
             except:
-                print "Failed to fetch rows"
+                retval = None
         self.conn.commit()
         return retval
 

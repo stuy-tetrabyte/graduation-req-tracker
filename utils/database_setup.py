@@ -92,7 +92,7 @@ def load_excel_file(datafile):
         schema = (("%s , " * len(column_names))[:-2]) % tuple(column_names)
         values = (("'%s' , " * len(data))[:-2]) % tuple(( str(it) for it in data))
         query = query % (Constants.PROJECT_TABLE_NAME, schema, values)
-        print query
+        # print query
         SQLConnector.execute(query)
         counter += 1
     print "Done!"
