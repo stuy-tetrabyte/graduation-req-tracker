@@ -41,8 +41,6 @@ issues. The Pandas site suggested that Pandas be installed using anaconda:
 ```
 $ wget http://repo.continuum.io/archive/Anaconda2-4.0.0-Linux-x86_64.sh
 $ bash Anaconda2-4.0.0-Linux-x86_64.sh
-$ source ~/.bashrc
-$ conda install -c anaconda mysql-connector-python
 ```
 
 During the installation, it may prompt you to append the path for Anaconda in
@@ -51,6 +49,11 @@ your `.bashrc` file. You should answer `yes` to this prompt.
 This command will install Pandas, along with a whole bunch of other things,
 including `xlrd`, which Pandas uses for opening Excel files. It also installs
 Python Flask with all of the dependencies.
+
+```
+$ source ~/.bashrc
+$ conda install -c anaconda mysql-connector-python
+```
 
 ## Setting up a Vagrant Box for a development environment
 
