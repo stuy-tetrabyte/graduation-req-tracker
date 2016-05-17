@@ -4,36 +4,22 @@
       "name": "Music Appreciation",
       options: [
         {
-          "course-name" : "Music Appreciation",
+          "track-name" : "1 Term Music App",
           "terms-req" : 1,
           "suggested-terms" : [1,2],
-          "course-code" : ["MAPP_TEMP"],
-          "pre-req" : null,
-          "regents" : false
+          "course-code" : [["UAS11"]]
         },
         {
-          "course-name" : "Band",
-          "terms-req" : 3,
-          "suggested-terms" : [1,2,3],
-          "course-code" : ["BAND_TEMP"],
-          "pre-req" : null,
-          "regents" : false
+          "track-name" : "2 Terms Band or Orchestra",
+          "terms-req" : 2,
+          "suggested-terms" : [1,2],
+          "course-code" : [["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33"],["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33"]]
         },
         {
-          "course-name" : "Orchestra",
+          "course-name" : "3 Terms Chorus",
           "terms-req" : 3,
-          "suggested-terms" : [1,2,3],
-          "course-code" : ["ORCH_TEMP"],
-          "pre-req" : null,
-          "regents" : false
-        },
-        {
-          "course-name" : "Chorus",
-          "terms-req" : 3,
-          "suggested-terms" : [1,2,3],
-          "course-code" : ["CHOR_TEMP"],
-          "pre-req" : null,
-          "regents" : false
+          "suggested-terms" : [1,2,3,4],
+          "course-code" : [["UVS11","UCS11"],["UVS11","UCS11"],["UVS11","UCS11"]]
         }
       ]
     },
@@ -41,12 +27,10 @@
       "name": "Art Appreciation",
       options : [
          {
-          "course_name" : "Art Appreciation",
+          "track_name" : "Art Appreciation",
           "terms-req" : 1,
           "suggested-terms" : [1,2],
-          "course-code" : ["ARTAP_TEMP"],
-          "pre-req" : null,
-          "regents" : false
+          "course-code" : [["AHS11"]]
         }
       ]
     },
@@ -54,12 +38,10 @@
       "name": "Intro CS",
       options : [
          {
-          "course_name" : "Intro CompSci 1",
+          "track_name" : "Intro CompSci 1",
           "terms-req" : 1,
           "suggested-terms" : [3,4],
-          "course-code" : ["INTRO1_TEMP"],
-          "pre-req" : null,
-          "regents" : false
+          "course-code" : [["MKS21"]]
         }
       ]
     },
@@ -67,12 +49,10 @@
       "name": "Techncal Drawing",
       options : [
          {
-          "course_name" : "Drafting",
+          "track_name" : "Drafting",
           "terms-req" : 1,
           "suggested-terms" : [3,4,5,6],
-          "course-code" : ["DRAFT_TEMP"],
-          "pre-req" : null,
-          "regents" : false
+          "course-code" : [["TDS11"]]
         }
       ]
     },
@@ -80,92 +60,16 @@
       "name": "5 Tech",
       options : [
          {
-          "course_name" : "Intro CS 2",
+          "track_name" : "2nd Term CompSci",
           "terms-req" : 1,
           "suggested-terms" : [4],
-          "course-code" : ["INTRO2_TEMP"],
-          "pre-req" : ["INTRO1_TEMP"],
-          "regents" : false
+          "course-code" : [["MKS22"]]
         },
         {
-          "course_name" : "Computer Technology",
+          "track_name" : "1 Term 5Tech",
           "terms-req" : 1,
           "suggested-terms" : [5,6],
-          "course-code" : ["CTECH5_TEMP"],
-          "pre-req" : null,
-          "regents" : false
-        },
-        {
-          "course_name" : "Digital Photography",
-          "terms-req" : 1,
-          "suggested-terms" : [5,6],
-          "course-code" : ["DPHOT5_TEMP"],
-          "pre-req" : null,
-          "regents" : false
-        },
-        {
-          "course_name" : "Graphic Arts Communication",
-          "terms-req" : 1,
-          "suggested-terms" : [5,6],
-          "course-code" : ["GART5_TEMP"],
-          "pre-req" : null,
-          "regents" : false
-        },
-        {
-          "course_name" : "Intro Architecture",
-          "terms-req" : 1,
-          "suggested-terms" : [5,6],
-          "course-code" : ["IARCH5_TEMP"],
-          "pre-req" : null,
-          "regents" : false
-        },
-        {
-          "course_name" : "Intro Interior Design",
-          "terms-req" : 1,
-          "suggested-terms" : [5,6],
-          "course-code" : ["INTD5_TEMP"],
-          "pre-req" : null,
-          "regents" : false
-        },
-        {
-          "course_name" : "Jewelry Design",
-          "terms-req" : 1,
-          "suggested-terms" : [5,6],
-          "course-code" : ["JWLD5_TEMP"],
-          "pre-req" : null,
-          "regents" : false
-        },
-        {
-          "course_name" : "Principles of Technology - Mechanisms",
-          "terms-req" : 1,
-          "suggested-terms" : [5,6],
-          "course-code" : ["TECHM5_TEMP"],
-          "pre-req" : null,
-          "regents" : false
-        },
-        {
-          "course_name" : "Robotics",
-          "terms-req" : 1,
-          "suggested-terms" : [5,6],
-          "course-code" : ["ROBO5_TEMP"],
-          "pre-req" : null,
-          "regents" : false
-        },
-        {
-          "course_name" : "Technical and Scientific Illust",
-          "terms-req" : 1,
-          "suggested-terms" : [5,6],
-          "course-code" : ["TSILL5_TEMP"],
-          "pre-req" : null,
-          "regents" : false
-        },
-        {
-          "course_name" : "Video Production",
-          "terms-req" : 1,
-          "suggested-terms" : [5,6],
-          "course-code" : ["VIDP5_TEMP"],
-          "pre-req" : null,
-          "regents" : false
+          "course-code" : [["TYS11QT5","TAS11QP5","TZS11QG5","TDS11QA5","TDS11QD5","TMS11QD5","TMS11QW5","TQS11QB5","TCS11QT5","TQS11QV5"]]
         }
       ]
     },
@@ -173,76 +77,28 @@
       "name": "10 Tech",
       options : [
         {
-          "course_name" : "AP Computer Science",
+          "track_name" : "AP Computer Science",
           "terms-req" : 2,
           "suggested-terms" : [5,6,7,8],
-          "course-code" : ["APCS_TEMP"],
-          "pre-req" : ["INTRO1_TEMP", "INTRO2_TEMP"],
-          "regents" : false
+          "course-code" : ["MKS21X", "MKS22X"]
         },
         {
-          "course_name" : "Advanced Computer Technology, Networking & Internetworking - Cisco Networking Academy",
+          "course_name" : "2 Term Senior Year 10Tech",
           "terms-req" : 2,
           "suggested-terms" : [7,8],
-          "course-code" : ["CISCO10_TEMP"],
-          "pre-req" : null,
-          "regents" : false
+          "course-code" : [["TES21QCA","TQS21QVA","TMS21QWA","TDS21QAA","TMS21QCA","TAS21QPA","APS21QAP","TQS21QBA"],["TES22QCA","TQS22QVA","TMS22QWA","TDS22QAA","TMS22QCA","TAS22QPA","APS22QAP","TQS22QBA"]]
         },
         {
-          "course_name" : "Advanced Video Production",
-          "terms-req" : 2,
-          "suggested-terms" : [7,8],
-          "course-code" : ["TQS21QVA","TQS22QVA"],
-          "pre-req" : ["VID5_TEMP"],
-          "regents" : false
+          "track-name" : "7 Terms Music Credit",
+          "terms-req" : 7,
+          "suggested-terms" : [1,2,3,4,5,6,7,8],
+          "course-code" : [["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33","UVS11","UCS11"],["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33","UVS11","UCS11"],["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33","UVS11","UCS11"],["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33","UVS11","UCS11"],["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33","UVS11","UCS11"],["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33","UVS11","UCS11"],["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33","UVS11","UCS11"]]
         },
         {
-          "course_name" : "Advanced Woodworking",
+          "track-name" : "Intel Research",
           "terms-req" : 2,
-          "suggested-terms" : [7,8],
-          "course-code" : ["TMS21QWA","TMS22QWA"],
-          "pre-req" : null,
-          "regents" : false
-        },
-        {
-          "course_name" : "Architecture",
-          "terms-req" : 2,
-          "suggested-terms" : [7,8],
-          "course-code" : ["TDS21QAA","TDS22QAA"],
-          "pre-req" : ["DRAFT_TEMP"],
-          "regents" : false
-        },
-        {
-          "course_name" : "Ceramics",
-          "terms-req" : 2,
-          "suggested-terms" : [7,8],
-          "course-code" : ["TMS21QCA","TMS22QCA"],
-          "pre-req" : null,
-          "regents" : false
-        },
-        {
-          "course_name" : "Photography",
-          "terms-req" : 2,
-          "suggested-terms" : [7,8],
-          "course-code" : ["TAS21QPA","TAS22QPA"],
-          "pre-req" : null,
-          "regents" : false
-        },
-        {
-          "course_name" : "Robotics Engineering",
-          "terms-req" : 2,
-          "suggested-terms" : [7,8],
-          "course-code" : ["TQS21QBA"],
-          "pre-req" : ["DRAFT_TEMP"],
-          "regents" : false
-        },
-        {
-          "course_name" : "Acrylic Painting",
-          "terms-req" : 2,
-          "suggested-terms" : [7,8],
-          "course-code" : ["APS21QAP","APS22QAP"],
-          "pre-req" : ["ARTAP_TEMP"],
-          "regents" : false
+          "suggested-terms" : [6,7],
+          "course-code" : [["SQS86QJ5","MQS86QJI"],["SQS87QJ5","MQS87QJI"]]
         }
         ]
     },
@@ -250,36 +106,12 @@
       "name": "Health",
       options : [
          {
-          "course_name" : "Health",
+          "track_name" : "Health",
           "terms-req" : 1,
           "suggested-terms" : [5,6],
-          "course-code" : ["PHS11"],
-          "pre-req" : null,
-          "regents" : false
+          "course-code" : ["PHS11"]
         }
       ]
-    },
-    {
-      "name": "Language",
-      options : [
-         {
-          "course_name" : "French 1-3",
-          "terms-req" : 6,
-          "suggested-terms" : [1,2,3,4,5,6],
-          "course-code" : ["FFS61","FFS62","FFS63","FFS64","FFS65","FFS66"],
-          "pre-req" : null,
-          "regents" : true
-        },
-        {
-          "course_name" : "French 2-AP",
-          "terms-req" : 6,
-          "suggested-terms" : [1,2,3,4,5,6],
-          "course-code" : ["FFS63","FFS64","FFS65","FFS66","FFS87X","FFS88X"],
-          "pre-req" : ["FFS61","FFS62"],
-          "regents" : true
-        }
-      ]
-    },
-    
+    }
   ]
 }
