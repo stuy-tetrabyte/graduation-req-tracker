@@ -55,17 +55,6 @@ $ git clone https://github.com/stuy-tetrabyte/graduation-req-tracker.git
 ```
 
 Once you have cloned the repository, run the setup instructions for the server.
-
-After you run the setup instructions for the server, you can load in the
-sample data by doing:
-
-```
-$ cd utils
-$ python database_setup.py -l ../sample_data/grad_req.xlsx
-```
-
-Keep in mind that this is a rather large operation, inserting 16666 rows of 13
-columns each.
 ## Setting up the server
 
 You will need to install a few packages to get this project up and running.
@@ -117,9 +106,10 @@ Python Flask with all of the dependencies.
 
 ```
 $ source ~/.bashrc
-$ conda install -c anaconda mysql-connector-python
+$ conda install -c anaconda mysql-connector-python pandas
 ```
 
+After this you should be ready to run the database script
 
 ## Using the Database Setup Script
 
@@ -129,4 +119,13 @@ There is a database setup script located in the `utils` directory, called
 ```
 $ python database_setup.py -h
 ```
+
+To load the sample data, do:
+```
+$ python database_setup.py -l ../sample_data/grad_req.xlsx
+```
+
+Keep in mind that this is a rather large operation, inserting 16666 rows of 13
+columns each.
+
 
