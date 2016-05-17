@@ -41,6 +41,7 @@ issues. The Pandas site suggested that Pandas be installed using anaconda:
 ```
 $ wget http://repo.continuum.io/archive/Anaconda2-4.0.0-Linux-x86_64.sh
 $ bash Anaconda2-4.0.0-Linux-x86_64.sh
+$ source ~/.bashrc
 $ conda install -c anaconda mysql-connector-python
 ```
 
