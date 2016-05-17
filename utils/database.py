@@ -1,4 +1,6 @@
 import database_setup
+import Constants
+from SQLConnector import Connection
 
 assert(database_setup.is_table_set_up())
 
@@ -23,7 +25,15 @@ def get_student(OSIS):
                         term_3 : [ABC21, etc],
                         etc
                 }
-        """
+    """
 
+    c = Connection(Constants.PROJECT_DB_NAME)
+    res = c.execute('SELECT FIRSTNAME, LASTNAME, COURSE, GRADE, YEAR FROM %s WHERE STUDENTID = %s ORDER BY YEAR DESC' % (Constants.PROJECT_TABLE_NAME, OSIS))
+    student = {
+        name: "%s %s" % (res[0][0], res[0][1])
+    }
+    print res
 
+if __name__ == '__main__':
+    get_student('701111528')
 

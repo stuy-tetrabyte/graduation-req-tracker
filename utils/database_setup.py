@@ -19,7 +19,7 @@ def get_excel(filepath):
 def get_column_names(datafile):
     """
     Returns a list containing the column names of a Pandas datafile as Python
-    strings
+    strings. This replaces all spaces with _ and upper-cases all letters
 
     Params:
         datafile - A Pandas datafile
@@ -27,7 +27,7 @@ def get_column_names(datafile):
     Returns:
         A list of strings
     """
-    return [ str(s).replace(" ", "_") for s in datafile.columns ]
+    return [ str(s).upper().replace(" ", "_") for s in datafile.columns ]
 
 def is_table_set_up():
     """
