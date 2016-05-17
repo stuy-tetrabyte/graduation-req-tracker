@@ -1,0 +1,10 @@
+{
+  "courses" : [
+    {
+      "name" : "Intro CompSci 2",
+      "course-code" : "MKS22",
+      "pre-reqs" : ["MKS21"]
+    }
+    
+    ]
+}
