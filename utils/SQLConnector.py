@@ -26,7 +26,7 @@ class Connection:
         self.conn.commit()
         return retval
 
-    def destroy(self):
+    def __del__(self):
         """
         Destroys the internal variables of this class
         """
@@ -40,6 +40,5 @@ def execute(*args):
     """
     c = Connection(Constants.PROJECT_DB_NAME)
     retval = c.execute(*args)
-    c.destroy()
     return retval
 
