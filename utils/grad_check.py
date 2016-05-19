@@ -63,7 +63,7 @@ def requirements_met(OSIS):
             . . .
         ]
     """
-    studnet_info = db_m.get_student(OSIS)
+    studnet_info = db_m.get_student_info(OSIS)
     ret = []
 
     for requirement in reqs:

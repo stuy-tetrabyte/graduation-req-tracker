@@ -18,9 +18,9 @@ class DBManager:
         self.course_table = course_table_name
 
 
-    def get_student(self, OSIS):
+    def get_student_info(self, OSIS):
         """
-        get_student: returns a dictionary of the student with the given osis and all of the courses they've taken
+        get_student_info: returns a dictionary of the student with the given osis and all of the courses they've taken
 
         Args: 
             OSIS (string): 9 digit id of the student in quesiton
@@ -74,7 +74,42 @@ class DBManager:
 
         return student_info
 
+    def get_grade_info(self, grade):
+        """
+        get_grade_info: return a list of all the student's information within a
+        certain grade
+    
+        Args:
+            grade (int): the specified grade who's information one is querying
+        
+        Returns:
+            a list of dictionaries of all the informations of all the students
+            within the specified grade
+        """
+
+        q = "SELECT DISTINCT STUDENTID FROM %s WHERE GRADE = %d" % (self.course_table, grade)
+        res = self.conn.execute(q)
+
+        return [self.get_student_info(osis[0]) for osis in res]
+
+    def get_all_students_info(self):
+        """
+        get_all_students_info: returns a list of all the students' informations
+    
+        Args: none
+        
+        Returns:
+            a list of dictionaries of student information as specified by the
+            documentation of the get_student_info
+        """
+
+        q = "SELECT DISTINCT STUDENTID FROM %s" % (self.course_table)
+        res = self.conn.execute(q)
+
+        return [self.get_student_info(osis[0]) for osis in res]
+
 if __name__ == '__main__':
     db_m = DBManager(Constants.PROJECT_DB_NAME, Constants.PROJECT_TABLE_NAME)
-    print db_m.get_student('701116533')
+    #print db_m.get_student_info('701116533')
+    print db_m.get_grade_info(9)
 
