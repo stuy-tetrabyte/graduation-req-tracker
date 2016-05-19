@@ -27,7 +27,7 @@ def get_column_names(datafile):
     Returns:
         A list of strings
     """
-    return [ str(s).upper().replace(" ", "_") for s in datafile.columns ]
+    return [ str(s).strip().upper().replace(" ", "_") for s in datafile.columns ]
 
 def is_table_set_up():
     """
@@ -83,14 +83,14 @@ def load_excel_file(datafile):
     counter = 0
     print "Inserting %d rows with %d data fields each" % (rows, cols)
     for row in datafile.itertuples():
-        if counter % 50 == 0:
+        if counter % 100 == 0:
             print "Progress: %d of %d" % (counter, rows)
         data = list(row._asdict().values())[1:]
         assert(len(data) == len(column_names))
         # Generate query
         query = "INSERT INTO %s (%s) VALUES (%s);"
         schema = (("%s , " * len(column_names))[:-2]) % tuple(column_names)
-        values = (("'%s' , " * len(data))[:-2]) % tuple(( str(it) for it in data))
+        values = (("'%s' , " * len(data))[:-2]) % tuple(( str(it).upper() for it in data))
         query = query % (Constants.PROJECT_TABLE_NAME, schema, values)
         # print query
         SQLConnector.execute(query)
