@@ -65,3 +65,4 @@ target/
 .*.swp
 
 DevBox/
+.DS_Store
