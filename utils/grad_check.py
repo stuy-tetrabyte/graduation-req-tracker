@@ -66,8 +66,6 @@ def requirements_met(OSIS):
     studnet_info = db_m.get_student(OSIS)
     ret = []
 
-    print studnet_info['passed_courses']
-
     for requirement in reqs:
         req_status = {'name': requirement['name'], 'completed': False}
         for option in requirement['options']:
