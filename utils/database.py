@@ -49,7 +49,9 @@ class DBManager:
             'grade': res[0][2]
         }
 
-        q = 'SELECT COURSE, MARK, TERM, YEAR FROM %s WHERE STUDENTID = %s AND MARK >= 65 ORDER BY YEAR, TERM ASC' % (self.course_table, OSIS)
+        q = "SELECT COURSE, MARK, TERM, YEAR FROM %s WHERE STUDENTID = %s AND \
+            MARK >= 65 AND MARK REGEXP '^[0-9]+$' OR MARK='P' OR MARK='C' OR \
+            MARK='CR' ORDER BY YEAR, TERM ASC" % (self.course_table, OSIS)
         res = self.conn.execute(q)
         passed_courses = []
         if (res):
@@ -57,7 +59,9 @@ class DBManager:
                 passed_courses.append((item[0], item[1]))
 
 
-        q = 'SELECT COURSE, MARK, TERM, YEAR FROM %s WHERE STUDENTID = %s AND MARK < 65 ORDER BY YEAR, TERM ASC' % (self.course_table, OSIS)
+        q = "SELECT COURSE, MARK, TERM, YEAR FROM %s WHERE STUDENTID = %s AND \
+            MARK < 65 AND MARK REGEXP '^[0-9]+$' OR MARK LIKE 'N%%' ORDER BY \
+            YEAR, TERM ASC" % (self.course_table, OSIS)
         res = self.conn.execute(q)
 
         failed_courses = []
