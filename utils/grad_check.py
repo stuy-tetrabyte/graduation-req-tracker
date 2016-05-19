@@ -20,12 +20,6 @@ def has_completed_track(passed_courses, track_reqs):
     Returns:
         a boolean value indicating if the list of passed courses completes the
         track requirements
-    
-    Example:
-        TODO
-    
-    Raises:
-        TODO
     """
 
     for semester in track_reqs:
@@ -74,5 +68,21 @@ def requirements_met(OSIS):
 
     return ret
 
+def check_grade_status(grade):
+    """
+    check_grade_status: checks the status of all the students in an entire grade
+
+    Args:
+        grade (int): the specified grade
+    
+    Returns:
+        a list of student status dictionaries as specified above
+    """
+    student_info = db_m.get_grade_info(grade)
+    ret = []
+
+# TODO ASSIGN LOREN
+
+    
 if __name__ == '__main__':
     print requirements_met('701116515')
