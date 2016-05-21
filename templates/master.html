@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	{% block head %}
+	<title>{% block title %}{% endblock %}</title>
+	<link type='text/css' rel='stylesheet' href="../static/main.css"></link>
+	{% endblock %}
+</head>
+
+<body>
+
+<div class="header">
+	<h1>On Track</h1>
+
+	<div class="navbar">
+		<ul>
+			<li>Home</li>
+			<li>Class View</li>
+			<li>Login</li>
+		</ul>
+	</div>
+
+	<div id="content">
+		{% block content %}
+		{% endblock %}
+	</div>
+
+	<div class="footer">
+		<p>Tetrabyte Information Systems, 2016</p>
+	</div>
+</div>
+
+</body>
+
+</html>
