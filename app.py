@@ -65,7 +65,12 @@ def class_view(grad_year):
         the page with data of the specified graduating year
     """
     # TODO: get list of students in a given grad year
-    # each student entry should include OSIS, name, grad year
+    # each student entry should include:
+    #   .osis - OSIS
+    #   .lastn - last name
+    #   .firstn - first name
+    #   .grade - grade
+    #   .offcl - official class
     list_of_students = []  
     return render_template("class.html", students=list_of_students)
 
@@ -82,8 +87,13 @@ def class_view_filtered(grad_year): # XXX Discuss server side v. client side
     Returns:
         the page with the filtered dataset
     """
-    # TODO: get list of students based on filters
-    # each student entry should include OSIS, name, grad year
+    # TODO: get list of students in a given grad year
+    # each student entry should include:
+    #   .osis - OSIS
+    #   .lastn - last name
+    #   .firstn - first name
+    #   .grade - grade
+    #   .offcl - official class
     list_of_students = []  
     return render_template("class.html", students=list_of_students)
 
@@ -98,7 +108,7 @@ def student_view(OSIS):
     Returns:
         the page with the specified student's data
     """
-    return ""
+    return render_template("student.html")
 
 @app.route('/export/<int:grad_year>')
 def export_db(grad_years):
