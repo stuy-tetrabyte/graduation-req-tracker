@@ -19,7 +19,6 @@ from flask import Flask, render_template
 #}}}
 #{{{ Preamble
 from flask import Flask
->>>>>>> master
 
 app = Flask(__name__)
 #}}}
@@ -32,7 +31,7 @@ def home():
     Returns:
         the home page
     """
-    return ""
+    return_template("master.html")
 
 @app.route('/login')
 def login_page():
@@ -81,7 +80,6 @@ def class_view_filtered(grad_year): # XXX Discuss server side v. client side
         the page with the filtered dataset
     """
     return ""
->>>>>>> master
 
 @app.route('/student/<OSIS>')
 def student_view(OSIS):
