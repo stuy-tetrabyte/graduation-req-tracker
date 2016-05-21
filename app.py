@@ -5,6 +5,7 @@ from flask import Flask, render_template
 #                                                                              #
 # Authors                                                                      #
 #  Yicheng Wang                                                                #
+#  Ariel Levy                                                                  #
 #                                                                              #
 # Description                                                                  #
 #  TODO                                                                        #
@@ -72,6 +73,13 @@ def class_view(grad_year):
     #   .grade - grade
     #   .offcl - official class
     list_of_students = []  
+    list_of_students += [{
+        "osis": "123456789",
+        "lastn": "Rachmaninoff",
+        "firstn": "Sergei Vasilievich",
+        "grade": "12",
+        "offcl": "7CC"
+    }]
     return render_template("class.html", students=list_of_students)
 
 @app.route('/class/<int:grad_year>', methods = ['GET', 'POST'])
@@ -94,7 +102,7 @@ def class_view_filtered(grad_year): # XXX Discuss server side v. client side
     #   .firstn - first name
     #   .grade - grade
     #   .offcl - official class
-    list_of_students = []  
+    list_of_students = []
     return render_template("class.html", students=list_of_students)
 
 @app.route('/student/<OSIS>')
@@ -108,7 +116,35 @@ def student_view(OSIS):
     Returns:
         the page with the specified student's data
     """
-    return render_template("student.html")
+    # TODO: get dictionary of student info, including:
+    #   .osis - OSIS
+    #   .lastn - last name
+    #   .firstn - first name
+    #   .grade - grade
+    #   .offcl - official class
+    student_info = {}
+    if OSIS == "0":
+        student_info["osis"] = "123456789"
+        student_info["lastn"] = "Rachmaninoff"
+        student_info["firstn"] = "Sergei Vasilievich"
+        student_info["grade"] = "12"
+        student_info["offcl"] = "7CC"
+    # TODO: get a list of classes fulfilling grad requirements:
+    #   0 - Art 
+    #   1 - Music
+    #   2 - Intro CS 
+    #   3 - Drafting
+    #   4 - Tech
+    #   5 - Health
+    list_of_courses = [""]*6
+    if OSIS == "0":
+        list_of_courses[0] = "ART APPRECIATION"
+        list_of_courses[1] = "BEGINNING BAND"
+        list_of_courses[2] = "INTRO COMP SCI 1 OF 2"
+        list_of_courses[3] = "TECHNICAL GRAPHIC COMMUNICATIONS"
+        list_of_courses[4] = "BEGINNING BAND, CONCERT BAND, SYMPHONIC BAND"
+        list_of_courses[5] = "HEALTH"
+    return render_template("student.html", profile=student_info, courses=list_of_courses)
 
 @app.route('/export/<int:grad_year>')
 def export_db(grad_years):
