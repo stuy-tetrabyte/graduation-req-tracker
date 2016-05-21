@@ -3,8 +3,8 @@ body {
 	max-width: 1000px;
 	line-height: 1.6;
 	font-size: 18px;
-	color: #444;
-	padding: 0 10px;
+	color: #333;
+	padding: 0 10px 0;
 }
 
 h1, h2, h3 {
@@ -19,6 +19,7 @@ h1, h2, h3 {
 
 .navbar {
 	float: right;
+	padding-bottom: 30px;
 }
 
 .navbar ul {
@@ -30,12 +31,20 @@ h1, h2, h3 {
 .navbar li {
 	display: inline;
 	margin: 0px 5px 0px;
+}
+
+.navbar li a {
+	color: #00E;
+	text-decoration: none;
+}
+
+.navbar li a:hover {
 	text-decoration: underline;
 }
 
 #content {
-	max-width: 650px;
 	clear: both;
+	width: 100%;
 }
 
 .footer p {

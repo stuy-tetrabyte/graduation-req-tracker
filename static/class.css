@@ -1,0 +1,25 @@
+#filters {
+	float: left;
+	width: 30%;
+	min-width: 300px;
+	margin: 0px;
+}
+
+#results {
+	float: right;
+	width: 70%;
+	min-width: 700px;
+	margin: 0px;
+}
+
+#results table {
+	width: 100%;
+	border: 1px solid black;
+	text-align: center;
+	border-collapse: collapse; 
+}
+
+#results tr {
+	border: 1px solid black;
+	margin: 0px;
+}

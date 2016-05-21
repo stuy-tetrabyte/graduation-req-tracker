@@ -31,7 +31,7 @@ def home():
     Returns:
         the home page
     """
-    return_template("master.html")
+    return render_template("master.html")
 
 @app.route('/login')
 def login_page():
@@ -41,7 +41,7 @@ def login_page():
     Returns:
         the login page
     """
-    return ""
+    return render_template("login.html")
 
 @app.route('/login', methods = ['GET', 'POST'])
 def login_check():
@@ -64,7 +64,10 @@ def class_view(grad_year):
     Returns:
         the page with data of the specified graduating year
     """
-    return ""
+    # TODO: get list of students in a given grad year
+    # each student entry should include OSIS, name, grad year
+    list_of_students = []  
+    return render_template("class.html", students=list_of_students)
 
 @app.route('/class/<int:grad_year>', methods = ['GET', 'POST'])
 def class_view_filtered(grad_year): # XXX Discuss server side v. client side
@@ -79,7 +82,10 @@ def class_view_filtered(grad_year): # XXX Discuss server side v. client side
     Returns:
         the page with the filtered dataset
     """
-    return ""
+    # TODO: get list of students based on filters
+    # each student entry should include OSIS, name, grad year
+    list_of_students = []  
+    return render_template("class.html", students=list_of_students)
 
 @app.route('/student/<OSIS>')
 def student_view(OSIS):

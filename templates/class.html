@@ -1,0 +1,44 @@
+{% extends "master.html" %}
+
+{% block title %}Class View{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link type="text/css" rel="stylesheet" href="../static/class.css"></link>
+{% endblock %}
+
+{% block content %}
+<div id="filters">
+	<form>
+		<h3>Graduating Class</h3>
+		<input type="checkbox" name="year0" value="2016">2016<br>
+		<input type="checkbox" name="year1" value="2017">2017<br>
+		<input type="checkbox" name="year2" value="2018">2018<br>
+		<input type="checkbox" name="year3" value="2019">2019<br>
+	
+		<h3>Courses</h3>
+		<button class="add-class">Add Class</button>
+
+		<button type="submit" name="action">Update</button>
+	</form>
+</div>
+
+<div id="results">
+	<table>
+		<tr><th>OSIS</th><th>Name</th><th>Year</th></tr>
+		<tr><td>123456789</td><td>Ariel Levy</td><td>2016</td></tr>
+	{% for student in students %}
+		<!-- 
+		OSIS - student[0]
+		Name - student[1]
+		Year - student[2]
+		-->
+		<a href="/student/{{student[0]}}"><tr>
+			<td>{{student[0]}}</td>
+			<td>{{student[1]}}</td>
+			<td>{{student[2]}}</td>
+		</tr></a>
+	{% endfor %}
+	</table>
+</div>
+{% endblock %}
