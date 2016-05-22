@@ -4,22 +4,23 @@
 
 {% block head %}
 {{ super() }}
-<link type="text/css" rel="stylesheet" href="../static/class.css"></link>
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='class.css') }}"></link>
 {% endblock %}
 
 {% block content %}
 <div id="filters">
 	<form>
-		<h3>Grade</h3>
+		<h3>Select Grade(s):</h3>
 		<input type="checkbox" name="grade" value="12">12<br>
 		<input type="checkbox" name="grade" value="11">11<br>
 		<input type="checkbox" name="grade" value="10">10<br>
 		<input type="checkbox" name="grade" value="9">9<br>
 	
-		<h3>Courses</h3>
-		<button class="add-class">Add Class</button>
+		<h3>Select Course(s):</h3>
+		<input type="text" id="class" placeholder="Add Course Code">
+		<button class="right" id="add-class">+</button>
 
-		<button type="submit" name="action">Update</button>
+		<button class="submit" type="submit" name="action">Update</button>
 	</form>
 </div>
 

@@ -146,6 +146,16 @@ def student_view(OSIS):
         list_of_courses[5] = "HEALTH"
     return render_template("student.html", profile=student_info, courses=list_of_courses)
 
+@app.route('/data')
+def manage_data():
+    """
+    manage_data: returns the page for data management
+
+    Returns:
+        the page with links to manage database
+    """
+    return render_template("data.html")
+
 @app.route('/export/<int:grad_year>')
 def export_db(grad_years):
     """

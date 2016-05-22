@@ -5,7 +5,7 @@
 <head>
 	{% block head %}
 	<title>On Track - {% block title %}{% endblock %}</title>
-	<link type='text/css' rel='stylesheet' href="../static/main.css"></link>
+	<link type='text/css' rel='stylesheet' href="{{ url_for('static', filename='main.css') }}"></link>
 	{% endblock %}
 </head>
 
@@ -18,7 +18,7 @@
 		<ul>
 			<li><a href="/">Home</a></li>
 			<li><a href="/class/0">Class View</a></li>
-			<li><a href="/data">Manage Data</a></li>
+			<li><a href="/data">Database</a></li>
 			<li><a href="/login">Login</a></li>
 		</ul>
 	</div>
