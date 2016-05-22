@@ -21,6 +21,7 @@ h1, h2, h3 {
 	float: left;
 	padding: 0px;
 	margin: 0px;
+	border-bottom: 1px solid #F44336;
 }
 
 .navbar {
