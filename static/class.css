@@ -40,3 +40,7 @@
 	border: 1px solid black;
 	margin: 0px;
 }
+
+#results tr:hover {
+	background-color: #FFF;
+}
