@@ -29,6 +29,13 @@
 	border-collapse: collapse; 
 }
 
+#results th {
+	font-size: 12px;
+	text-transform: uppercase;
+	background-color: #666;
+	color: #EEE;
+}
+
 #results tr {
 	border: 1px solid black;
 	margin: 0px;
