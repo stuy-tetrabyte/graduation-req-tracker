@@ -56,14 +56,18 @@ h1, h2, h3 {
 	width: 100%;
 }
 
-.footer p {
+.footer {
 	clear: both;
 	position: fixed;
 	bottom: 0px;
+	left: 0px;
+	width: 100%;
 }
 
 .footer p {
 	font-size: 12px;
+	float: right;
+	margin-right: 12px;
 }
 
 button {
