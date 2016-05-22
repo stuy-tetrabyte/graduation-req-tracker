@@ -4,7 +4,7 @@ from database import DBManager
 import Constants
 
 reqs = json.loads(open('../data/reqs.json','r').read())['grad_requirements']
-db_m = DBManager(Constants.PROJECT_DB_NAME, Constants.PROJECT_TABLE_NAME)
+db_m = DBManager(Constants.PROJECT_DB_NAME, Constants.COURSES_TABLE_NAME)
 
 def has_completed_track(passed_courses, track_reqs):
     """
@@ -22,6 +22,9 @@ def has_completed_track(passed_courses, track_reqs):
         track requirements
     """
 
+    relevent_courses_taken = []
+    status = True
+
     for semester in track_reqs:
         fufilled = False
 
@@ -30,6 +33,8 @@ def has_completed_track(passed_courses, track_reqs):
                 passed_courses.pop(i)
                 fufilled = True
                 break
+
+        status = status 
         
         if (not fufilled):
             return False
@@ -47,12 +52,24 @@ def requirements_met(OSIS):
         ex:
         [
             {
-              "name": "Art Appreciation",
-              "completed" : True,
+                "name": "Art Appreciation",
+                "completed" : True,
+                "courses_taken" : [<list of courses taken in this field>],
+                "possible_tracks" : [
+                    [<list of courses that will fufill this in 1 term>],
+                    [<list of courses that will fufill this in 2 terms>],
+                    ...
+                ]
             },
             {
-            "name": "Music Appreciation",
-              "completed" : False,
+                "name": "Music Appreciation",
+                "completed" : False,
+                "courses_taken" : [<list of courses taken in this field>],
+                "possible_tracks" : [
+                    [<list of courses that will fufill this in 1 term>],
+                    [<list of courses that will fufill this in 2 terms>],
+                    ...
+                ]
             },
             . . .
         ]

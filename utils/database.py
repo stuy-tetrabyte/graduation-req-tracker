@@ -109,7 +109,7 @@ class DBManager:
         return [self.get_student_info(osis[0]) for osis in res]
 
 if __name__ == '__main__':
-    db_m = DBManager(Constants.PROJECT_DB_NAME, Constants.PROJECT_TABLE_NAME)
+    db_m = DBManager(Constants.PROJECT_DB_NAME, Constants.COURSES_TABLE_NAME)
     #print db_m.get_student_info('701116533')
     print db_m.get_grade_info(9)
 
