@@ -65,7 +65,21 @@ class DBManager:
             within the specified grade, in the same format as the return type
             for get_student_info
         """
-        pass
+        grade_query = "SELECT * FROM %s WHERE GRADE=%d;"
+        grade_query = grade_query % (self.student_table, grade)
+        studentlist = self.conn.execute(grade_query)
+        dict_list = []
+        for student in studentlist:
+            data = [ str(elem) for elem in student ]
+            dict_list.append({
+                "osis": data[0],
+                "lastn": data[1],
+                "firstn": data[2],
+                "grade": data[3],
+                "offcl": data[4],
+                "req_status": [ True if req == "True" else False for req in data[5:] ]
+            })
+        return dict_list
 
     def get_all_students_info(self):
         """
@@ -124,7 +138,6 @@ class DBManager:
 if __name__ == '__main__':
     db_m = DBManager(Constants.PROJECT_DB_NAME, Constants.COURSES_TABLE_NAME,
             Constants.STUDENT_TABLE_NAME)
-    #print db_m.get_student_info('701116533')
     print db_m.get_student_info('701116533')
-    #print db_m.get_grade_info(9)
+    print db_m.get_grade_info(9)
 
