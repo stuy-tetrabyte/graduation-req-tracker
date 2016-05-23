@@ -13,9 +13,10 @@ class DBManager:
     Class to manage the student/courses database
     """
 
-    def __init__(self, db_name, course_table_name):
+    def __init__(self, db_name, course_table_name, student_table_name):
         self.conn = Connection(db_name)
         self.course_table = course_table_name
+        self.student_table = student_table_name
 
 
     def get_student_info(self, OSIS):
@@ -107,7 +108,8 @@ class DBManager:
     """
 
 if __name__ == '__main__':
-    db_m = DBManager(Constants.PROJECT_DB_NAME, Constants.COURSES_TABLE_NAME)
+    db_m = DBManager(Constants.PROJECT_DB_NAME, Constants.COURSES_TABLE_NAME,
+            Constants.STUDENT_TABLE_NAME)
     #print db_m.get_student_info('701116533')
     print db_m.get_grade_info(9)
 
