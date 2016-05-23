@@ -121,14 +121,15 @@ class DBManager:
             ]
         """
         pass
+    def 
 
-    def get_all_students_who_have_failed(self):
+    def get_all_students_failed_req(self, req_num):
         """
         get_all_students_who_have_failed: returns a list of student
         informations for everyone who has failed a class
 
         Args:
-            self (type): TODO
+            req_num (int) : index of requirement checking against (in reqs.json)
 
         Returns:
             a list of student information as specified by the documentation of
@@ -136,7 +137,9 @@ class DBManager:
             correspondes to a list of (course_code, mark) tuples of all the
             courses a student has failed
         """
-        pass
+        all_students = get_all_students_info()
+        students = [ student in all_students if student["req_status"][req_num] == False  ] 
+        return students
 
 if __name__ == '__main__':
     db_m = DBManager(Constants.PROJECT_DB_NAME, Constants.COURSES_TABLE_NAME,
