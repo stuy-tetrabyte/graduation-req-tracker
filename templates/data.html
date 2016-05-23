@@ -1,0 +1,15 @@
+{% extends "master.html" %}
+
+{% block title %}Manage Data{% endblock %}
+
+{% block content %}
+<a class="icon" href="/export">
+	<img src="{{ url_for('static', filename='export.png') }}" />
+	Export course database in Excel file
+</a>
+
+<a class="icon" href="/update_reqs">
+	<img src="{{ url_for('static', filename='grad.png') }}" />
+	Update graduation requirements in JSON file
+</a>
+{% endblock %}

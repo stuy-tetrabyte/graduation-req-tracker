@@ -1,8 +1,11 @@
+from flask import Flask, render_template
+
 ################################################################################
 # Python Flask based server script for graduation requirement tracker          #
 #                                                                              #
 # Authors                                                                      #
 #  Yicheng Wang                                                                #
+#  Ariel Levy                                                                  #
 #                                                                              #
 # Description                                                                  #
 #  TODO                                                                        #
@@ -29,7 +32,7 @@ def home():
     Returns:
         the home page
     """
-    return ""
+    return render_template("master.html")
 
 @app.route('/login')
 def login_page():
@@ -39,7 +42,7 @@ def login_page():
     Returns:
         the login page
     """
-    return ""
+    return render_template("login.html")
 
 @app.route('/login', methods = ['GET', 'POST'])
 def login_check():
@@ -62,7 +65,22 @@ def class_view(grad_year):
     Returns:
         the page with data of the specified graduating year
     """
-    return ""
+    # TODO: get list of students in a given grad year
+    # each student entry should include:
+    #   .osis - OSIS
+    #   .lastn - last name
+    #   .firstn - first name
+    #   .grade - grade
+    #   .offcl - official class
+    list_of_students = []  
+    list_of_students += [{
+        "osis": "123456789",
+        "lastn": "Rachmaninoff",
+        "firstn": "Sergei Vasilievich",
+        "grade": "12",
+        "offcl": "7CC"
+    }]
+    return render_template("class.html", students=list_of_students)
 
 @app.route('/class/<int:grad_year>', methods = ['GET', 'POST'])
 def class_view_filtered(grad_year): # XXX Discuss server side v. client side
@@ -77,7 +95,15 @@ def class_view_filtered(grad_year): # XXX Discuss server side v. client side
     Returns:
         the page with the filtered dataset
     """
-    return ""
+    # TODO: get list of students in a given grad year
+    # each student entry should include:
+    #   .osis - OSIS
+    #   .lastn - last name
+    #   .firstn - first name
+    #   .grade - grade
+    #   .offcl - official class
+    list_of_students = []
+    return render_template("class.html", students=list_of_students)
 
 @app.route('/student/<OSIS>')
 def student_view(OSIS):
@@ -90,7 +116,45 @@ def student_view(OSIS):
     Returns:
         the page with the specified student's data
     """
-    return ""
+    # TODO: get dictionary of student info, including:
+    #   .osis - OSIS
+    #   .lastn - last name
+    #   .firstn - first name
+    #   .grade - grade
+    #   .offcl - official class
+    student_info = {}
+    if OSIS == "0":
+        student_info["osis"] = "123456789"
+        student_info["lastn"] = "Rachmaninoff"
+        student_info["firstn"] = "Sergei Vasilievich"
+        student_info["grade"] = "12"
+        student_info["offcl"] = "7CC"
+    # TODO: get a list of classes fulfilling grad requirements:
+    #   0 - Art 
+    #   1 - Music
+    #   2 - Intro CS 
+    #   3 - Drafting
+    #   4 - Tech
+    #   5 - Health
+    list_of_courses = [""]*6
+    if OSIS == "0":
+        list_of_courses[0] = "ART APPRECIATION"
+        list_of_courses[1] = "BEGINNING BAND"
+        list_of_courses[2] = "INTRO COMP SCI 1 OF 2"
+        list_of_courses[3] = "TECHNICAL GRAPHIC COMMUNICATIONS"
+        list_of_courses[4] = "BEGINNING BAND, CONCERT BAND, SYMPHONIC BAND"
+        list_of_courses[5] = "HEALTH"
+    return render_template("student.html", profile=student_info, courses=list_of_courses)
+
+@app.route('/data')
+def manage_data():
+    """
+    manage_data: returns the page for data management
+
+    Returns:
+        the page with links to manage database
+    """
+    return render_template("data.html")
 
 @app.route('/export/<int:grad_year>')
 def export_db(grad_years):

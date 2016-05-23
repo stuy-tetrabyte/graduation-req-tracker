@@ -1,0 +1,16 @@
+{% extends "master.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div id="login">
+	<h2>Login</h2>
+
+	<form method="post" action="/login">
+		<input type="text" id="user" placeholder="Username"><br>
+		<input type="text" id="pass" placeholder="Password"><br>
+		<button class="submit" type="submit" name="action">Submit</button>
+	</form>
+</div>
+{% endblock %}
+
