@@ -94,7 +94,7 @@ class DBManager:
         """
         dict_list = []
         for i in range(4):
-            dict_list.append(get_grade_info(i + 9)
+            dict_list += self.get_grade_info(i + 9)
         return dict_list
 
     def get_next_term_course_suggestions(self, OSIS):
@@ -142,5 +142,6 @@ if __name__ == '__main__':
     db_m = DBManager(Constants.PROJECT_DB_NAME, Constants.COURSES_TABLE_NAME,
             Constants.STUDENT_TABLE_NAME)
     print db_m.get_student_info('701116533')
-    print db_m.get_grade_info(9)
+    #print db_m.get_grade_info(9)
+    db_m.get_all_students_info()
 
