@@ -6,4 +6,4 @@ COURSES_TABLE_COLUMNS = ["STUDENTID", "SCHOOL", "YEAR", "TERM", "COURSE", "COURS
 
 STUDENT_TABLE_COLUMNS = ["STUDENTID", "LASTNAME", "FIRSTNAME", "GRADE", "OFFCLASS"]
 
-TOTAL_REQ_COUNT = 6 # amount of graduation requirements
+TOTAL_REQ_COUNT = 7 # amount of graduation requirements

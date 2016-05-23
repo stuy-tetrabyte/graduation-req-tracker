@@ -3,6 +3,43 @@ import argparse
 import SQLConnector
 import Constants
 import sys
+import json
+
+def has_completed_track(passed_courses, track_reqs):
+    """
+    has_completed_track: checks if the list of passed courses completes the
+    track requirements
+
+    Args:
+        passed_courses (list of strings): a student's
+            passed courses
+	track_reqs (list of strings): list of required courses to complete a
+            certain track
+    
+    Returns:
+        a boolean value indicating if the list of passed courses completes the
+        track requirements
+    """
+
+    relevent_courses_passed = []
+    status = True
+
+    for semester in track_reqs:
+        fufilled = False
+
+        for i in range(0, len(passed_courses)):
+            if (passed_courses[i] in semester):
+                passed_courses.pop(i)
+                fufilled = True
+                break
+
+        status = status 
+        
+        if (not fufilled):
+            return False
+
+    return True
+
 
 def get_excel(filepath):
     """
@@ -76,6 +113,8 @@ def reset_project_table():
     Resets the table for this project by calling 'delete' and 'setup'
     """
     delete_project_table()
+    for i in range(0, Constants.TOTAL_REQ_COUNT):
+        Constants.STUDENT_TABLE_COLUMNS.append("REQ%02d" % i) # grad reqs
     create_project_table(Constants.COURSES_TABLE_COLUMNS, Constants.STUDENT_TABLE_COLUMNS)
 
 def load_excel_file(datafile):
@@ -113,6 +152,8 @@ def load_excel_file(datafile):
     print "Populating %s" % Constants.COURSES_TABLE_NAME
     print "Inserting %d rows with %d data fields each" % (rows, cols)
 
+    student_data = {} # dictionary used to temporarily store data for students datatabe
+
     for row in datafile.itertuples():
         if counter % 100 == 0:
             print "Progress: %d of %d" % (counter, rows)
@@ -122,6 +163,9 @@ def load_excel_file(datafile):
 
         # FIXME THIS IS BAD BUT IDK HOW TO MAKE IT BETTER - YICHENG
         # Works for now tho
+        if str(data[0]) not in student_data.keys():
+            student_data[str(data[0])] = [data[1], data[2], data[3], data[4]]
+
         data = [data[0], data[5], data[6], data[7], data[8], data[9], data[11], data[12]]
 
         # Generate query
@@ -137,9 +181,50 @@ def load_excel_file(datafile):
     print "Done!"
     print "Begin analysis... Populating %s" % Constants.STUDENT_TABLE_NAME
 
-    query = "SELECT DISTINCT STUDENTID FROM %s" % (Constants.COURSES_TABLE_NAME)
-    # TODO -- populate student db based on the thing, feel free to tweak around
-    # overall structure and move functions and files
+    reqs = json.loads(open('../data/reqs.json', 'r').read())['grad_requirements']
+
+    query = "SELECT DISTINCT STUDENTID FROM %s;" % (Constants.COURSES_TABLE_NAME)
+
+    res = SQLConnector.execute(query)
+
+    print "Inserting %d students" % (len(res))
+
+    counter = 0
+
+    for (osis, ) in res:
+
+        if counter % 100 == 0:
+            print "Progress: %d of %d" % (counter, len(res))
+
+        query = "SELECT COURSE FROM %s WHERE STUDENTID = %s AND \
+            ((MARK >= 65 AND MARK REGEXP '^[0-9]+$') OR MARK='P' OR MARK='C' OR \
+            MARK='CR');" % (Constants.COURSES_TABLE_NAME, osis)
+
+        r = SQLConnector.execute(query)
+        if r:
+            courses_passed = [course for (course,) in r]
+        else:
+            courses_passed = []
+
+        req_status = []
+
+        for requirement in reqs:
+            status = False
+            for option in requirement['options']:
+                status = status or has_completed_track(courses_passed, option['course-code'])
+                if status:
+                    break
+            req_status.append(str(status))
+
+        query = "INSERT INTO %s (%s) VALUES (%s);"
+        schema = (("%s, " * len(Constants.STUDENT_TABLE_COLUMNS))[:-2]) % tuple(Constants.STUDENT_TABLE_COLUMNS)
+        values = (("'%s', " * len(Constants.STUDENT_TABLE_COLUMNS))[:-2]) % tuple([osis] + student_data[str(osis)] + req_status)
+        query = query % (Constants.STUDENT_TABLE_NAME, schema, values)
+
+        r = SQLConnector.execute(query)
+
+        counter += 1
+
 
 def main():
     parser = argparse.ArgumentParser()
