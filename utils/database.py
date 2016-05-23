@@ -19,94 +19,92 @@ class DBManager:
 
 
     def get_student_info(self, OSIS):
-        """
-        get_student_info: returns a dictionary of the student with the given osis and all of the courses they've taken
+    """
+    get_student_info: returns a dictionary of the student with the given osis and all of the courses they've taken
 
-        Args: 
-            OSIS (string): 9 digit id of the student in quesiton
-        Returns:
-            Dict with student info and courses 
-            ex : {
-                    'name': "Student Name",
-                    'OSIS': "123456789",
-                    'grade': 12,
-                    'passed_courses' : [<list of passed courses>],
-                    'failed_courses' : [<list of failed courses>]
-                }
-
-            the courses are stored as tuples of (<course code>, <mark received>)
-        """
-
-        q = 'SELECT FIRSTNAME, LASTNAME, GRADE FROM %s WHERE STUDENTID = %s' % (self.course_table, OSIS)
-        res = self.conn.execute(q)
-
-        if (len(res) == 0):
-            return None
-
-        student_info = {
-            'name': res[0][0] + ' ' + res[0][1],
-            'OSIS': OSIS,
-            'grade': res[0][2]
+    Args: 
+        OSIS (string): 9 digit id of the student in quesiton
+        
+    Returns:
+        Dict with student information in the following format:
+        {
+            "osis": "123456789",
+            "lastn": "Rachmaninoff",
+            "firstn": "Sergei Vasilievich",
+            "grade": "12",
+            "offcl": "7CC",
+            "req_status": [list of booleans, the index of
+            which corresponding to the requirement specified in
+            data/reqs.json (note that the database was also generated in
+            this order)]
         }
 
-        q = "SELECT COURSE, MARK, TERM, YEAR FROM %s WHERE STUDENTID = %s AND \
-            MARK >= 65 AND MARK REGEXP '^[0-9]+$' OR MARK='P' OR MARK='C' OR \
-            MARK='CR' ORDER BY YEAR, TERM ASC" % (self.course_table, OSIS)
-        res = self.conn.execute(q)
-        passed_courses = []
-        if (res):
-           for item in res:
-                passed_courses.append((item[0], item[1]))
-
-
-        q = "SELECT COURSE, MARK, TERM, YEAR FROM %s WHERE STUDENTID = %s AND \
-            MARK < 65 AND MARK REGEXP '^[0-9]+$' OR MARK LIKE 'N%%' ORDER BY \
-            YEAR, TERM ASC" % (self.course_table, OSIS)
-        res = self.conn.execute(q)
-
-        failed_courses = []
-        if (res):
-           for item in res:
-               failed_courses.append((item[0], item[1]))
-
-        student_info['passed_courses'] = passed_courses
-        student_info['failed_courses'] = failed_courses
-
-        return student_info
+    """
 
     def get_grade_info(self, grade):
-        """
-        get_grade_info: return a list of all the student's information within a
-        certain grade
+    """
+    get_grade_info: return a list of all the student's information within a
+    certain grade
+
+    Args:
+        grade (int): the specified grade who's information one is querying
     
-        Args:
-            grade (int): the specified grade who's information one is querying
-        
-        Returns:
-            a list of dictionaries of all the informations of all the students
-            within the specified grade
-        """
-
-        q = "SELECT DISTINCT STUDENTID FROM %s WHERE GRADE = %d" % (self.course_table, grade)
-        res = self.conn.execute(q)
-
-        return [self.get_student_info(osis[0]) for osis in res]
+    Returns:
+        a list of dictionaries of all the informations of all the students
+        within the specified grade, in the same format as the return type
+        for get_student_info
+    """
 
     def get_all_students_info(self):
-        """
-        get_all_students_info: returns a list of all the students' informations
+    """
+    get_all_students_info: returns a list of all the students' informations
+
+    Args:
+        None
     
-        Args: none
-        
-        Returns:
-            a list of dictionaries of student information as specified by the
-            documentation of the get_student_info
-        """
+    Returns:
+        a list of dictionaries of student information as specified by the
+        documentation of the get_student_info
+    """
 
-        q = "SELECT DISTINCT STUDENTID FROM %s" % (self.course_table)
-        res = self.conn.execute(q)
+    def get_next_term_course_suggestions(self, OSIS):
+    """
+    get_next_term_course_suggestions: returns the courses one can take next
+    term to fufill graduation requirements
 
-        return [self.get_student_info(osis[0]) for osis in res]
+    Args:
+        OSIS (string): studentID of student in question
+    
+    Returns:
+        a nested list of course codes, at the top level, each index
+        correspondes to a graduation requirement as specified in
+        data/reqs.json. Within each index, it should contain an empty list if
+        the requirement has already been fufilled, or a list of tracks to
+        fufill the requirement (this is subject to change, may not be the best
+        idea) (may also require more than a couple of helper functions)
+
+        Example
+        [
+            [["UAS11"], ["UDS11Q8", "UDS11Q8", ...], ...], # music
+            [], # art
+            ...
+        ]
+    """
+
+    def get_all_students_who_have_failed(self):
+    """
+    get_all_students_who_have_failed: returns a list of student
+    informations for everyone who has failed a class
+
+    Args:
+        self (type): TODO
+    
+    Returns:
+        a list of student information as specified by the documentation of
+        get_student_info except with the extra key "failed_courses" which
+        correspondes to a list of (course_code, mark) tuples of all the
+        courses a student has failed
+    """
 
 if __name__ == '__main__':
     db_m = DBManager(Constants.PROJECT_DB_NAME, Constants.COURSES_TABLE_NAME)
