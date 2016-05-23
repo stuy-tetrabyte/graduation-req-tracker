@@ -92,7 +92,10 @@ class DBManager:
             a list of dictionaries of student information as specified by the
             documentation of the get_student_info
         """
-        pass
+        dict_list = []
+        for i in range(4):
+            dict_list.append(get_grade_info(i + 9)
+        return dict_list
 
     def get_next_term_course_suggestions(self, OSIS):
         """
