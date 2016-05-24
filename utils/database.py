@@ -125,7 +125,7 @@ class DBManager:
 
     def get_all_students_failed_req(self, req_num):
         """
-        get_all_students_who_have_failed: returns a list of student
+        get_all_students_failed_req: returns a list of student
         informations for everyone who has failed a class
 
         Args:
@@ -145,6 +145,7 @@ if __name__ == '__main__':
     db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME,
             STUDENT_TABLE_NAME)
     print db_m.get_student_info('701116533')
-    #print db_m.get_grade_info(9)
+    db_m.get_grade_info(9)
     db_m.get_all_students_info()
+    print get_all_students_failed_req()
 
