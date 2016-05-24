@@ -19,5 +19,6 @@ before_script:
     - "mysqladmin -u root password test" # set root password
 
 script:
-    - "cd utils && python database_setup.py -l ../sample_data/smaller_grad_req.xlsx"
-    - "cd utils && python database.py" # run main
+    - "cd utils"
+    - "python database_setup.py -l ../sample_data/smaller_grad_req.xlsx" # Set up test db
+    - "python database.py" # run main
