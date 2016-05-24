@@ -18,7 +18,24 @@ class DBManager:
         self.course_table = course_table_name
         self.student_table = student_table_name
 
-
+    def get_student_courses(self, OSIS):
+        """
+        get_student_courses: returns a list of the students' courses
+    
+        Args:
+            OSIS (string): student ID in question
+        
+        Returns:
+            returns a list of information regarding all the courses a student
+            took
+        """
+        q = "SELECT * FROM %s WHERE STUDENTID = '%s';"
+        q = q % (self.student_table, OSIS)
+        data = self.conn.execute(q)
+        if (data):
+            return data
+        else:
+            return []
         
     def get_student_info(self, OSIS):
         """
