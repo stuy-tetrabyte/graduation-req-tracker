@@ -19,6 +19,7 @@ class DBManager:
         self.student_table = student_table_name
 
 
+        
     def get_student_info(self, OSIS):
         """
         get_student_info: returns a dictionary of the student with the given osis and all of the courses they've taken
@@ -97,7 +98,18 @@ class DBManager:
         for i in range(4):
             dict_list += self.get_grade_info(i + 9)
         return dict_list
+    def get_req_course_track(self, OSIS, req_num):
+        """
+        get_req_course_track: returns course suggestions for student to meet req
 
+        Args:
+            OSIS (string) : studentID
+            req_num (int) : req to check (nums in constants.py)
+
+        Returns:
+            
+        """
+    
     def get_next_term_course_suggestions(self, OSIS):
         """
         get_next_term_course_suggestions: returns the courses one can take next
