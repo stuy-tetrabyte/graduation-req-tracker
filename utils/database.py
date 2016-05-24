@@ -1,5 +1,5 @@
 import database_setup
-import Constants
+from Constants import *
 from SQLConnector import Connection
 from datetime import date
 
@@ -34,7 +34,8 @@ class DBManager:
                 "firstn": "Sergei Vasilievich",
                 "grade": "12",
                 "offcl": "7CC",
-                "req_status": [list of booleans, the index of
+                "req_status": [list of status codes as specified in
+                py, the index of
                 which corresponding to the requirement specified in
                 data/reqs.json (note that the database was also generated in
                 this order)]
@@ -49,7 +50,7 @@ class DBManager:
             "firstn": data[2],
             "grade": data[3],
             "offcl": data[4],
-            "req_status": [ True if req == "True" else False for req in data[5:] ]
+            "req_status": [ int(n) for n in data[5:] ]
         }
 
     def get_grade_info(self, grade):
@@ -77,7 +78,7 @@ class DBManager:
                 "firstn": data[2],
                 "grade": data[3],
                 "offcl": data[4],
-                "req_status": [ True if req == "True" else False for req in data[5:] ]
+                "req_status": [ int(n) for n in data[5:] ]
             })
         return dict_list
 
@@ -121,7 +122,6 @@ class DBManager:
             ]
         """
         pass
-    def 
 
     def get_all_students_failed_req(self, req_num):
         """
@@ -138,12 +138,12 @@ class DBManager:
             courses a student has failed
         """
         all_students = get_all_students_info()
-        students = [ student in all_students if student["req_status"][req_num] == False  ] 
+        students = [ student for student in all_students if student["req_status"][req_num] == HAS_FAILED ] 
         return students
 
 if __name__ == '__main__':
-    db_m = DBManager(Constants.PROJECT_DB_NAME, Constants.COURSES_TABLE_NAME,
-            Constants.STUDENT_TABLE_NAME)
+    db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME,
+            STUDENT_TABLE_NAME)
     print db_m.get_student_info('701116533')
     #print db_m.get_grade_info(9)
     db_m.get_all_students_info()
