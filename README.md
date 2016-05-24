@@ -1,7 +1,7 @@
 # graduation-req-tracker
 Graduation Requirement Tracker
 
-**Build status**: [![Build Status](https://travis-ci.org/stuy-tetrabyte/graduation-req-tracker.svg?branch=feature-backend)](https://travis-ci.org/stuy-tetrabyte/graduation-req-tracker)
+[![Build Status](https://travis-ci.org/stuy-tetrabyte/graduation-req-tracker.svg?branch=feature-backend)](https://travis-ci.org/stuy-tetrabyte/graduation-req-tracker)
 
 ## Setting up a Vagrant Box for a development environment
 
