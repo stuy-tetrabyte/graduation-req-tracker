@@ -1,9 +1,7 @@
-import pandas
-import argparse
-import SQLConnector
 from Constants import *
-import sys
-import json
+import os, sys, argparse
+import SQLConnector
+import pandas, json
 
 def get_track_completion_status(passed_courses, failed_courses, track_reqs):
     """
@@ -190,7 +188,9 @@ def load_excel_file(datafile):
     print "Done!"
     print "Begin analysis... Populating %s" % STUDENT_TABLE_NAME
 
-    reqs = json.loads(open('../data/reqs.json', 'r').read())['grad_requirements']
+    script_path = os.path.realpath(__file__)
+    script_loc = os.path.dirname(script_path)
+    reqs = json.loads(open(script_loc + '/../data/reqs.json', 'r').read())['grad_requirements']
 
     query = "SELECT DISTINCT STUDENTID FROM %s;" % (COURSES_TABLE_NAME)
 
