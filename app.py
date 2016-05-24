@@ -136,14 +136,15 @@ def student_view(OSIS):
     #   3 - Drafting
     #   4 - Tech
     #   5 - Health
-    list_of_courses = [""]*6
+    list_of_courses = [""]*7
     if OSIS == "0":
         list_of_courses[0] = "ART APPRECIATION"
         list_of_courses[1] = "BEGINNING BAND"
         list_of_courses[2] = "INTRO COMP SCI 1 OF 2"
         list_of_courses[3] = "TECHNICAL GRAPHIC COMMUNICATIONS"
-        list_of_courses[4] = "BEGINNING BAND, CONCERT BAND, SYMPHONIC BAND"
-        list_of_courses[5] = "HEALTH"
+        list_of_courses[4] = "JEWELRY DESIGN"
+        list_of_courses[5] = "WOODWORKING 1 OF 2, WOODWORKING 2 OF 2"
+        list_of_courses[6] = "HEALTH"
     return render_template("student.html", profile=student_info, courses=list_of_courses)
 
 @app.route('/data')
