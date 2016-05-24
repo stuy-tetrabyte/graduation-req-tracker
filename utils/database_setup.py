@@ -207,7 +207,7 @@ def load_excel_file(datafile):
 
         query = "SELECT COURSE FROM %s WHERE STUDENTID = %s AND \
             ((MARK >= 65 AND MARK REGEXP '^[0-9]+$') OR MARK='P' OR MARK='C' OR \
-            MARK='CR');" % (COURSES_TABLE_NAME, osis)
+            MARK='CR' OR MARK REGEXP '^[A-D]$');" % (COURSES_TABLE_NAME, osis)
 
         r = SQLConnector.execute(query)
         if r:
