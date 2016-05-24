@@ -183,15 +183,15 @@ class DBManager:
             correspondes to a list of (course_code, mark) tuples of all the
             courses a student has failed
         """
-        all_students = get_all_students_info()
+        all_students = self.get_all_students_info()
         students = [ student for student in all_students if student["req_status"][req_num] == HAS_FAILED ]
         return students
 
 if __name__ == '__main__':
     db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME,
             STUDENT_TABLE_NAME)
-    print db_m.get_student_info('701116533')
-    db_m.get_grade_info(9)
-    db_m.get_all_students_info()
-    print get_all_students_failed_req(0)
+    print db_m.get_student_info('701116533'), "\n\n"
+    print db_m.get_grade_info(9), "\n\n"
+    print db_m.get_all_students_info(), "\n\n"
+    print db_m.get_all_students_failed_req(0), "\n\n"
 
