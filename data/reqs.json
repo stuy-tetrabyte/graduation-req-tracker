@@ -2,7 +2,7 @@
   "grad_requirements": [
     {
       "name": "Music Appreciation",
-      options: [
+      "options": [
         {
           "track-name" : "1 Term Music App",
           "terms-req" : 1,
@@ -16,7 +16,7 @@
           "course-code" : [["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33"],["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33"]]
         },
         {
-          "course-name" : "3 Terms Chorus",
+          "track-name" : "3 Terms Chorus",
           "terms-req" : 3,
           "suggested-terms" : [1,2,3,4],
           "course-code" : [["UVS11","UCS11"],["UVS11","UCS11"],["UVS11","UCS11"]]
@@ -25,7 +25,7 @@
     },
     {
       "name": "Art Appreciation",
-      options : [
+      "options" : [
          {
           "track_name" : "Art Appreciation",
           "terms-req" : 1,
@@ -36,7 +36,7 @@
     },
     {
       "name": "Intro CS",
-      options : [
+      "options" : [
          {
           "track_name" : "Intro CompSci 1",
           "terms-req" : 1,
@@ -47,7 +47,7 @@
     },
     {
       "name": "Techncal Drawing",
-      options : [
+      "options" : [
          {
           "track_name" : "Drafting",
           "terms-req" : 1,
@@ -58,7 +58,7 @@
     },
     {
       "name": "5 Tech",
-      options : [
+      "options" : [
          {
           "track_name" : "2nd Term CompSci",
           "terms-req" : 1,
@@ -75,7 +75,7 @@
     },
     {
       "name": "10 Tech",
-      options : [
+      "options" : [
         {
           "track_name" : "AP Computer Science",
           "terms-req" : 2,
@@ -104,7 +104,7 @@
     },
     {
       "name": "Health",
-      options : [
+      "options" : [
          {
           "track_name" : "Health",
           "terms-req" : 1,

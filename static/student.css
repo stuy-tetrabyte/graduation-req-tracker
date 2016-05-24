@@ -1,0 +1,38 @@
+h2 {
+	float: left;
+	clear: left;
+	font-size: 25px;
+	margin: 0px;
+}
+
+h3 {
+	float: right;
+	clear: right;
+	font-size: 25px;
+	margin: 0px;
+}
+
+table {
+	clear: both;
+	margin-top: 30px;
+	border-collapse: collapse;
+	width: 100%;
+	text-align: center;
+}
+
+table th, td {
+	border-top: 3px solid #EEE;
+	border-bottom: 3px solid #EEE;
+	padding: 5px 15px 5px;
+}
+
+table th {
+	background-color: #666;
+	color: #FFF;
+	font-weight: 500;
+}
+
+table td {
+	background-color: #FFF;
+}
+
