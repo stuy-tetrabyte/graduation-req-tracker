@@ -109,6 +109,21 @@ class DBManager:
         Returns:
             
         """
+        student_courses = get_student_courses(OSIS)
+        req_tracks = json.loads(open('../data/reqs.json', 'r').read())['grad_requirements'][req_num]["options"]
+        track_progress = [] 
+        #check if already started on any tracks
+        for track in req_tracks:
+            for semester in track:
+                for course in semester:
+                    if (course in student_courses): #also check if passed
+                        track_progress.append(track)
+        #then check if none started, or one completed
+        #if none suggest all
+        #if done suggest ?
+        #if progress, suggest the rest of current track(s)
+        
+        
     
     def get_next_term_course_suggestions(self, OSIS):
         """

@@ -109,7 +109,7 @@
           "track_name" : "Health",
           "terms-req" : 1,
           "suggested-terms" : [5,6],
-          "course-code" : ["PHS11"]
+          "course-code" : [["PHS11"]]
         }
       ]
     }
