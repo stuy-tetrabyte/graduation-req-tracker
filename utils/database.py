@@ -193,5 +193,5 @@ if __name__ == '__main__':
     print db_m.get_student_info('701116533')
     db_m.get_grade_info(9)
     db_m.get_all_students_info()
-    print get_all_students_failed_req()
+    print get_all_students_failed_req(0)
 
