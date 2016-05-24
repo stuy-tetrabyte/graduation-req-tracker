@@ -5,9 +5,6 @@ from datetime import date
 
 assert(database_setup.is_table_set_up())
 
-# TODO: Create the stubs for database files
-# Assignee: Loren
-
 class DBManager:
     """
     Class to manage the student/courses database
@@ -21,10 +18,10 @@ class DBManager:
     def get_student_courses(self, OSIS):
         """
         get_student_courses: returns a list of the students' courses
-    
+
         Args:
             OSIS (string): student ID in question
-        
+
         Returns:
             returns a list of information regarding all the courses a student
             took
@@ -32,11 +29,11 @@ class DBManager:
         q = "SELECT * FROM %s WHERE STUDENTID = '%s';"
         q = q % (self.student_table, OSIS)
         data = self.conn.execute(q)
-        if (data):
+        if data:
             return data
         else:
             return []
-        
+
     def get_student_info(self, OSIS):
         """
         get_student_info: returns a dictionary of the student with the given osis and all of the courses they've taken
@@ -61,7 +58,10 @@ class DBManager:
         """
         query = "SELECT * FROM %s WHERE STUDENTID='%s';"
         query = query % (self.student_table, OSIS)
-        data = [ str(elem) for elem in self.conn.execute(query)[0] ]
+        query_res = self.conn.execute(query)
+        if not query_res: # if query_res == None
+            return None
+        data = [ str(elem) for elem in query_res[0] ]
         return {
             "osis": data[0],
             "lastn": data[1],
@@ -87,6 +87,8 @@ class DBManager:
         grade_query = "SELECT * FROM %s WHERE GRADE=%d;"
         grade_query = grade_query % (self.student_table, grade)
         studentlist = self.conn.execute(grade_query)
+        if not studentlist: # if studentlist == None
+            return None
         dict_list = []
         for student in studentlist:
             data = [ str(elem) for elem in student ]
@@ -113,8 +115,11 @@ class DBManager:
         """
         dict_list = []
         for i in range(4):
-            dict_list += self.get_grade_info(i + 9)
+            info = self.get_grade_info(i + 9)
+            if info: # if info != None
+                dict_list += info
         return dict_list
+
     def get_req_course_track(self, OSIS, req_num):
         """
         get_req_course_track: returns course suggestions for student to meet req
@@ -124,7 +129,6 @@ class DBManager:
             req_num (int) : req to check (nums in constants.py)
 
         Returns:
-            
         """
         student_courses = get_student_courses(OSIS)
         req_tracks = json.loads(open('../data/reqs.json', 'r').read())['grad_requirements'][req_num]["options"]
@@ -139,9 +143,7 @@ class DBManager:
         #if none suggest all
         #if done suggest ?
         #if progress, suggest the rest of current track(s)
-        
-        
-    
+
     def get_next_term_course_suggestions(self, OSIS):
         """
         get_next_term_course_suggestions: returns the courses one can take next
@@ -182,7 +184,7 @@ class DBManager:
             courses a student has failed
         """
         all_students = get_all_students_info()
-        students = [ student for student in all_students if student["req_status"][req_num] == HAS_FAILED ] 
+        students = [ student for student in all_students if student["req_status"][req_num] == HAS_FAILED ]
         return students
 
 if __name__ == '__main__':
