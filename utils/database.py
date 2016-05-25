@@ -270,9 +270,9 @@ class DBManager:
         for option in options:
             for courses in option['course-code']:
                 relevent_courses = relevent_courses.union(set(courses))
-        relevent_courses = str(tuple([str(code) for code in relevent_courses]))
+        relevent_courses = str([str(code) for code in relevent_courses])[1:-1]
         q = "SELECT COURSE, COURSE_TITLE, MARK FROM %s WHERE STUDENTID = '%s'\
-                AND COURSE IN %s" % (self.course_table, osis, relevent_courses)
+                AND COURSE IN (%s)" % (self.course_table, osis, relevent_courses)
         r = self.conn.execute(q)
         if (r):
             return r
