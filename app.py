@@ -137,6 +137,7 @@ def student_view(OSIS):
     #   4 - Tech
     #   5 - Health
     list_of_courses = [""]*7
+    # TODO: replace course names with codes!
     if OSIS == "123456789":
         list_of_courses[0] = "ART APPRECIATION"
         list_of_courses[1] = "BEGINNING BAND"
