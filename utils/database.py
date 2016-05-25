@@ -2,6 +2,7 @@ import database_setup
 from Constants import *
 from SQLConnector import Connection
 from datetime import date
+import os, json
 
 assert(database_setup.is_table_set_up())
 
@@ -14,6 +15,9 @@ class DBManager:
         self.conn = Connection(db_name)
         self.course_table = course_table_name
         self.student_table = student_table_name
+        script_path = os.path.realpath(__file__)
+        script_loc = os.path.dirname(script_path)
+        self.reqs = json.loads(open(script_loc + '/../data/reqs.json', 'r').read())['grad_requirements']
 
     def get_student_courses(self, OSIS):
         """
@@ -247,21 +251,48 @@ class DBManager:
         else: # nobody can graduate :(
             return []
 
+    def get_relevent_courses(self, osis, req_number):
+        """
+        get_relevent_courses: gets all the courses a student has taken that is
+        relevent to a specific requirement
+    
+        Args:
+            osis (string): the studentid of the student in question
+            req_number (int): requirement number
+        
+        Returns:
+            a nested list where each index is a list of all the courses a
+            student has taken with respect to a specific requirement number,
+            each course is stored as a tuple of ('code', 'name', 'mark')
+        """
+        options = self.reqs[req_number]['options']
+        relevent_courses = set()
+        for option in options:
+            for courses in option['course-code']:
+                relevent_courses = relevent_courses.union(set(courses))
+        relevent_courses = str(tuple(relevent_courses))
+        q = "SELECT COURSE, COURSE_TITLE, MARK FROM %s WHERE STUDENTID = %s\
+                AND COURSE IN (%s)" % (self.course_table, osis, relevent_courses)
+        r = self.conn.execute(q)
+        if (r):
+            return r
+        else:
+            return []
 
 if __name__ == '__main__':
     db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME,
             STUDENT_TABLE_NAME)
-    print "Test get_all_students_info:"
+    print "Test get_students_info: 701113960"
     print db_m.get_student_info('701113960'), "\n"
-    print "Test get_grade_info:"
+    print "Test get_grade_info: 12"
     print db_m.get_grade_info(12), "\n"
     print "Test get_all_students_info:"
     print db_m.get_all_students_info(), "\n"
-    print "Test get_all_students_failed_req:"
+    print "Test get_all_students_failed_req: Drafting"
     print db_m.get_all_students_failed_req(3), "\n"
-    print "Test get_all_students_fufilled_req:"
+    print "Test get_all_students_fufilled_req: Art"
     print db_m.get_all_students_fufilled_req(1), '\n'
-    print "Test get_all_students_need_req:"
+    print "Test get_all_students_need_req: 10-Tech"
     print db_m.get_all_students_need_req(5), '\n'
     print "Test get_all_can_graduate:"
     print db_m.get_all_can_graduate(), '\n'
