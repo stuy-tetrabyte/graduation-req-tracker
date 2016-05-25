@@ -39,15 +39,7 @@
 			<th>Off Class</th>
 		</tr>
 	{% for student in students %}
-		<!-- 
-		Javascript for linking to student page http://stackoverflow.com/questions/17147821/how-to-make-a-whole-row-in-a-table-clickable-as-a-link
-		jQuery(document).ready(function($) {
-		    $(".clickable-row").click(function() {
-		        window.document.location = $(this).data("href");
-		    });
-		});
-		-->
-		<tr class="clickable-student" data-href="/student/{{ student.osis }}">
+		<tr onclick="location.href='/student/{{ student.osis }}'">
 			<td>{{ student.osis }}</td>
 			<td>{{ student.lastn }}</td>
 			<td>{{ student.firstn }}</td>

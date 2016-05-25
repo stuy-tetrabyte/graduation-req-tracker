@@ -89,7 +89,7 @@ button.submit {
 	margin-top: 20px;
 }
 
-button.submit:active {
+button:active {
 	background-color: #F44336;
 	border-color: #F44336;
 }
@@ -112,7 +112,7 @@ input[type=text]:focus {
 	border-bottom: 2px solid #F44336;
 }
 
-a.icon {
+.icon {
 	float: left;
 	clear: both;
 	font-size: 20px;
@@ -135,6 +135,14 @@ a.icon:hover {
 	bottom: 5px;
 }
 
+.search {
+	float: left;
+}
+
+.search input {
+	margin: 0px 10px 0px 0px;
+}
+
 #login {
 	width: 40%;
 	min-width: 400px;
@@ -143,7 +151,7 @@ a.icon:hover {
 }
 
 #login input {
-	width: 97.5%;
+	width: 96%;
 }
 
 .right {

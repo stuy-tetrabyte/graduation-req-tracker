@@ -3,6 +3,14 @@
 {% block title %}Manage Data{% endblock %}
 
 {% block content %}
+<div class="icon" href="/data">
+	<img src="{{ url_for('static', filename='search.png') }}" />
+	<form class="search">
+		<input type="text" placeholder="Enter an OSIS">
+		<button>Find Student</button>
+	</form>
+</div>
+
 <a class="icon" href="/export">
 	<img src="{{ url_for('static', filename='export.png') }}" />
 	Export course database in Excel file

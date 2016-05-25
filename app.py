@@ -123,7 +123,7 @@ def student_view(OSIS):
     #   .grade - grade
     #   .offcl - official class
     student_info = {}
-    if OSIS == "0":
+    if OSIS == "123456789":
         student_info["osis"] = "123456789"
         student_info["lastn"] = "Rachmaninoff"
         student_info["firstn"] = "Sergei Vasilievich"
@@ -137,7 +137,7 @@ def student_view(OSIS):
     #   4 - Tech
     #   5 - Health
     list_of_courses = [""]*7
-    if OSIS == "0":
+    if OSIS == "123456789":
         list_of_courses[0] = "ART APPRECIATION"
         list_of_courses[1] = "BEGINNING BAND"
         list_of_courses[2] = "INTRO COMP SCI 1 OF 2"
