@@ -270,9 +270,9 @@ class DBManager:
         for option in options:
             for courses in option['course-code']:
                 relevent_courses = relevent_courses.union(set(courses))
-        relevent_courses = str(tuple(relevent_courses))
-        q = "SELECT COURSE, COURSE_TITLE, MARK FROM %s WHERE STUDENTID = %s\
-                AND COURSE IN (%s)" % (self.course_table, osis, relevent_courses)
+        relevent_courses = str(tuple([str(code) for code in relevent_courses]))
+        q = "SELECT COURSE, COURSE_TITLE, MARK FROM %s WHERE STUDENTID = '%s'\
+                AND COURSE IN %s" % (self.course_table, osis, relevent_courses)
         r = self.conn.execute(q)
         if (r):
             return r
@@ -296,4 +296,5 @@ if __name__ == '__main__':
     print db_m.get_all_students_need_req(5), '\n'
     print "Test get_all_can_graduate:"
     print db_m.get_all_can_graduate(), '\n'
-
+    print "Test get_relevent_courses: 701113960 and MUSIC"
+    print db_m.get_relevent_courses('701113960', 0), '\n'
