@@ -187,11 +187,82 @@ class DBManager:
         students = [ student for student in all_students if student["req_status"][req_num] == HAS_FAILED ]
         return students
 
+    def get_all_students_fufilled_req(self, req_num):
+        """
+        get_all_students_fufilled_req: gets a list of student information for
+        everyone who has fufilled a requirement
+    
+        Args:
+            req_num (type): TODO
+        
+        Returns:
+            a list of student ifnromation as specified by the documentation of
+            get_student_info for all the students who have fufilled a
+            requirement
+        """
+        all_students = self.get_all_students_info()
+        students = [ student for student in all_students if student['req_status'][req_num] == COMPLETED ]
+        return students
+
+    def get_all_students_need_req(self, req_num):
+        """
+        get_all_students_need_req: gets a list of student information for
+        everyone who still needs to fufill a requirement
+    
+        Args:
+            req_num (type): TODO
+        
+        Returns:
+            a list of student information as specified by the doc. of
+            get_student_info for all the students who still need to fufill the
+            specified requirement either by failing a req. class or not
+            taking the req class yet
+        """
+        all_students = self.get_all_students_info()
+        students = [ student for student in all_students
+                if student['req_status'][req_num] != COMPLETED ]
+        return students
+
+    def get_all_can_graduate(self):
+        """
+        get_all_can_graduate: gets a list of all students who have fufilled all
+        graduation requirements
+    
+        Args:
+            None
+        
+        Returns:
+            a list of student info as specified by the doc. of
+            get_student_info for all the students who can graduate (fufilled
+            all requirements)
+        """
+        condition = ""
+        for i in range(TOTAL_REQ_COUNT):
+            condition += "REQ%02d = '%d' AND " % (i, COMPLETED)
+        condition = condition[:-5]
+        q = "SELECT STUDENTID FROM %s WHERE %s" % (self.student_table, condition)
+        res = self.conn.execute(q)
+        if res:
+            return [self.get_student_info(osis) for (osis,) in res]
+        else: # nobody can graduate :(
+            return []
+
+
 if __name__ == '__main__':
     db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME,
             STUDENT_TABLE_NAME)
-    print db_m.get_student_info('701113960'), "\n\n"
-    print db_m.get_grade_info(9), "\n\n"
-    print db_m.get_all_students_info(), "\n\n"
-    print db_m.get_all_students_failed_req(3), "\n\n"
+    print "Test get_all_students_info:"
+    print db_m.get_student_info('701113960'), "\n"
+    print "Test get_grade_info:"
+    print db_m.get_grade_info(12), "\n"
+    print "Test get_all_students_info:"
+    print db_m.get_all_students_info(), "\n"
+    print "Test get_all_students_failed_req:"
+    print db_m.get_all_students_failed_req(3), "\n"
+    print "Test get_all_students_fufilled_req:"
+    print db_m.get_all_students_fufilled_req(1), '\n'
+    print "Test get_all_students_need_req:"
+    print db_m.get_all_students_need_req(5), '\n'
+    print "Test get_all_can_graduate:"
+    print db_m.get_all_can_graduate(), '\n'
 
