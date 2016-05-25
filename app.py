@@ -1,4 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+import sys
+sys.path.insert(0, './utils/')
+from database import DBManager
+from Constants import *
 
 ################################################################################
 # Python Flask based server script for graduation requirement tracker          #
@@ -19,9 +23,8 @@ from flask import Flask, render_template
 #  Project Created: 2016-05-13 19:32 - Yicheng W.
 #}}}
 #{{{ Preamble
-from flask import Flask
-
 app = Flask(__name__)
+db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME, STUDENT_TABLE_NAME)
 #}}}
 #{{{ Pages
 @app.route("/")
@@ -54,55 +57,33 @@ def login_check():
     """
     return ""
 
-@app.route('/class/<int:grad_year>')
-def class_view(grad_year):
+@app.route('/class')
+def class_view():
     """
-    class_view: returns the student data for the specified graduation year
-
-    Args:
-        grad_year (int): the specified graduation year
-    
+    class_view: returns the student data for all students
+ 
     Returns:
         the page with data of the specified graduating year
     """
-    # TODO: get list of students in a given grad year
-    # each student entry should include:
-    #   .osis - OSIS
-    #   .lastn - last name
-    #   .firstn - first name
-    #   .grade - grade
-    #   .offcl - official class
-    list_of_students = []  
-    list_of_students += [{
-        "osis": "123456789",
-        "lastn": "Rachmaninoff",
-        "firstn": "Sergei Vasilievich",
-        "grade": "12",
-        "offcl": "7CC"
-    }]
+    list_of_students = db_m.get_all_students_info()
     return render_template("class.html", students=list_of_students)
 
-@app.route('/class/<int:grad_year>', methods = ['GET', 'POST'])
-def class_view_filtered(grad_year): # XXX Discuss server side v. client side
+@app.route('/class', methods = ['GET', 'POST'])
+def class_view_filtered(): # XXX Discuss server side v. client side
     """
     class_view_filtered: returns the filtered data for the specified graduation
     year, filters specified in the GET request, including:
         TODO
 
     Args:
-        grad_year (int): the specified graduation year
+        grade (get request argument): grade filter
     
     Returns:
         the page with the filtered dataset
     """
-    # TODO: get list of students in a given grad year
-    # each student entry should include:
-    #   .osis - OSIS
-    #   .lastn - last name
-    #   .firstn - first name
-    #   .grade - grade
-    #   .offcl - official class
-    list_of_students = []
+    grade = request.args.get('grade')
+    print grade
+    list_of_students = db_m.get_grade_info(grade)
     return render_template("class.html", students=list_of_students)
 
 @app.route('/student/<OSIS>')
