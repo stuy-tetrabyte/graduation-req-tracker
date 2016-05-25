@@ -190,8 +190,8 @@ class DBManager:
 if __name__ == '__main__':
     db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME,
             STUDENT_TABLE_NAME)
-    print db_m.get_student_info('701116533'), "\n\n"
+    print db_m.get_student_info('701113960'), "\n\n"
     print db_m.get_grade_info(9), "\n\n"
     print db_m.get_all_students_info(), "\n\n"
-    print db_m.get_all_students_failed_req(0), "\n\n"
+    print db_m.get_all_students_failed_req(3), "\n\n"
 
