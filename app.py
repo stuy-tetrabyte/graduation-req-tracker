@@ -118,7 +118,12 @@ def student_view(OSIS):
             "HEALTH"
         ]
     else:
-        list_of_courses = [db_m.get_relevent_courses(OSIS, i)[1] for i in range(0, 6)]
+        for i in range(0, 6):
+            data = db_m.get_relevent_courses(OSIS, i)
+            courses = []
+            for entry in data:
+                courses.append(entry[1])
+            list_of_courses[i] = courses
 
     return render_template("student.html", profile=student_info, courses=list_of_courses)
 
