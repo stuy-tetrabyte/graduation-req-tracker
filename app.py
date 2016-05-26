@@ -97,34 +97,29 @@ def student_view(OSIS):
     Returns:
         the page with the specified student's data
     """
-    # TODO: get dictionary of student info, including:
-    #   .osis - OSIS
-    #   .lastn - last name
-    #   .firstn - first name
-    #   .grade - grade
-    #   .offcl - official class
-    student_info = {}
-    if OSIS == "0":
-        student_info["osis"] = "123456789"
-        student_info["lastn"] = "Rachmaninoff"
-        student_info["firstn"] = "Sergei Vasilievich"
-        student_info["grade"] = "12"
-        student_info["offcl"] = "7CC"
-    # TODO: get a list of classes fulfilling grad requirements:
-    #   0 - Art 
-    #   1 - Music
-    #   2 - Intro CS 
-    #   3 - Drafting
-    #   4 - Tech
-    #   5 - Health
-    list_of_courses = [""]*6
-    if OSIS == "0":
-        list_of_courses[0] = "ART APPRECIATION"
-        list_of_courses[1] = "BEGINNING BAND"
-        list_of_courses[2] = "INTRO COMP SCI 1 OF 2"
-        list_of_courses[3] = "TECHNICAL GRAPHIC COMMUNICATIONS"
-        list_of_courses[4] = "BEGINNING BAND, CONCERT BAND, SYMPHONIC BAND"
-        list_of_courses[5] = "HEALTH"
+
+    student_info = db_m.get_student_info(OSIS)
+    list_of_courses = [""] * 6
+    if not student_info:
+        # Default data for testing
+        student_info = {
+            "osis" : "123456789",
+            "lastn" : "Rachmaninoff",
+            "firstn" : "Sergei Vasilievich",
+            "grade" : "12",
+            "offcl" : "7CC"
+        }
+        list_of_courses = [
+            "ART APPRECIATION",
+            "BEGINNING BAND",
+            "INTRO COMP SCI 1 OF 2",
+            "TECHNICAL GRAPHIC COMMUNICATIONS",
+            "BEGINNING BAND, CONCERT BAND, SYMPHONIC BAND",
+            "HEALTH"
+        ]
+    else:
+        list_of_courses = [db_m.get_relevent_courses(OSIS, i)[1] for i in range(0, 6)]
+
     return render_template("student.html", profile=student_info, courses=list_of_courses)
 
 @app.route('/data')
