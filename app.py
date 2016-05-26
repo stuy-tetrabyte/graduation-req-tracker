@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
+from functools import wraps
 import sys
 sys.path.insert(0, './utils/')
 from database import DBManager
@@ -10,21 +11,34 @@ from Constants import *
 # Authors                                                                      #
 #  Yicheng Wang                                                                #
 #  Ariel Levy                                                                  #
+#  Ethan Cheng                                                                 #
 #                                                                              #
 # Description                                                                  #
 #  TODO                                                                        #
 #                                                                              #
 ################################################################################
 
-#{{{TODO LIST
-#  TODO
-#}}}
-#{{{Dev Log
-#  Project Created: 2016-05-13 19:32 - Yicheng W.
-#}}}
 #{{{ Preamble
 app = Flask(__name__)
 db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME, STUDENT_TABLE_NAME)
+#}}}
+#{{{ Decorator Functions
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "logged_in" not in session or not session['logged_in']:
+            session.clear()
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+    return decorated_function
+
+def redirect_if_logged_in(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'logged_in' in session and session['logged_in']:
+            return redirect(url_for("class_view"))
+        return f(*args, **kwargs)
+    return decorated_function
 #}}}
 #{{{ Pages
 @app.route("/")
