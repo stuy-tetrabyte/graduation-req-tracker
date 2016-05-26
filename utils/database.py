@@ -251,10 +251,10 @@ class DBManager:
         else: # nobody can graduate :(
             return []
 
-    def get_relevent_courses(self, osis, req_number):
+    def get_relevant_courses(self, osis, req_number):
         """
-        get_relevent_courses: gets all the courses a student has taken that is
-        relevent to a specific requirement
+        get_relevant_courses: gets all the courses a student has taken that is
+        relevant to a specific requirement
     
         Args:
             osis (string): the studentid of the student in question
@@ -266,13 +266,14 @@ class DBManager:
             each course is stored as a tuple of ('code', 'name', 'mark')
         """
         options = self.reqs[req_number]['options']
-        relevent_courses = set()
+        relevant_courses = set()
         for option in options:
             for courses in option['course-code']:
-                relevent_courses = relevent_courses.union(set(courses))
-        relevent_courses = str([str(code) for code in relevent_courses])[1:-1]
+                relevant_courses = relevant_courses.union(set(courses))
+        relevant_courses = str([str(code) for code in relevant_courses])[1:-1]
         q = "SELECT COURSE, COURSE_TITLE, MARK FROM %s WHERE STUDENTID = '%s'\
-                AND COURSE IN (%s)" % (self.course_table, osis, relevent_courses)
+                AND COURSE IN (%s)" % (self.course_table, osis, relevant_courses)
+        print relevant_courses
         r = self.conn.execute(q)
         if (r):
             return r
@@ -296,5 +297,5 @@ if __name__ == '__main__':
     print db_m.get_all_students_need_req(5), '\n'
     print "Test get_all_can_graduate:"
     print db_m.get_all_can_graduate(), '\n'
-    print "Test get_relevent_courses: 701113960 and MUSIC"
-    print db_m.get_relevent_courses('701113960', 0), '\n'
+    print "Test get_relevant_courses: 701113960 and MUSIC"
+    print db_m.get_relevant_courses('701113960', 0), '\n'
