@@ -99,7 +99,7 @@ def student_view(OSIS):
     """
 
     student_info = db_m.get_student_info(OSIS)
-    list_of_courses = [""] * 6
+    list_of_courses = [""] * 7
     if not student_info:
         # Default data for testing
         student_info = {
@@ -118,7 +118,7 @@ def student_view(OSIS):
             "HEALTH"
         ]
     else:
-        for i in range(0, 6):
+        for i in range(len(list_of_courses)):
             data = db_m.get_relevant_courses(OSIS, i)
             courses = ""
             for entry in data:
