@@ -1,0 +1,28 @@
+{
+  "courses" : [
+    {
+      "name" : "Intro CompSci 2",
+      "course-code" : "MKS22",
+      "pre-reqs" : ["MKS21"]
+    },
+    {
+      "name" : "Music Appreciation",
+      "course-code" : "UAS11",
+      "pre-reqs" : null
+    },{
+      "name" : "Concert Chorus",
+      "course-code" : "UVS11",
+      "pre-reqs" : null
+    },
+    {
+      "name" : "Concert Choir",
+      "course-code" : "UCS11",
+      "pre-reqs" : null
+    },
+    {
+      "name" : "Symphonic Band",
+      "course-code" : "UDS11Q3",
+      "pre-reqs" : null
+    }
+    ]
+}
