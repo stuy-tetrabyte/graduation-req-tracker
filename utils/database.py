@@ -133,10 +133,42 @@ class DBManager:
             req_num (int) : req to check (nums in constants.py)
 
         Returns:
+            a tuple of nested lists wehre the first list represents the courses
+            already taken while the second list includes list suggestions
+            for future courses. Inside each list, each corresponding
+            index represents a list of course codes. which the student has
+            taken (will need to take)
+
+            Sample format:
+            [
+                [ # courses passed
+                    [<courses passed in track 1],
+                    [<courses passed in track 2],
+                    . . .
+                ],
+                [ # courses need to take in the future
+                    [
+                        [<next sem courses for track 1>],
+                        [<2 next sem courses for track 2>],
+                        . . .
+                    ],
+                    [
+                        [<next sem courses for track 1>],
+                        [<2 next sem courses for track 2>],
+                        . . .
+                    ],
+                    . . .
+                ]
+            ]
         """
-        student_courses = get_student_courses(OSIS)
-        req_tracks = json.loads(open('../data/reqs.json', 'r').read())['grad_requirements'][req_num]["options"]
-        track_progress = [] 
+        student_courses = self.get_relevant_courses(osis, req_num)
+        req_tracks = self.reqs[req_num]['options']
+        # according to client we want to show all options, not just the track
+        # the current student is on (which is already covered by
+        # 'get_relevant_courses')
+
+
+
         #check if already started on any tracks
         for track in req_tracks:
             for semester in track:
