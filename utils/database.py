@@ -195,10 +195,10 @@ class DBManager:
         """
         get_all_students_fufilled_req: gets a list of student information for
         everyone who has fufilled a requirement
-    
+
         Args:
             req_num (type): TODO
-        
+
         Returns:
             a list of student ifnromation as specified by the documentation of
             get_student_info for all the students who have fufilled a
@@ -212,10 +212,10 @@ class DBManager:
         """
         get_all_students_need_req: gets a list of student information for
         everyone who still needs to fufill a requirement
-    
+
         Args:
             req_num (type): TODO
-        
+
         Returns:
             a list of student information as specified by the doc. of
             get_student_info for all the students who still need to fufill the
@@ -231,10 +231,10 @@ class DBManager:
         """
         get_all_can_graduate: gets a list of all students who have fufilled all
         graduation requirements
-    
+
         Args:
             None
-        
+
         Returns:
             a list of student info as specified by the doc. of
             get_student_info for all the students who can graduate (fufilled
@@ -255,11 +255,11 @@ class DBManager:
         """
         get_relevant_courses: gets all the courses a student has taken that is
         relevant to a specific requirement
-    
+
         Args:
             osis (string): the studentid of the student in question
             req_number (int): requirement number
-        
+
         Returns:
             a nested list where each index is a list of all the courses a
             student has taken with respect to a specific requirement number,
@@ -273,7 +273,6 @@ class DBManager:
         relevant_courses = str([str(code) for code in relevant_courses])[1:-1]
         q = "SELECT COURSE, COURSE_TITLE, MARK FROM %s WHERE STUDENTID = '%s'\
                 AND COURSE IN (%s)" % (self.course_table, osis, relevant_courses)
-        print relevant_courses
         r = self.conn.execute(q)
         if (r):
             return r
