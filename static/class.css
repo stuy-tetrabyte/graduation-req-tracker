@@ -15,6 +15,24 @@
 	font-size: 16px;
 }
 
+.search {
+	float: right;
+}
+
+.search input {
+	margin: 0px 10px 0px 0px;
+	width: 100px;
+}
+
+#filters input[name="grade"] {
+	margin-left: 10px;
+}
+
+#filters table {
+	width: 100%;
+	text-align: center;
+}
+
 #results {
 	float: right;
 	width: 70%;
@@ -39,4 +57,8 @@
 #results tr {
 	border: 1px solid black;
 	margin: 0px;
+}
+
+#results tr:hover {
+	background-color: #FFF;
 }
