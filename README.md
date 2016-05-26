@@ -36,9 +36,7 @@ $ sudo dpkg -i [downloaded package name]
 After Vagrant and VirtualBox are installed, set up the development box:
 
 ```
-$ mkdir DevBox
 $ cd DevBox
-$ vagrant init ubuntu/trusty64
 $ vagrant up --provider virtualbox
 ```
 
