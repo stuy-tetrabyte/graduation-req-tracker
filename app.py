@@ -31,7 +31,7 @@ db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME, STUDENT_TABLE_NAME)
 def home():
     """
     home: returns the home page
-    
+
     Returns:
         the home page
     """
@@ -51,7 +51,7 @@ def login_page():
 def login_check():
     """
     login_check: returns the check page for login
-    
+
     Returns:
         the approporiate page
     """
@@ -61,7 +61,7 @@ def login_check():
 def class_view():
     """
     class_view: returns the student data for all students
- 
+
     Returns:
         the page with data of the specified graduating year
     """
@@ -77,7 +77,7 @@ def class_view_filtered(): # XXX Discuss server side v. client side
 
     Args:
         grade (get request argument): grade filter
-    
+
     Returns:
         the page with the filtered dataset
     """
@@ -93,7 +93,7 @@ def student_view(OSIS):
 
     Args:
         OSIS (string): OSIS of student
-    
+
     Returns:
         the page with the specified student's data
     """
@@ -144,7 +144,7 @@ def export_db(grad_years):
 
     Args:
         grad_years (int): the specified graduation year
-    
+
     Returns:
         an xls file for client to download
     """
@@ -156,7 +156,7 @@ def update_graduation_requirements():
     """
     update_graduation_requirements: AJAX call to server that updates the
     graduation requirements
-    
+
     Returns:
         JSON status for success or failure
     """
@@ -170,7 +170,7 @@ def update_db(grad_year):
 
     Args:
         grad_year (int): the specified graduation year
-    
+
     Returns:
         JSON status for success or failure
     """
@@ -183,7 +183,7 @@ def update_student(OSIS):
 
     Args:
         OSIS (string): the OSIS for the student
-    
+
     Returns:
         JSON status for success or failure
     """
