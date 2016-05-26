@@ -135,14 +135,6 @@ a.icon:hover {
 	bottom: 5px;
 }
 
-.search {
-	float: left;
-}
-
-.search input {
-	margin: 0px 10px 0px 0px;
-}
-
 #login {
 	width: 40%;
 	min-width: 400px;
