@@ -12,9 +12,9 @@ def get_track_completion_status(passed_courses, failed_courses, track_reqs):
     Args:
         passed_courses (list of strings): a student's passed courses
         failed_courses (list of strings): a student's failed courses
-	track_reqs (list of strings): list of required courses to complete a
+        track_reqs (list of strings): list of required courses to complete a
             certain track
-    
+
     Returns:
         0 (COMPLETED) if the student completed the track
         1 (NOT_COMPLETED) if the student has yet to complete the track
@@ -103,8 +103,6 @@ def create_project_table(courses_column_names, student_column_names):
 
     schema = (("%s VARCHAR(64), " * len(student_column_names))[:-2]) % tuple(student_column_names)
     SQLConnector.execute(query % (STUDENT_TABLE_NAME, schema))
-    
-
 
 def delete_project_table():
     """
@@ -135,7 +133,7 @@ def load_excel_file(datafile):
     If they are not present in the datafile, a KeyError will be raised
     """
     column_names = get_column_names(datafile) # loads file
-    
+
     # check if COURSES_TABLE_COLUMNS are completed contained in the column names
     for name in COURSES_TABLE_COLUMNS:
         if name not in column_names:

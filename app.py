@@ -1,9 +1,16 @@
+# core dependencies
 from flask import Flask, render_template, request, session
 from functools import wraps
-import sys
+import sys, os
 sys.path.insert(0, './utils/')
+
+# project imports
 from database import DBManager
 from Constants import *
+from database_setup import delete_project_table, get_excel, load_excel_file
+
+# security imports
+from werkzeug import secure_filename
 
 ################################################################################
 # Python Flask based server script for graduation requirement tracker          #
@@ -19,7 +26,16 @@ from Constants import *
 ################################################################################
 
 #{{{ Preamble
+app_path = os.path.realpath(__file__)
+app_dir = os.path.dirname(app_path)
+
+UPLOAD_FOLDER = app_dir + '/uploaded_files/'
+ALLOWED_EXTENSIONS = set(['xlsx', 'xls'])
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+print "Saving files to: ", app.config['UPLOAD_FOLDER']
+
 db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME, STUDENT_TABLE_NAME)
 #}}}
 #{{{ Decorator Functions
@@ -140,6 +156,7 @@ def student_view(OSIS=0):
     return render_template("student.html", profile=student_info, courses=list_of_courses)
 
 @app.route('/data')
+@app.route('/data/')
 # @login_required
 def manage_data():
     """
@@ -150,7 +167,43 @@ def manage_data():
     """
     return render_template("data.html")
 
+@app.route('/upload', methods=["GET", "POST"])
+@app.route('/upload/', methods=["GET", "POST"])
+# @login_required
+def upload():
+    """
+    upload: takes a .xls or .xlsx file and models the database.
+    #TODO: (enhancement) allow the user to undo, or revert to previous versions
+    #TODO: (enhancement) load the file into the database asynchronously and
+    display a progress bar.
+
+    Returns:
+        The upload page (regardless of whether not you are uploading or not
+    """
+    if request.method == 'POST':
+
+        def allowed_filename(filename):
+            return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+        f = request.files['file']
+        if f and allowed_filename(f.filename):
+            secure_name = secure_filename(f.filename)
+            path_to_uploaded = os.path.join(app.config['UPLOAD_FOLDER'], secure_name)
+            print "Saving file to: ", path_to_uploaded
+            f.save(os.path.join(path_to_uploaded))
+            print "Deleting database to clean state..."
+            delete_project_table()
+            print "Loading database..."
+            load_excel_file(get_excel(path_to_uploaded))
+            print "Removing file to save storage..."
+            os.remove(path_to_uploaded)
+        else:
+            print "File extension not allowed!", str(f)
+
+    return render_template("upload.html")
+
 @app.route('/export/<int:grad_year>')
+@app.route('/export/<int:grad_year>/')
 # @login_required
 def export_db(grad_years):
     """
@@ -166,6 +219,7 @@ def export_db(grad_years):
 #}}}
 #{{{ AJAX Calls
 @app.route('/update_reqs', methods = ['GET', 'POST'])
+@app.route('/update_reqs/', methods = ['GET', 'POST'])
 def update_graduation_requirements():
     """
     update_graduation_requirements: AJAX call to server that updates the
@@ -177,6 +231,7 @@ def update_graduation_requirements():
     return ""
 
 @app.route('/update_db/<int:grad_year>', methods = ['GET', 'POST'])
+@app.route('/update_db/<int:grad_year>/', methods = ['GET', 'POST'])
 def update_db(grad_year):
     """
     update_db: AJAX call that updates the student info of a given graduating
@@ -191,6 +246,7 @@ def update_db(grad_year):
     return ""
 
 @app.route('/update_student/<OSIS>', methods = ['GET', 'POST'])
+@app.route('/update_student/<OSIS>/', methods = ['GET', 'POST'])
 def update_student(OSIS):
     """
     update_student: updates the information on a single student in the database
@@ -205,3 +261,4 @@ def update_student(OSIS):
 
 if __name__ == "__main__":
     app.run(host = "0.0.0.0", port = 8000, debug = True)
+
