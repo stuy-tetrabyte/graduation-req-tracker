@@ -9,89 +9,89 @@
 
 {% block content %}
 <div id="filters">
-	<div class="icon" href="/data">
-		<form class="search">
-			<input type="text" placeholder="Enter an OSIS">
-			<button>Find Student</button>
-		</form>
-	</div>
+    <div class="icon" href="/data">
+        <form class="search">
+            <input type="text" placeholder="Enter an OSIS">
+            <button>Find Student</button>
+        </form>
+    </div>
 
-	<form>
-		<h3>Select Grade(s):</h3>
-		<input type="checkbox" checked="checked" name="grade" value="12">12
-		<input type="checkbox" checked="checked" name="grade" value="11">11
-		<input type="checkbox" checked="checked" name="grade" value="10">10
-		<input type="checkbox" checked="checked" name="grade" value="9">9
-	
-		<h3>Select Requirement Status:</h3>
-		<table>
-			<tr><th></th><th>Fulfilled</th><th>Missing</th><th>Failed</th></tr>
-			<tr>
-				<th>Art</th>
-				<td><input type="checkbox" checked="checked" name="0-fulfilled"></td>
-				<td><input type="checkbox" checked="checked" name="0-missing"></td>
-				<td><input type="checkbox" checked="checked" name="0-failed"></td>
-			</tr>
-			<tr>
-				<th>Music</th>
-				<td><input type="checkbox" checked="checked" name="1-fulfilled"></td>
-				<td><input type="checkbox" checked="checked" name="1-missing"></td>
-				<td><input type="checkbox" checked="checked" name="1-failed"></td>
-			</tr>
-			<tr>
-				<th>Intro CS 1</th>
-				<td><input type="checkbox" checked="checked" name="2-fulfilled"></td>
-				<td><input type="checkbox" checked="checked" name="2-missing"></td>
-				<td><input type="checkbox" checked="checked" name="2-failed"></td>
-			</tr>
-			<tr>
-				<th>Drafting</th>
-				<td><input type="checkbox" checked="checked" name="3-fulfilled"></td>
-				<td><input type="checkbox" checked="checked" name="3-missing"></td>
-				<td><input type="checkbox" checked="checked" name="3-failed"></td>
-			</tr>
-			<tr>
-				<th>5-Tech</th>
-				<td><input type="checkbox" checked="checked" name="4-fulfilled"></td>
-				<td><input type="checkbox" checked="checked" name="4-missing"></td>
-				<td><input type="checkbox" checked="checked" name="4-failed"></td>
-			</tr>
-			<tr>
-				<th>10-Tech</th>
-				<td><input type="checkbox" checked="checked" name="5-fulfilled"></td>
-				<td><input type="checkbox" checked="checked" name="5-missing"></td>
-				<td><input type="checkbox" checked="checked" name="5-failed"></td>
-			</tr>
-			<tr>
-				<th>Health</th>
-				<td><input type="checkbox" checked="checked" name="6-fulfilled"></td>
-				<td><input type="checkbox" checked="checked" name="6-missing"></td>
-				<td><input type="checkbox" checked="checked" name="6-failed"></td>
-			</tr>
-		</table>
+    <form>
+        <h3>Select Grade(s):</h3>
+        <input type="checkbox" checked="checked" name="grade" value="12">12
+        <input type="checkbox" checked="checked" name="grade" value="11">11
+        <input type="checkbox" checked="checked" name="grade" value="10">10
+        <input type="checkbox" checked="checked" name="grade" value="9">9
 
-		<button class="submit" type="submit" name="action">Update</button>
-	</form>
+        <h3>Select Requirement Status:</h3>
+        <table>
+            <tr><th></th><th>Fulfilled</th><th>Missing</th><th>Failed</th></tr>
+            <tr>
+                <th>Art</th>
+                <td><input type="checkbox" checked="checked" name="0-fulfilled"></td>
+                <td><input type="checkbox" checked="checked" name="0-missing"></td>
+                <td><input type="checkbox" checked="checked" name="0-failed"></td>
+            </tr>
+            <tr>
+                <th>Music</th>
+                <td><input type="checkbox" checked="checked" name="1-fulfilled"></td>
+                <td><input type="checkbox" checked="checked" name="1-missing"></td>
+                <td><input type="checkbox" checked="checked" name="1-failed"></td>
+            </tr>
+            <tr>
+                <th>Intro CS 1</th>
+                <td><input type="checkbox" checked="checked" name="2-fulfilled"></td>
+                <td><input type="checkbox" checked="checked" name="2-missing"></td>
+                <td><input type="checkbox" checked="checked" name="2-failed"></td>
+            </tr>
+            <tr>
+                <th>Drafting</th>
+                <td><input type="checkbox" checked="checked" name="3-fulfilled"></td>
+                <td><input type="checkbox" checked="checked" name="3-missing"></td>
+                <td><input type="checkbox" checked="checked" name="3-failed"></td>
+            </tr>
+            <tr>
+                <th>5-Tech</th>
+                <td><input type="checkbox" checked="checked" name="4-fulfilled"></td>
+                <td><input type="checkbox" checked="checked" name="4-missing"></td>
+                <td><input type="checkbox" checked="checked" name="4-failed"></td>
+            </tr>
+            <tr>
+                <th>10-Tech</th>
+                <td><input type="checkbox" checked="checked" name="5-fulfilled"></td>
+                <td><input type="checkbox" checked="checked" name="5-missing"></td>
+                <td><input type="checkbox" checked="checked" name="5-failed"></td>
+            </tr>
+            <tr>
+                <th>Health</th>
+                <td><input type="checkbox" checked="checked" name="6-fulfilled"></td>
+                <td><input type="checkbox" checked="checked" name="6-missing"></td>
+                <td><input type="checkbox" checked="checked" name="6-failed"></td>
+            </tr>
+        </table>
+
+        <button class="submit" type="submit" name="action">Update</button>
+    </form>
 </div>
 
 <div id="results">
-	<table>
-		<tr>
-			<th>OSIS</th>
-			<th>Last Name</th>
-			<th>First Name</th>
-			<th>Grade</th>
-			<th>Off Class</th>
-		</tr>
-	{% for student in students %}
-		<tr onclick="location.href='/student/{{ student.osis }}'">
-			<td>{{ student.osis }}</td>
-			<td>{{ student.lastn }}</td>
-			<td>{{ student.firstn }}</td>
-			<td>{{ student.grade }}</td>
-			<td>{{ student.offcl }}</td>
-		</tr>
-	{% endfor %}
-	</table>
+    <table>
+        <tr>
+            <th>OSIS</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Grade</th>
+            <th>Off Class</th>
+        </tr>
+    {% for student in students %}
+        <tr onclick="location.href='/student/{{ student.osis }}'">
+            <td>{{ student.osis }}</td>
+            <td>{{ student.lastn }}</td>
+            <td>{{ student.firstn }}</td>
+            <td>{{ student.grade }}</td>
+            <td>{{ student.offcl }}</td>
+        </tr>
+    {% endfor %}
+    </table>
 </div>
 {% endblock %}

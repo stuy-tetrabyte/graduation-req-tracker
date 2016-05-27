@@ -1,8 +1,16 @@
-from flask import Flask, render_template, request
-import sys
+# core dependencies
+from flask import Flask, render_template, request, session
+from functools import wraps
+import sys, os
 sys.path.insert(0, './utils/')
+
+# project imports
 from database import DBManager
 from Constants import *
+from database_setup import delete_project_table, get_excel, load_excel_file
+
+# security imports
+from werkzeug import secure_filename
 
 ################################################################################
 # Python Flask based server script for graduation requirement tracker          #
@@ -10,21 +18,43 @@ from Constants import *
 # Authors                                                                      #
 #  Yicheng Wang                                                                #
 #  Ariel Levy                                                                  #
+#  Ethan Cheng                                                                 #
 #                                                                              #
 # Description                                                                  #
 #  TODO                                                                        #
 #                                                                              #
 ################################################################################
 
-#{{{TODO LIST
-#  TODO
-#}}}
-#{{{Dev Log
-#  Project Created: 2016-05-13 19:32 - Yicheng W.
-#}}}
 #{{{ Preamble
+app_path = os.path.realpath(__file__)
+app_dir = os.path.dirname(app_path)
+
+UPLOAD_FOLDER = app_dir + '/uploaded_files/'
+ALLOWED_EXTENSIONS = set(['xlsx', 'xls'])
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+print "Saving files to: ", app.config['UPLOAD_FOLDER']
+
 db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME, STUDENT_TABLE_NAME)
+#}}}
+#{{{ Decorator Functions
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "logged_in" not in session or not session['logged_in']:
+            session.clear()
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+    return decorated_function
+
+def redirect_if_logged_in(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'logged_in' in session and session['logged_in']:
+            return redirect(url_for("class_view"))
+        return f(*args, **kwargs)
+    return decorated_function
 #}}}
 #{{{ Pages
 @app.route("/")
@@ -37,8 +67,10 @@ def home():
     """
     return render_template("master.html")
 
-@app.route('/login')
-def login_page():
+@app.route('/login', methods=["GET", "POST"])
+@app.route('/login/', methods=["GET", "POST"])
+@redirect_if_logged_in
+def login():
     """
     login_page: returns the login page
 
@@ -47,49 +79,35 @@ def login_page():
     """
     return render_template("login.html")
 
-@app.route('/login', methods = ['GET', 'POST'])
-def login_check():
-    """
-    login_check: returns the check page for login
-
-    Returns:
-        the approporiate page
-    """
-    return ""
-
-@app.route('/class')
+@app.route('/class', methods = ['GET'])
+@app.route('/class/', methods = ['GET'])
+# @login_required
 def class_view():
     """
     class_view: returns the student data for all students
 
+    This applies filters specified by the GET request, including:
+        - grade
+        - TODO: ADD MORE
+
     Returns:
         the page with data of the specified graduating year
     """
-    list_of_students = db_m.get_all_students_info()
-    return render_template("class.html", students=list_of_students)
-
-@app.route('/class', methods = ['GET', 'POST'])
-def class_view_filtered(): # XXX Discuss server side v. client side
-    """
-    class_view_filtered: returns the filtered data for the specified graduation
-    year, filters specified in the GET request, including:
-        TODO
-
-    Args:
-        grade (get request argument): grade filter
-
-    Returns:
-        the page with the filtered dataset
-    """
+    list_of_students = []
     grade = request.args.get('grade')
-    print grade
-    list_of_students = db_m.get_grade_info(grade)
+    if grade:
+        list_of_students = db_m.get_grade_info(grade)
+    else:
+        list_of_students = db_m.get_all_students_info()
     return render_template("class.html", students=list_of_students)
 
 @app.route('/student/<OSIS>')
-def student_view(OSIS):
+@app.route('/student/<OSIS>/')
+# @login_required
+def student_view(OSIS=0):
     """
-    student_view: returns the page for single-student data
+    student_view: returns the page for single-student data. By default, if
+    failed, will return the page with fake data.
 
     Args:
         OSIS (string): OSIS of student
@@ -120,14 +138,26 @@ def student_view(OSIS):
     else:
         for i in range(len(list_of_courses)):
             data = db_m.get_relevant_courses(OSIS, i)
-            courses = ""
+            courses = {}
             for entry in data:
-                courses += entry[1] + " , "
-            list_of_courses[i] = "None" if courses == "" else courses[:-3]
+                if entry[1] in courses:
+                    courses[entry[1]] += 1
+                else:
+                    courses[entry[1]] = 1
+
+            def format_output(d):
+                output = []
+                for key in d:
+                    output.append("%s (%d)" % (key, d[key]))
+                return ", ".join(output)
+
+            list_of_courses[i] = "None" if courses == {} else format_output(courses)
 
     return render_template("student.html", profile=student_info, courses=list_of_courses)
 
 @app.route('/data')
+@app.route('/data/')
+# @login_required
 def manage_data():
     """
     manage_data: returns the page for data management
@@ -137,7 +167,44 @@ def manage_data():
     """
     return render_template("data.html")
 
+@app.route('/upload', methods=["GET", "POST"])
+@app.route('/upload/', methods=["GET", "POST"])
+# @login_required
+def upload():
+    """
+    upload: takes a .xls or .xlsx file and models the database.
+    #TODO: (enhancement) allow the user to undo, or revert to previous versions
+    #TODO: (enhancement) load the file into the database asynchronously and
+    display a progress bar.
+
+    Returns:
+        The upload page (regardless of whether not you are uploading or not
+    """
+    if request.method == 'POST':
+
+        def allowed_filename(filename):
+            return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+        f = request.files['file']
+        if f and allowed_filename(f.filename):
+            secure_name = secure_filename(f.filename)
+            path_to_uploaded = os.path.join(app.config['UPLOAD_FOLDER'], secure_name)
+            print "Saving file to: ", path_to_uploaded
+            f.save(os.path.join(path_to_uploaded))
+            print "Deleting database to clean state..."
+            delete_project_table()
+            print "Loading database..."
+            load_excel_file(get_excel(path_to_uploaded))
+            print "Removing file to save storage..."
+            os.remove(path_to_uploaded)
+        else:
+            print "File extension not allowed!", str(f)
+
+    return render_template("upload.html")
+
 @app.route('/export/<int:grad_year>')
+@app.route('/export/<int:grad_year>/')
+# @login_required
 def export_db(grad_years):
     """
     export_db: export the database in xls form
@@ -152,6 +219,7 @@ def export_db(grad_years):
 #}}}
 #{{{ AJAX Calls
 @app.route('/update_reqs', methods = ['GET', 'POST'])
+@app.route('/update_reqs/', methods = ['GET', 'POST'])
 def update_graduation_requirements():
     """
     update_graduation_requirements: AJAX call to server that updates the
@@ -163,6 +231,7 @@ def update_graduation_requirements():
     return ""
 
 @app.route('/update_db/<int:grad_year>', methods = ['GET', 'POST'])
+@app.route('/update_db/<int:grad_year>/', methods = ['GET', 'POST'])
 def update_db(grad_year):
     """
     update_db: AJAX call that updates the student info of a given graduating
@@ -177,6 +246,7 @@ def update_db(grad_year):
     return ""
 
 @app.route('/update_student/<OSIS>', methods = ['GET', 'POST'])
+@app.route('/update_student/<OSIS>/', methods = ['GET', 'POST'])
 def update_student(OSIS):
     """
     update_student: updates the information on a single student in the database
@@ -191,3 +261,4 @@ def update_student(OSIS):
 
 if __name__ == "__main__":
     app.run(host = "0.0.0.0", port = 8000, debug = True)
+
