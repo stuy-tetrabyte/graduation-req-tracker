@@ -161,13 +161,13 @@ class DBManager:
                 ]
             ]
         """
-        student_courses = [course for course
+        student_courses = [course for (course, name, mark)
                             in self.get_relevant_courses(OSIS, req_num)
-                            if course[2] == 'P'
-                                or course[2] == 'C'
-                                or course[2] == 'CR'
-                                or course[2] in ['A', 'B', 'C', 'D']
-                                or int(course[2]) >= 65] # . . . passing filter
+                            if mark == 'P'
+                                or mark == 'C'
+                                or mark == 'CR'
+                                or mark in ['A', 'B', 'C', 'D']
+                                or int(mark) >= 65] # . . . passing filter
 
         req_tracks = self.reqs[req_num]['options']
         # according to client we want to show all options, not just the track
