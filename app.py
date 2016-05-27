@@ -122,10 +122,20 @@ def student_view(OSIS=0):
     else:
         for i in range(len(list_of_courses)):
             data = db_m.get_relevant_courses(OSIS, i)
-            courses = ""
+            courses = {}
             for entry in data:
-                courses += entry[1] + " , "
-            list_of_courses[i] = "None" if courses == "" else courses[:-3]
+                if entry[1] in courses:
+                    courses[entry[1]] += 1
+                else:
+                    courses[entry[1]] = 1
+
+            def format_output(d):
+                output = []
+                for key in d:
+                    output.append("%s (%d)" % (key, d[key]))
+                return ", ".join(output)
+
+            list_of_courses[i] = "None" if courses == {} else format_output(courses)
 
     return render_template("student.html", profile=student_info, courses=list_of_courses)
 
