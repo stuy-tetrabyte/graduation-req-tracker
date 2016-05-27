@@ -51,8 +51,10 @@ def home():
     """
     return render_template("master.html")
 
-@app.route('/login')
-def login_page():
+@app.route('/login', methods=["GET", "POST"])
+@app.route('/login/', methods=["GET", "POST"])
+@redirect_if_logged_in
+def login():
     """
     login_page: returns the login page
 
@@ -61,49 +63,35 @@ def login_page():
     """
     return render_template("login.html")
 
-@app.route('/login', methods = ['GET', 'POST'])
-def login_check():
-    """
-    login_check: returns the check page for login
-
-    Returns:
-        the approporiate page
-    """
-    return ""
-
-@app.route('/class')
+@app.route('/class', methods = ['GET'])
+@app.route('/class/', methods = ['GET'])
+# @login_required
 def class_view():
     """
     class_view: returns the student data for all students
 
+    This applies filters specified by the GET request, including:
+        - grade
+        - TODO: ADD MORE
+
     Returns:
         the page with data of the specified graduating year
     """
-    list_of_students = db_m.get_all_students_info()
-    return render_template("class.html", students=list_of_students)
-
-@app.route('/class', methods = ['GET', 'POST'])
-def class_view_filtered(): # XXX Discuss server side v. client side
-    """
-    class_view_filtered: returns the filtered data for the specified graduation
-    year, filters specified in the GET request, including:
-        TODO
-
-    Args:
-        grade (get request argument): grade filter
-
-    Returns:
-        the page with the filtered dataset
-    """
+    list_of_students = []
     grade = request.args.get('grade')
-    print grade
-    list_of_students = db_m.get_grade_info(grade)
+    if grade:
+        list_of_students = db_m.get_grade_info(grade)
+    else:
+        list_of_students = db_m.get_all_students_info()
     return render_template("class.html", students=list_of_students)
 
 @app.route('/student/<OSIS>')
-def student_view(OSIS):
+@app.route('/student/<OSIS>/')
+# @login_required
+def student_view(OSIS=0):
     """
-    student_view: returns the page for single-student data
+    student_view: returns the page for single-student data. By default, if
+    failed, will return the page with fake data.
 
     Args:
         OSIS (string): OSIS of student
@@ -142,6 +130,7 @@ def student_view(OSIS):
     return render_template("student.html", profile=student_info, courses=list_of_courses)
 
 @app.route('/data')
+# @login_required
 def manage_data():
     """
     manage_data: returns the page for data management
@@ -152,6 +141,7 @@ def manage_data():
     return render_template("data.html")
 
 @app.route('/export/<int:grad_year>')
+# @login_required
 def export_db(grad_years):
     """
     export_db: export the database in xls form
