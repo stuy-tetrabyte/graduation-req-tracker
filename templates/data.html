@@ -3,6 +3,11 @@
 {% block title %}Manage Data{% endblock %}
 
 {% block content %}
+<a class="icon" href="/upload">
+    <img src="{{ url_for('static', filename='export.png') }}" />
+    Import course database from Excel file
+</a>
+
 <a class="icon" href="/export">
     <img src="{{ url_for('static', filename='export.png') }}" />
     Export course database in Excel file
