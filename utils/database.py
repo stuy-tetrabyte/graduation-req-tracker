@@ -161,24 +161,42 @@ class DBManager:
                 ]
             ]
         """
-        student_courses = self.get_relevant_courses(osis, req_num)
+        student_courses = [course for course
+                            in self.get_relevant_courses(OSIS, req_num)
+                            if course[2] == 'P'
+                                or course[2] == 'C'
+                                or course[2] == 'CR'
+                                or course[2] in ['A', 'B', 'C', 'D']
+                                or int(course[2]) >= 65] # . . . passing filter
+
         req_tracks = self.reqs[req_num]['options']
         # according to client we want to show all options, not just the track
         # the current student is on (which is already covered by
         # 'get_relevant_courses')
 
+        passed_courses = []
+        need_to_take = []
 
+        for option in req_tracks:
+            student_courses_copy = student_courses[:] # make a copy
+            taken = []
+            still_need = []
 
-        #check if already started on any tracks
-        for track in req_tracks:
-            for semester in track:
-                for course in semester:
-                    if (course in student_courses): #also check if passed
-                        track_progress.append(track)
-        #then check if none started, or one completed
-        #if none suggest all
-        #if done suggest ?
-        #if progress, suggest the rest of current track(s)
+            for semester in option['course-code']: # each semester
+                need = True
+                for i in range(0, len(student_courses_copy)):
+                    if student_courses_copy[i][0] in semester:
+                        taken.append(student_courses_copy.pop(i))
+                        need = False
+                        break # semester is fufilled if student has taken a
+                              # class
+                if need:
+                    still_need.append(semester)
+
+            passed_courses.append(taken)
+            need_to_take.append(still_need)
+
+        return [passed_courses, need_to_take]
 
     def get_next_term_course_suggestions(self, OSIS):
         """
@@ -314,19 +332,21 @@ class DBManager:
 if __name__ == '__main__':
     db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME,
             STUDENT_TABLE_NAME)
-    print "Test get_students_info: 701113960"
-    print db_m.get_student_info('701113960'), "\n"
-    print "Test get_grade_info: 12"
-    print db_m.get_grade_info(12), "\n"
-    print "Test get_all_students_info:"
-    print db_m.get_all_students_info(), "\n"
-    print "Test get_all_students_failed_req: Drafting"
-    print db_m.get_all_students_failed_req(3), "\n"
-    print "Test get_all_students_fufilled_req: Art"
-    print db_m.get_all_students_fufilled_req(1), '\n'
-    print "Test get_all_students_need_req: 10-Tech"
-    print db_m.get_all_students_need_req(5), '\n'
-    print "Test get_all_can_graduate:"
-    print db_m.get_all_can_graduate(), '\n'
+    #print "Test get_students_info: 701113960"
+    #print db_m.get_student_info('701113960'), "\n"
+    #print "Test get_grade_info: 12"
+    #print db_m.get_grade_info(12), "\n"
+    #print "Test get_all_students_info:"
+    #print db_m.get_all_students_info(), "\n"
+    #print "Test get_all_students_failed_req: Drafting"
+    #print db_m.get_all_students_failed_req(3), "\n"
+    #print "Test get_all_students_fufilled_req: Art"
+    #print db_m.get_all_students_fufilled_req(1), '\n'
+    #print "Test get_all_students_need_req: 10-Tech"
+    #print db_m.get_all_students_need_req(5), '\n'
+    #print "Test get_all_can_graduate:"
+    #print db_m.get_all_can_graduate(), '\n'
     print "Test get_relevant_courses: 701113960 and MUSIC"
     print db_m.get_relevant_courses('701113960', 0), '\n'
+    print "Test get_req_course_track: 701113960 and MUSIC"
+    print db_m.get_req_course_track('701113960', 0), '\n'
