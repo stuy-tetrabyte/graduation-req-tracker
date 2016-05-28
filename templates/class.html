@@ -10,63 +10,92 @@
 {% block content %}
 <div id="filters">
     <div class="icon" href="/data">
-        <form class="search">
-            <input type="text" placeholder="Enter an OSIS">
+        <form class="search" action='/student'>
+            <input type="text" name='osis' placeholder="Enter an OSIS">
             <button>Find Student</button>
         </form>
     </div>
 
+    <script>
+console.log("{{boxes['0-fulfilled']}}")
+    </script>
+
     <form>
         <h3>Select Grade(s):</h3>
-        <input type="checkbox" checked="checked" name="grade" value="12">12
-        <input type="checkbox" checked="checked" name="grade" value="11">11
-        <input type="checkbox" checked="checked" name="grade" value="10">10
-        <input type="checkbox" checked="checked" name="grade" value="9">9
+        <input type="checkbox" {{ "checked='checked'" if not boxes
+            or boxes['grade-12'] == ['on'] }} name="grade-12">12
+        <input type="checkbox" {{ "checked='checked'" if not boxes
+            or boxes['grade-11'] == ['on'] }} name="grade-11">11
+        <input type="checkbox" {{ "checked='checked'" if not boxes
+            or boxes['grade-10'] == ['on'] }} name="grade-10">10
+        <input type="checkbox" {{ "checked='checked'" if not boxes
+            or boxes['grade-9'] == ['on'] }} name="grade-9">9
 
         <h3>Select Requirement Status:</h3>
         <table>
             <tr><th></th><th>Fulfilled</th><th>Missing</th><th>Failed</th></tr>
             <tr>
                 <th>Art</th>
-                <td><input type="checkbox" checked="checked" name="0-fulfilled"></td>
-                <td><input type="checkbox" checked="checked" name="0-missing"></td>
-                <td><input type="checkbox" checked="checked" name="0-failed"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['0-fulfilled'] == ['on'] }} name="0-fulfilled"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['0-missing'] == ['on'] }} name="0-missing"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['0-failed'] == ['on'] }} name="0-failed"></td>
             </tr>
             <tr>
                 <th>Music</th>
-                <td><input type="checkbox" checked="checked" name="1-fulfilled"></td>
-                <td><input type="checkbox" checked="checked" name="1-missing"></td>
-                <td><input type="checkbox" checked="checked" name="1-failed"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['1-fulfilled'] == ['on'] }} name="1-fulfilled"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['1-missing'] == ['on'] }} name="1-missing"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['1-failed'] == ['on'] }} name="1-failed"></td>
             </tr>
             <tr>
                 <th>Intro CS 1</th>
-                <td><input type="checkbox" checked="checked" name="2-fulfilled"></td>
-                <td><input type="checkbox" checked="checked" name="2-missing"></td>
-                <td><input type="checkbox" checked="checked" name="2-failed"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['2-fulfilled'] == ['on'] }} name="2-fulfilled"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['2-missing'] == ['on'] }} name="2-missing"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['2-failed'] == ['on'] }} name="2-failed"></td>
             </tr>
             <tr>
                 <th>Drafting</th>
-                <td><input type="checkbox" checked="checked" name="3-fulfilled"></td>
-                <td><input type="checkbox" checked="checked" name="3-missing"></td>
-                <td><input type="checkbox" checked="checked" name="3-failed"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['3-fulfilled'] == ['on'] }} name="3-fulfilled"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['3-missing'] == ['on'] }} name="3-missing"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['3-failed'] == ['on'] }} name="3-failed"></td>
             </tr>
             <tr>
                 <th>5-Tech</th>
-                <td><input type="checkbox" checked="checked" name="4-fulfilled"></td>
-                <td><input type="checkbox" checked="checked" name="4-missing"></td>
-                <td><input type="checkbox" checked="checked" name="4-failed"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['4-fulfilled'] == ['on'] }} name="4-fulfilled"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['4-missing'] == ['on'] }} name="4-missing"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['4-failed'] == ['on'] }} name="4-failed"></td>
             </tr>
             <tr>
                 <th>10-Tech</th>
-                <td><input type="checkbox" checked="checked" name="5-fulfilled"></td>
-                <td><input type="checkbox" checked="checked" name="5-missing"></td>
-                <td><input type="checkbox" checked="checked" name="5-failed"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['5-fulfilled'] == ['on'] }} name="5-fulfilled"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['5-missing'] == ['on'] }} name="5-missing"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['5-failed'] == ['on'] }} name="5-failed"></td>
             </tr>
             <tr>
                 <th>Health</th>
-                <td><input type="checkbox" checked="checked" name="6-fulfilled"></td>
-                <td><input type="checkbox" checked="checked" name="6-missing"></td>
-                <td><input type="checkbox" checked="checked" name="6-failed"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['6-fulfilled'] == ['on'] }} name="6-fulfilled"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['6-missing'] == ['on'] }} name="6-missing"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['6-failed'] == ['on'] }} name="6-failed"></td>
             </tr>
         </table>
 
