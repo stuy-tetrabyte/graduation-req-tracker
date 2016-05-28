@@ -342,8 +342,11 @@ class DBManager:
         q = q[:-4] + ';' # remove the final AND
 
         r = self.conn.execute(q)
-        
-        return [self.get_student_info(osis) for (osis,) in r]
+
+        if r:
+            return [self.get_student_info(osis) for (osis,) in r]
+        else:
+            return []
 
 
     def get_relevant_courses(self, osis, req_number):

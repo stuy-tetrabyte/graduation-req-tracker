@@ -1,5 +1,5 @@
 # core dependencies
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect, url_for
 from functools import wraps
 import sys, os
 sys.path.insert(0, './utils/')
@@ -93,13 +93,36 @@ def class_view():
     Returns:
         the page with data of the specified graduating year
     """
-    list_of_students = []
-    grade = request.args.get('grade')
-    if grade:
-        list_of_students = db_m.get_grade_info(grade)
-    else:
-        list_of_students = db_m.get_all_students_info()
-    return render_template("class.html", students=list_of_students)
+    grades = []
+    req_statuses = [[], [], [], [], [], [], []]
+    
+    get_req_args = request.args
+
+    if not get_req_args:
+        return render_template('class.html', students = db_m.get_all_students_info())
+
+    for grade in range(9, 13):
+        if get_req_args.get( 'grade-' + str( grade ) ) == 'on':
+            grades.append(str( grade ))
+
+    for req in range(0, 7):
+        if get_req_args.get( str( req ) + '-fulfilled' ) == 'on':
+            req_statuses[req].append(0)
+        if get_req_args.get( str( req ) + '-missing' ) == 'on':
+            req_statuses[req].append(1)
+        if get_req_args.get( str( req ) + '-failed' ) == 'on':
+            req_statuses[req].append(2)
+
+    list_of_students = [student_info for student_info
+                            in db_m.get_students_such_that(req_statuses)
+                            if student_info['grade'] in grades]
+
+    return render_template("class.html", students=list_of_students, boxes = dict( get_req_args ))
+
+@app.route('/student', methods = ['GET'])
+@app.route('/student/', methods = ['GET'])
+def student_search():
+    return redirect(url_for('student_view', OSIS = request.args.get('osis')))
 
 @app.route('/student/<OSIS>')
 @app.route('/student/<OSIS>/')
