@@ -301,6 +301,51 @@ class DBManager:
         else: # nobody can graduate :(
             return []
 
+    def get_students_such_that(self, req_status):
+        """
+        get_students_such_that: gets a list of all students with some set of
+        graduation requirements
+    
+        Args:
+            req_status (list): a list of specified requirement statuses in the
+            following format:
+            [
+                [<desired status for req0, OR statement>],
+                [<desired status for req1, OR statement>],
+                ...
+            ]
+
+            Ex:
+            [
+                [0, 1],
+                [0],
+                [2],
+                [0,1,2]
+            ]
+            means get all students that:
+                completed or has not completed REQ0,
+                completed REQ1,
+                failed REQ2,
+                completed, has not completed, or failed REQ3
+        
+        Returns:
+            a list of studnet info as specified by the doc. of get_student_info
+            for all the students with the specified requirement statuses
+        """
+        assert(len(req_status) == TOTAL_REQ_COUNT)
+
+        req_cond = "REQ%02d IN (%s) AND "
+        q = "SELECT STUDENTID FROM %s WHERE " % (self.student_table)
+
+        for i in range(0, TOTAL_REQ_COUNT):
+            q += req_cond % (i, str(req_status[i])[1:-1])
+        q = q[:-4] + ';' # remove the final AND
+
+        r = self.conn.execute(q)
+        
+        return [self.get_student_info(osis) for (osis,) in r]
+
+
     def get_relevant_courses(self, osis, req_number):
         """
         get_relevant_courses: gets all the courses a student has taken that is
@@ -332,21 +377,24 @@ class DBManager:
 if __name__ == '__main__':
     db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME,
             STUDENT_TABLE_NAME)
-    #print "Test get_students_info: 701113960"
-    #print db_m.get_student_info('701113960'), "\n"
-    #print "Test get_grade_info: 12"
-    #print db_m.get_grade_info(12), "\n"
-    #print "Test get_all_students_info:"
-    #print db_m.get_all_students_info(), "\n"
-    #print "Test get_all_students_failed_req: Drafting"
-    #print db_m.get_all_students_failed_req(3), "\n"
-    #print "Test get_all_students_fufilled_req: Art"
-    #print db_m.get_all_students_fufilled_req(1), '\n'
-    #print "Test get_all_students_need_req: 10-Tech"
-    #print db_m.get_all_students_need_req(5), '\n'
-    #print "Test get_all_can_graduate:"
-    #print db_m.get_all_can_graduate(), '\n'
+    print "Test get_students_info: 701113960"
+    print db_m.get_student_info('701113960'), "\n"
+    print "Test get_grade_info: 12"
+    print db_m.get_grade_info(12), "\n"
+    print "Test get_all_students_info:"
+    print db_m.get_all_students_info(), "\n"
+    print "Test get_all_students_failed_req: Drafting"
+    print db_m.get_all_students_failed_req(3), "\n"
+    print "Test get_all_students_fufilled_req: Art"
+    print db_m.get_all_students_fufilled_req(1), '\n'
+    print "Test get_all_students_need_req: 10-Tech"
+    print db_m.get_all_students_need_req(5), '\n'
+    print "Test get_all_can_graduate:"
+    print db_m.get_all_can_graduate(), '\n'
     print "Test get_relevant_courses: 701113960 and MUSIC"
     print db_m.get_relevant_courses('701113960', 0), '\n'
     print "Test get_req_course_track: 701113960 and MUSIC"
     print db_m.get_req_course_track('701113960', 0), '\n'
+    print "Test get_students_such_that:"
+    print db_m.get_students_such_that([[0,1,2], [0,1,2], [0,1,2], [0,1,2],
+        [0,1,2], [0,1,2], [0,1,2]])
