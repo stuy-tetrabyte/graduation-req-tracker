@@ -133,20 +133,70 @@ class DBManager:
             req_num (int) : req to check (nums in constants.py)
 
         Returns:
+            a tuple of nested lists wehre the first list represents the courses
+            already taken while the second list includes list suggestions
+            for future courses. Inside each list, each corresponding
+            index represents a list of course codes. which the student has
+            taken (will need to take)
+
+            Sample format:
+            [
+                [ # courses passed
+                    [<courses passed in track 1],
+                    [<courses passed in track 2],
+                    . . .
+                ],
+                [ # courses need to take in the future
+                    [
+                        [<next sem courses for track 1>],
+                        [<2 next sem courses for track 2>],
+                        . . .
+                    ],
+                    [
+                        [<next sem courses for track 1>],
+                        [<2 next sem courses for track 2>],
+                        . . .
+                    ],
+                    . . .
+                ]
+            ]
         """
-        student_courses = get_student_courses(OSIS)
-        req_tracks = json.loads(open('../data/reqs.json', 'r').read())['grad_requirements'][req_num]["options"]
-        track_progress = [] 
-        #check if already started on any tracks
-        for track in req_tracks:
-            for semester in track:
-                for course in semester:
-                    if (course in student_courses): #also check if passed
-                        track_progress.append(track)
-        #then check if none started, or one completed
-        #if none suggest all
-        #if done suggest ?
-        #if progress, suggest the rest of current track(s)
+        student_courses = [course for (course, name, mark)
+                            in self.get_relevant_courses(OSIS, req_num)
+                            if mark == 'P'
+                                or mark == 'C'
+                                or mark == 'CR'
+                                or mark in ['A', 'B', 'C', 'D']
+                                or int(mark) >= 65] # . . . passing filter
+
+        req_tracks = self.reqs[req_num]['options']
+        # according to client we want to show all options, not just the track
+        # the current student is on (which is already covered by
+        # 'get_relevant_courses')
+
+        passed_courses = []
+        need_to_take = []
+
+        for option in req_tracks:
+            student_courses_copy = student_courses[:] # make a copy
+            taken = []
+            still_need = []
+
+            for semester in option['course-code']: # each semester
+                need = True
+                for i in range(0, len(student_courses_copy)):
+                    if student_courses_copy[i][0] in semester:
+                        taken.append(student_courses_copy.pop(i))
+                        need = False
+                        break # semester is fufilled if student has taken a
+                              # class
+                if need:
+                    still_need.append(semester)
+
+            passed_courses.append(taken)
+            need_to_take.append(still_need)
+
+        return [passed_courses, need_to_take]
 
     def get_next_term_course_suggestions(self, OSIS):
         """
@@ -251,6 +301,54 @@ class DBManager:
         else: # nobody can graduate :(
             return []
 
+    def get_students_such_that(self, req_status):
+        """
+        get_students_such_that: gets a list of all students with some set of
+        graduation requirements
+    
+        Args:
+            req_status (list): a list of specified requirement statuses in the
+            following format:
+            [
+                [<desired status for req0, OR statement>],
+                [<desired status for req1, OR statement>],
+                ...
+            ]
+
+            Ex:
+            [
+                [0, 1],
+                [0],
+                [2],
+                [0,1,2]
+            ]
+            means get all students that:
+                completed or has not completed REQ0,
+                completed REQ1,
+                failed REQ2,
+                completed, has not completed, or failed REQ3
+        
+        Returns:
+            a list of studnet info as specified by the doc. of get_student_info
+            for all the students with the specified requirement statuses
+        """
+        assert(len(req_status) == TOTAL_REQ_COUNT)
+
+        req_cond = "REQ%02d IN (%s) AND "
+        q = "SELECT STUDENTID FROM %s WHERE " % (self.student_table)
+
+        for i in range(0, TOTAL_REQ_COUNT):
+            q += req_cond % (i, str(req_status[i])[1:-1])
+        q = q[:-4] + ';' # remove the final AND
+
+        r = self.conn.execute(q)
+
+        if r:
+            return [self.get_student_info(osis) for (osis,) in r]
+        else:
+            return []
+
+
     def get_relevant_courses(self, osis, req_number):
         """
         get_relevant_courses: gets all the courses a student has taken that is
@@ -298,3 +396,8 @@ if __name__ == '__main__':
     print db_m.get_all_can_graduate(), '\n'
     print "Test get_relevant_courses: 701113960 and MUSIC"
     print db_m.get_relevant_courses('701113960', 0), '\n'
+    print "Test get_req_course_track: 701113960 and MUSIC"
+    print db_m.get_req_course_track('701113960', 0), '\n'
+    print "Test get_students_such_that:"
+    print db_m.get_students_such_that([[0,1,2], [0,1,2], [0,1,2], [0,1,2],
+        [0,1,2], [0,1,2], [0,1,2]])
