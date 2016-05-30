@@ -133,7 +133,7 @@ class DBManager:
             req_num (int) : req to check (nums in constants.py)
 
         Returns:
-            a tuple of nested lists wehre the first list represents the courses
+            a tuple of nested lists where the first list represents the courses
             already taken while the second list includes list suggestions
             for future courses. Inside each list, each corresponding
             index represents a list of course codes. which the student has
