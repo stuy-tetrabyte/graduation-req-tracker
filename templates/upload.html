@@ -1,0 +1,15 @@
+{% extends "master.html" %}
+
+{% block title %}Upload Data{% endblock %}
+
+{% block content %}
+<div align="center">
+    <h2> Upload an Excel File: </h2>
+    <form action="/upload/" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" />
+        <br>
+        <input type="submit"/>
+    </form>
+</div>
+
+{% endblock %}

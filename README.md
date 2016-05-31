@@ -1,6 +1,8 @@
 # graduation-req-tracker
 Graduation Requirement Tracker
 
+[![Build Status](https://travis-ci.org/stuy-tetrabyte/graduation-req-tracker.svg?branch=feature-backend)](https://travis-ci.org/stuy-tetrabyte/graduation-req-tracker)
+
 ## Setting up a Vagrant Box for a development environment
 
 NOTE THAT THIS SECTION IS FOR DEVELOPMENT ONLY. WHEN DEPLOYING WE DO NOT NEED
@@ -34,9 +36,7 @@ $ sudo dpkg -i [downloaded package name]
 After Vagrant and VirtualBox are installed, set up the development box:
 
 ```
-$ mkdir DevBox
 $ cd DevBox
-$ vagrant init ubuntu/trusty64
 $ vagrant up --provider virtualbox
 ```
 

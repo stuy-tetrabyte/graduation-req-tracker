@@ -64,5 +64,5 @@ target/
 .*~
 .*.swp
 
-DevBox/
+DevBox/.vagrant
 .DS_Store

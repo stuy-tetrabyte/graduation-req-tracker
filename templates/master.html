@@ -3,34 +3,33 @@
 <html>
 
 <head>
-	{% block head %}
-	<title>On Track - {% block title %}{% endblock %}</title>
-	<link type='text/css' rel='stylesheet' href="{{ url_for('static', filename='main.css') }}"></link>
-	{% endblock %}
+    {% block head %}
+    <title>On Track - {% block title %}{% endblock %}</title>
+    <link type='text/css' rel='stylesheet' href="{{ url_for('static', filename='main.css') }}"></link>
+    {% endblock %}
 </head>
 
 <body>
 
 <div class="header">
-	<h1>On Track</h1>
+    <h1>On Track</h1>
 
-	<div class="navbar">
-		<ul>
-			<li><a href="/">Home</a></li>
-			<li><a href="/class/0">Class View</a></li>
-			<li><a href="/data">Database</a></li>
-			<li><a href="/login">Login</a></li>
-		</ul>
-	</div>
+    <div class="navbar">
+        <ul>
+            <li><a href="/class">Class View</a></li>
+            <li><a href="/data">Database</a></li>
+            <li><a href="/login">Logout</a></li>
+        </ul>
+    </div>
 </div>
 
 <div id="content">
-	{% block content %}
-	{% endblock %}
+    {% block content %}
+    {% endblock %}
 </div>
 
 <div class="footer">
-	<p>Tetrabyte Information Systems, 2016</p>
+    <p>Tetrabyte Information Systems, 2016</p>
 </div>
 
 </body>

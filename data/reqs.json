@@ -80,7 +80,7 @@
           "track_name" : "AP Computer Science",
           "terms-req" : 2,
           "suggested-terms" : [5,6,7,8],
-          "course-code" : ["MKS21X", "MKS22X"]
+          "course-code" : [[ "MKS21X" ], [ "MKS22X" ]]
         },
         {
           "course_name" : "2 Term Senior Year 10Tech",
@@ -109,7 +109,7 @@
           "track_name" : "Health",
           "terms-req" : 1,
           "suggested-terms" : [5,6],
-          "course-code" : ["PHS11"]
+          "course-code" : [["PHS11"]]
         }
       ]
     }

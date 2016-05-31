@@ -9,47 +9,114 @@
 
 {% block content %}
 <div id="filters">
-	<form>
-		<h3>Select Grade(s):</h3>
-		<input type="checkbox" name="grade" value="12">12<br>
-		<input type="checkbox" name="grade" value="11">11<br>
-		<input type="checkbox" name="grade" value="10">10<br>
-		<input type="checkbox" name="grade" value="9">9<br>
-	
-		<h3>Select Course(s):</h3>
-		<input type="text" id="class" placeholder="Add Course Code">
-		<button class="right" id="add-class">+</button>
+    <div class="icon" href="/data">
+        <form class="search" action='/student'>
+            <input type="text" name='osis' placeholder="Enter an OSIS">
+            <button>Find Student</button>
+        </form>
+    </div>
 
-		<button class="submit" type="submit" name="action">Update</button>
-	</form>
+    <form style="float:left;">
+        <h3>Select Grade(s):</h3>
+        <input type="checkbox" {{ "checked='checked'" if not boxes
+            or boxes['grade-12'] == ['on'] }} name="grade-12">12
+        <input type="checkbox" {{ "checked='checked'" if not boxes
+            or boxes['grade-11'] == ['on'] }} name="grade-11">11
+        <input type="checkbox" {{ "checked='checked'" if not boxes
+            or boxes['grade-10'] == ['on'] }} name="grade-10">10
+        <input type="checkbox" {{ "checked='checked'" if not boxes
+            or boxes['grade-9'] == ['on'] }} name="grade-9">9
+
+        <h3>Select Requirement Status:</h3>
+        <table>
+            <tr><th></th><th>Fulfilled</th><th>Missing</th><th>Failed</th></tr>
+            <tr>
+                <th>Music</th>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['0-fulfilled'] == ['on'] }} name="0-fulfilled"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['0-missing'] == ['on'] }} name="0-missing"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['0-failed'] == ['on'] }} name="0-failed"></td>
+            </tr>
+            <tr>
+                <th>Art</th>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['1-fulfilled'] == ['on'] }} name="1-fulfilled"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['1-missing'] == ['on'] }} name="1-missing"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['1-failed'] == ['on'] }} name="1-failed"></td>
+            </tr>
+            <tr>
+                <th>Intro CS 1</th>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['2-fulfilled'] == ['on'] }} name="2-fulfilled"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['2-missing'] == ['on'] }} name="2-missing"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['2-failed'] == ['on'] }} name="2-failed"></td>
+            </tr>
+            <tr>
+                <th>Drafting</th>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['3-fulfilled'] == ['on'] }} name="3-fulfilled"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['3-missing'] == ['on'] }} name="3-missing"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['3-failed'] == ['on'] }} name="3-failed"></td>
+            </tr>
+            <tr>
+                <th>5-Tech</th>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['4-fulfilled'] == ['on'] }} name="4-fulfilled"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['4-missing'] == ['on'] }} name="4-missing"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['4-failed'] == ['on'] }} name="4-failed"></td>
+            </tr>
+            <tr>
+                <th>10-Tech</th>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['5-fulfilled'] == ['on'] }} name="5-fulfilled"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['5-missing'] == ['on'] }} name="5-missing"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['5-failed'] == ['on'] }} name="5-failed"></td>
+            </tr>
+            <tr>
+                <th>Health</th>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['6-fulfilled'] == ['on'] }} name="6-fulfilled"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['6-missing'] == ['on'] }} name="6-missing"></td>
+                <td><input type="checkbox" {{ "checked='checked'" if not boxes
+                    or boxes['6-failed'] == ['on'] }} name="6-failed"></td>
+            </tr>
+        </table>
+
+        <button class="submit" type="submit" name="action">Update</button>
+    </form>
 </div>
 
 <div id="results">
-	<table>
-		<tr>
-			<th>OSIS</th>
-			<th>Last Name</th>
-			<th>First Name</th>
-			<th>Grade</th>
-			<th>Off Class</th>
-		</tr>
-	{% for student in students %}
-		<!-- 
-		Javascript for linking to student page http://stackoverflow.com/questions/17147821/how-to-make-a-whole-row-in-a-table-clickable-as-a-link
-		jQuery(document).ready(function($) {
-		    $(".clickable-row").click(function() {
-		        window.document.location = $(this).data("href");
-		    });
-		});
-		-->
-		<tr class="clickable-student" data-href="/student/{{ student.osis }}">
-			<td>{{ student.osis }}</td>
-			<td>{{ student.lastn }}</td>
-			<td>{{ student.firstn }}</td>
-			<td>{{ student.grade }}</td>
-			<td>{{ student.offcl }}</td>
-		</tr>
-	{% endfor %}
-	</table>
+    <table>
+        <tr>
+            <th>OSIS</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Grade</th>
+            <th>Off Class</th>
+        </tr>
+    {% for student in students %}
+        <tr onclick="location.href='/student/{{ student.osis }}'">
+            <td>{{ student.osis }}</td>
+            <td>{{ student.lastn }}</td>
+            <td>{{ student.firstn }}</td>
+            <td>{{ student.grade }}</td>
+            <td>{{ student.offcl }}</td>
+        </tr>
+    {% endfor %}
+    </table>
 </div>
 {% endblock %}

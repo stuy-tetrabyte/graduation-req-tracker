@@ -23,6 +23,7 @@ table {
 table th, td {
 	border-top: 3px solid #EEE;
 	border-bottom: 3px solid #EEE;
+	border-left: 3px solid #EEE;
 	padding: 5px 15px 5px;
 }
 
