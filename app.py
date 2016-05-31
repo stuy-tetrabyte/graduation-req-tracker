@@ -246,7 +246,9 @@ def upload():
         else:
             print "File extension not allowed!", str(f)
 
-    return render_template("upload.html")
+        return redirect(url_for("class_view"))
+    else:
+        return render_template("upload.html")
 
 @app.route('/export/<int:grad_year>')
 @app.route('/export/<int:grad_year>/')
