@@ -143,6 +143,7 @@ def student_view(OSIS=0):
     list_of_courses = [""] * 7
     next_term_suggestions = [""] * 7
     if not student_info:
+        return render_template("student_not_found.html", osis=OSIS)
         # Default data for testing
         student_info = {
             "osis" : "123456789",
