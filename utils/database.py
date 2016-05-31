@@ -185,7 +185,7 @@ class DBManager:
             for semester in option['course-code']: # each semester
                 need = True
                 for i in range(0, len(student_courses_copy)):
-                    if student_courses_copy[i][0] in semester:
+                    if student_courses_copy[i] in semester:
                         taken.append(student_courses_copy.pop(i))
                         need = False
                         break # semester is fufilled if student has taken a
@@ -323,9 +323,9 @@ class DBManager:
                 [0,1,2]
             ]
             means get all students that:
-                completed or has not completed REQ0,
-                completed REQ1,
-                failed REQ2,
+                completed or has not completed REQ0, AND
+                completed REQ1, AND
+                failed REQ2, AND
                 completed, has not completed, or failed REQ3
         
         Returns:
