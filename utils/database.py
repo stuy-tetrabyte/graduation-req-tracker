@@ -23,6 +23,8 @@ class DBManager:
         script_loc = os.path.dirname(script_path)
         self.reqs = json.loads(open(script_loc + '/../data/reqs.json', 'r').read())['grad_requirements']
 
+    
+
     def get_student_courses(self, OSIS):
         """
         get_student_courses: returns a list of the students' courses
