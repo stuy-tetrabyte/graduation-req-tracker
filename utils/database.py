@@ -6,12 +6,16 @@ import os, json
 
 assert(database_setup.is_table_set_up())
 
+global use_and
+
 class DBManager:
     """
     Class to manage the student/courses database
     """
 
     def __init__(self, db_name, course_table_name, student_table_name):
+        global use_and
+        use_and = True
         self.conn = Connection(db_name)
         self.course_table = course_table_name
         self.student_table = student_table_name
@@ -332,13 +336,18 @@ class DBManager:
             a list of studnet info as specified by the doc. of get_student_info
             for all the students with the specified requirement statuses
         """
+        global use_and
         assert(len(req_status) == TOTAL_REQ_COUNT)
 
-        req_cond = "REQ%02d IN (%s) AND "
+        req_cond_and = "REQ%02d IN (%s) AND "
+        req_cond_or = "REQ%02d IN (%s) OR "
         q = "SELECT STUDENTID FROM %s WHERE " % (self.student_table)
 
         for i in range(0, TOTAL_REQ_COUNT):
-            q += req_cond % (i, str(req_status[i])[1:-1])
+            if (use_and):
+                q += req_cond_and % (i, str(req_status[i])[1:-1])
+            else:
+                q += req_cond_or % (i, str(req_status[i])[1:-1])
         q = q[:-4] + ';' # remove the final AND
 
         r = self.conn.execute(q)
@@ -376,6 +385,10 @@ class DBManager:
             return r
         else:
             return []
+
+    def switch_use_and():
+        global use_and
+        use_and = not use_and
 
 if __name__ == '__main__':
     db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME,
