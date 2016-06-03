@@ -83,8 +83,8 @@ def is_table_set_up():
     courses_setup = retval != None and len(retval) == 1
     retval = SQLConnector.execute(query % (PROJECT_DB_NAME, STUDENT_TABLE_NAME))
     student_setup = retval != None and len(retval) == 1
-    retval = SQLConnector.execute(query % (PROJECT_DB_NAME, CURRENT_COURSES_TABLE_NAME))
-    return courses_setup and student_setup and (retval != None and len(retval) == 1)
+
+    return courses_setup and student_setup
 
 def create_project_table(courses_column_names, student_column_names, current_courses_column_names):
     """
@@ -94,7 +94,6 @@ def create_project_table(courses_column_names, student_column_names, current_cou
     Params:
         courses_column_names - A list of strings containing column names for the courses table
         student_column_names - A list of strings containing column names for the students table
-        current_courses_column_names - A list of strings containing column names for the current_courses table
 
     Returns:
         None
@@ -107,8 +106,6 @@ def create_project_table(courses_column_names, student_column_names, current_cou
     schema = (("%s VARCHAR(64), " * len(student_column_names))[:-2]) % tuple(student_column_names)
     SQLConnector.execute(query % (STUDENT_TABLE_NAME, schema))
 
-    schema = (("%s VARCHAR(64), " * len(current_courses_column_names))[:-2]) % tuple(current_courses_column_names)
-    SQLConnector.execute(query % (CURRENT_COURSES_TABLE_NAME, schema))
 
 def delete_project_table():
     """
@@ -118,7 +115,7 @@ def delete_project_table():
     query = "DROP TABLE IF EXISTS %s;"
     SQLConnector.execute(query % (COURSES_TABLE_NAME,))
     SQLConnector.execute(query % (STUDENT_TABLE_NAME,))
-    SQLConnector.execute(query % (CURRENT_COURSES_TABLE_NAME,))
+
 
 def reset_project_table():
     """
@@ -127,7 +124,7 @@ def reset_project_table():
     delete_project_table()
     for i in range(0, TOTAL_REQ_COUNT):
         STUDENT_TABLE_COLUMNS.append("REQ%02d" % i) # grad reqs
-    create_project_table(COURSES_TABLE_COLUMNS, STUDENT_TABLE_COLUMNS, CURRENT_COURSES_TABLE_COLUMNS)
+    create_project_table(COURSES_TABLE_COLUMNS, STUDENT_TABLE_COLUMNS,)
     
 ##todo change this to be load past courses
 ##make new func for loading new courses 
@@ -138,7 +135,7 @@ def load_excel_file(datafile):
     If the project's table is not yet created, this function will call 'create'.
 
     The column names are specified within COURSES_TABLE_COLUMNS and
-    STUDENT_TABLE_COLUMNS and CURRENT_COURSES_TABLE_COLUMNS
+    STUDENT_TABLE_COLUMNS 
 
     If they are not present in the datafile, a KeyError will be raised
     """
