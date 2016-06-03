@@ -1,0 +1,17 @@
+{% extends "master.html" %}
+
+{% block title %}Student View{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='student.css') }}"></link>
+{% endblock %}
+
+{% block content %}
+<h2>Student Not Found</h2>
+<br>
+<hr>
+<p>Student with id of {{ osis }} cannot be found within the student
+database. To return to viewing the whole database, click <a
+href="/class">here</a></p>
+{% endblock %}

@@ -16,11 +16,8 @@
         </form>
     </div>
 
-    <script>
-console.log("{{boxes['0-fulfilled']}}")
-    </script>
 
-    <form>
+    <form style="float:left;">
         <h3>Select Grade(s):</h3>
         <input type="checkbox" {{ "checked='checked'" if not boxes
             or boxes['grade-12'] == ['on'] }} name="grade-12">12
@@ -35,7 +32,7 @@ console.log("{{boxes['0-fulfilled']}}")
         <table>
             <tr><th></th><th>Fulfilled</th><th>Missing</th><th>Failed</th></tr>
             <tr>
-                <th>Art</th>
+                <th>Music</th>
                 <td><input type="checkbox" {{ "checked='checked'" if not boxes
                     or boxes['0-fulfilled'] == ['on'] }} name="0-fulfilled"></td>
                 <td><input type="checkbox" {{ "checked='checked'" if not boxes
@@ -44,7 +41,7 @@ console.log("{{boxes['0-fulfilled']}}")
                     or boxes['0-failed'] == ['on'] }} name="0-failed"></td>
             </tr>
             <tr>
-                <th>Music</th>
+                <th>Art</th>
                 <td><input type="checkbox" {{ "checked='checked'" if not boxes
                     or boxes['1-fulfilled'] == ['on'] }} name="1-fulfilled"></td>
                 <td><input type="checkbox" {{ "checked='checked'" if not boxes

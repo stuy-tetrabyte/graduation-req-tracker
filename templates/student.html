@@ -16,13 +16,15 @@
 
 <table>
     <col width="20%">
-    <col width="80%">
-    <tr><th>Art</th><td>{{ courses[0] }}</td></tr>
-    <tr><th>Music</th><td>{{ courses[1] }}</td></tr>
-    <tr><th>Intro CS 1</th><td>{{ courses[2] }}</td></tr>
-    <tr><th>Drafting</th><td>{{ courses[3] }}</td></tr>
-    <tr><th>5-Tech</th><td>{{ courses[4] }}</td></tr>
-    <tr><th>10-Tech</th><td>{{ courses[5] }}</td></tr>
-    <tr><th>Health</th><td>{{ courses[6] }}</td></tr>
+    <col width="40%">
+    <col width="40%">
+    <tr><td></td><th>Courses Taken</th><th>Next Term Suggestions</th></tr>
+    <tr><th>Music</th><td>{{ courses[0] }}</td><td>{{ suggestions[0] }}</td></tr>
+    <tr><th>Art</th><td>{{ courses[1] }}</td><td>{{ suggestions[1] }}</td></tr>
+    <tr><th>Intro CS 1</th><td>{{ courses[2] }}</td><td>{{ suggestions[2] }}</td></tr>
+    <tr><th>Drafting</th><td>{{ courses[3] }}</td><td>{{ suggestions[3] }}</td></tr>
+    <tr><th>5-Tech</th><td>{{ courses[4] }}</td><td>{{ suggestions[4] }}</td></tr>
+    <tr><th>10-Tech</th><td>{{ courses[5] }}</td><td>{{ suggestions[5] }}</td></tr>
+    <tr><th>Health</th><td>{{ courses[6] }}</td><td>{{ suggestions[6] }}</td></tr>
 </table>
 {% endblock %}

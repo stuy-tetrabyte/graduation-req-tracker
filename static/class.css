@@ -1,9 +1,11 @@
 #filters {
+    position: fixed;
 	float: left;
 	width: 25%;
 	min-width: 250px;
 	margin: 0px;
 	margin-right: 5%;
+	top: 120px;
 }
 
 #filters form {
@@ -37,7 +39,7 @@
 	float: right;
 	width: 70%;
 	min-width: 700px;
-	margin: 0px;
+	margin-bottom: 50px;
 }
 
 #results table {
@@ -62,4 +64,8 @@
 #results tr:hover {
 	background-color: #FFF;
 	cursor:pointer;
+}
+
+h1 {
+    position:fixed;
 }
