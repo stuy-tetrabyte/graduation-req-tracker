@@ -118,8 +118,6 @@ def reset_project_table():
     Resets the table for this project by calling 'delete' and 'setup'
     """
     delete_project_table()
-    for i in range(0, TOTAL_REQ_COUNT):
-        STUDENT_TABLE_COLUMNS.append("REQ%02d" % i) # grad reqs
     create_project_table(COURSES_TABLE_COLUMNS, STUDENT_TABLE_COLUMNS)
 
 def load_excel_file(datafile):
@@ -133,6 +131,7 @@ def load_excel_file(datafile):
     If they are not present in the datafile, a KeyError will be raised
     """
     column_names = get_column_names(datafile) # loads file
+    new_student_columns = STUDENT_TABLE_COLUMNS
 
     # check if COURSES_TABLE_COLUMNS are completed contained in the column names
     for name in COURSES_TABLE_COLUMNS:
@@ -141,16 +140,16 @@ def load_excel_file(datafile):
             sys.exit(1)
 
     # check if STUDENT_TABLE_COLUMNS are completely contained in the column names
-    for name in STUDENT_TABLE_COLUMNS:
+    for name in new_student_columns:
         if name not in column_names:
             raise KeyError("%s is not present in the provided datafile" % name)
             sys.exit(1)
 
     for i in range(0, TOTAL_REQ_COUNT):
-        STUDENT_TABLE_COLUMNS.append("REQ%02d" % i) # grad reqs
+        new_student_columns.append("REQ%02d" % i) # grad reqs
 
-    if not is_table_set_up():
-        create_project_table(COURSES_TABLE_COLUMNS, STUDENT_TABLE_COLUMNS)
+    delete_project_table()
+    create_project_table(COURSES_TABLE_COLUMNS, new_student_columns)
 
     rows, cols = datafile.shape
     counter = 0
@@ -236,8 +235,8 @@ def load_excel_file(datafile):
             req_status.append(str(status))
 
         query = "INSERT INTO %s (%s) VALUES (%s);"
-        schema = (("%s, " * len(STUDENT_TABLE_COLUMNS))[:-2]) % tuple(STUDENT_TABLE_COLUMNS)
-        values = (("'%s', " * len(STUDENT_TABLE_COLUMNS))[:-2]) % tuple([osis] + student_data[str(osis)] + req_status)
+        schema = (("%s, " * len(new_student_columns))[:-2]) % tuple(new_student_columns)
+        values = (("'%s', " * len(new_student_columns))[:-2]) % tuple([osis] + student_data[str(osis)] + req_status)
         query = query % (STUDENT_TABLE_NAME, schema, values)
 
         r = SQLConnector.execute(query)

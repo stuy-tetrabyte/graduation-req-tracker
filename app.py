@@ -1,5 +1,5 @@
 # core dependencies
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, send_from_directory
 from functools import wraps
 import sys, os
 sys.path.insert(0, './utils/')
@@ -246,7 +246,9 @@ def upload():
         else:
             print "File extension not allowed!", str(f)
 
-    return render_template("upload.html")
+        return redirect(url_for("class_view"))
+    else:
+        return render_template("upload.html")
 
 @app.route('/export/<int:grad_year>')
 @app.route('/export/<int:grad_year>/')
