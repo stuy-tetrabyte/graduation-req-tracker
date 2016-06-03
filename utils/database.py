@@ -191,7 +191,7 @@ class DBManager:
             for semester in option['course-code']: # each semester
                 need = True
                 for i in range(0, len(student_courses_copy)):
-                    if student_courses_copy[i][0] in semester:
+                    if student_courses_copy[i] in semester:
                         taken.append(student_courses_copy.pop(i))
                         need = False
                         break # semester is fufilled if student has taken a
@@ -350,6 +350,7 @@ class DBManager:
                 q += req_cond_and % (i, str(req_status[i])[1:-1])
             else:
                 q += req_cond_or % (i, str(req_status[i])[1:-1])
+
         q = q[:-4] + ';' # remove the final AND
 
         r = self.conn.execute(q)

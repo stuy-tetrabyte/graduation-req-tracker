@@ -1,5 +1,5 @@
 # core dependencies
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, send_from_directory
 from functools import wraps
 import sys, os
 sys.path.insert(0, './utils/')
@@ -141,7 +141,9 @@ def student_view(OSIS=0):
 
     student_info = db_m.get_student_info(OSIS)
     list_of_courses = [""] * 7
+    next_term_suggestions = [""] * 7
     if not student_info:
+        return render_template("student_not_found.html", osis=OSIS)
         # Default data for testing
         student_info = {
             "osis" : "123456789",
@@ -163,10 +165,15 @@ def student_view(OSIS=0):
             data = db_m.get_relevant_courses(OSIS, i)
             courses = {}
             for entry in data:
-                if entry[1] in courses:
-                    courses[entry[1]] += 1
+                if entry[2] == 'F' or entry[2] == 'NC' or entry[2] == 'NS' or int(entry[2]) < 65:
+                    if entry[0] + " (FAILED)" in courses:
+                        courses[entry[0] + " (FAILED)"] += 1
+                    else:
+                        courses[entry[0] + " (FAILED)"] = 1
+                elif entry[0] in courses:
+                    courses[entry[0]] += 1
                 else:
-                    courses[entry[1]] = 1
+                    courses[entry[0]] = 1
 
             def format_output(d):
                 output = []
@@ -176,7 +183,23 @@ def student_view(OSIS=0):
 
             list_of_courses[i] = "None" if courses == {} else format_output(courses)
 
-    return render_template("student.html", profile=student_info, courses=list_of_courses)
+            need_to_take = db_m.get_req_course_track(OSIS, i)[1]
+            for j in need_to_take:
+                if j == []: # fufilled
+                    next_term_suggestions[i] = "Fufilled"
+            
+            if next_term_suggestions[i] == "":
+                suggestions = ""
+                for j in need_to_take:
+                    for k in j[0]:
+                        suggestions += str( k ) + ', '
+
+                suggestions = suggestions[:-2]
+
+                next_term_suggestions[i] = suggestions
+
+    return render_template("student.html", profile=student_info,
+            courses=list_of_courses, suggestions = next_term_suggestions)
 
 @app.route('/data')
 @app.route('/data/')
@@ -223,7 +246,9 @@ def upload():
         else:
             print "File extension not allowed!", str(f)
 
-    return render_template("upload.html")
+        return redirect(url_for("class_view"))
+    else:
+        return render_template("upload.html")
 
 @app.route('/export/<int:grad_year>')
 @app.route('/export/<int:grad_year>/')
