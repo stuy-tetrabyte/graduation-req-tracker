@@ -86,7 +86,7 @@ def is_table_set_up():
 
     return courses_setup and student_setup
 
-def create_project_table(courses_column_names, student_column_names, current_courses_column_names):
+def create_project_table(courses_column_names, student_column_names):
     """
     Sets up MySQL with a table with a set schema given a list of column_names.
     Does nothing if the table is already set up.
