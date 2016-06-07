@@ -1,10 +1,13 @@
 PROJECT_DB_NAME = "coursedb"
 COURSES_TABLE_NAME = "courses"
 STUDENT_TABLE_NAME = "students"
+CURRENT_COURSES_TABLE_NAME = "current"
 
 COURSES_TABLE_COLUMNS = ["STUDENTID", "SCHOOL", "YEAR", "TERM", "COURSE", "COURSE_TITLE", "MARK", "CREDITS"]
 
 STUDENT_TABLE_COLUMNS = ["STUDENTID", "LASTNAME", "FIRSTNAME", "GRADE", "OFFCLASS"]
+
+#TODO current column names
 
 TOTAL_REQ_COUNT = 7 # amount of graduation requirements
 

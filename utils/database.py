@@ -6,18 +6,24 @@ import os, json
 
 assert(database_setup.is_table_set_up())
 
+global use_and
+
 class DBManager:
     """
     Class to manage the student/courses database
     """
 
     def __init__(self, db_name, course_table_name, student_table_name):
+        global use_and
+        use_and = True
         self.conn = Connection(db_name)
         self.course_table = course_table_name
         self.student_table = student_table_name
         script_path = os.path.realpath(__file__)
         script_loc = os.path.dirname(script_path)
         self.reqs = json.loads(open(script_loc + '/../data/reqs.json', 'r').read())['grad_requirements']
+
+    
 
     def get_student_courses(self, OSIS):
         """
@@ -133,7 +139,7 @@ class DBManager:
             req_num (int) : req to check (nums in constants.py)
 
         Returns:
-            a tuple of nested lists wehre the first list represents the courses
+            a tuple of nested lists where the first list represents the courses
             already taken while the second list includes list suggestions
             for future courses. Inside each list, each corresponding
             index represents a list of course codes. which the student has
@@ -323,22 +329,28 @@ class DBManager:
                 [0,1,2]
             ]
             means get all students that:
-                completed or has not completed REQ0, AND
-                completed REQ1, AND
-                failed REQ2, AND
+                completed or has not completed REQ0,
+                completed REQ1,
+                failed REQ2,
                 completed, has not completed, or failed REQ3
         
         Returns:
             a list of studnet info as specified by the doc. of get_student_info
             for all the students with the specified requirement statuses
         """
+        global use_and
         assert(len(req_status) == TOTAL_REQ_COUNT)
 
-        req_cond = "REQ%02d IN (%s) AND "
+        req_cond_and = "REQ%02d IN (%s) AND "
+        req_cond_or = "REQ%02d IN (%s) OR "
         q = "SELECT STUDENTID FROM %s WHERE " % (self.student_table)
 
         for i in range(0, TOTAL_REQ_COUNT):
-            q += req_cond % (i, str(req_status[i])[1:-1])
+            if (use_and):
+                q += req_cond_and % (i, str(req_status[i])[1:-1])
+            else:
+                q += req_cond_or % (i, str(req_status[i])[1:-1])
+
         q = q[:-4] + ';' # remove the final AND
 
         r = self.conn.execute(q)
@@ -376,6 +388,10 @@ class DBManager:
             return r
         else:
             return []
+
+    def switch_use_and():
+        global use_and
+        use_and = not use_and
 
 if __name__ == '__main__':
     db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME,

@@ -1,0 +1,117 @@
+{
+  "grad_requirements": [
+    {
+      "name": "Music Appreciation",
+      "options": [
+        {
+          "track-name" : "1 Term Music App",
+          "terms-req" : 1,
+          "suggested-terms" : [1,2],
+          "course-code" : [["UAS11"]]
+        },
+        {
+          "track-name" : "2 Terms Band or Orchestra",
+          "terms-req" : 2,
+          "suggested-terms" : [1,2],
+          "course-code" : [["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33"],["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33"]]
+        },
+        {
+          "track-name" : "3 Terms Chorus",
+          "terms-req" : 3,
+          "suggested-terms" : [1,2,3,4],
+          "course-code" : [["UVS11","UCS11"],["UVS11","UCS11"],["UVS11","UCS11"]]
+        }
+      ]
+    },
+    {
+      "name": "Art Appreciation",
+      "options" : [
+         {
+          "track_name" : "Art Appreciation",
+          "terms-req" : 1,
+          "suggested-terms" : [1,2],
+          "course-code" : [["AHS11"]]
+        }
+      ]
+    },
+    {
+      "name": "Intro CS",
+      "options" : [
+         {
+          "track_name" : "Intro CompSci 1",
+          "terms-req" : 1,
+          "suggested-terms" : [3,4],
+          "course-code" : [["MKS21"]]
+        }
+      ]
+    },
+    {
+      "name": "Techncal Drawing",
+      "options" : [
+         {
+          "track_name" : "Drafting",
+          "terms-req" : 1,
+          "suggested-terms" : [3,4,5,6],
+          "course-code" : [["TDS11"]]
+        }
+      ]
+    },
+    {
+      "name": "5 Tech",
+      "options" : [
+         {
+          "track_name" : "2nd Term CompSci",
+          "terms-req" : 1,
+          "suggested-terms" : [4],
+          "course-code" : [["MKS22"]]
+        },
+        {
+          "track_name" : "1 Term 5Tech",
+          "terms-req" : 1,
+          "suggested-terms" : [5,6],
+          "course-code" : [["TYS11QT5","TAS11QP5","TZS11QG5","TDS11QA5","TDS11QD5","TMS11QD5","TMS11QW5","TQS11QB5","TCS11QT5","TQS11QV5"]]
+        }
+      ]
+    },
+    {
+      "name": "10 Tech",
+      "options" : [
+        {
+          "track_name" : "AP Computer Science",
+          "terms-req" : 2,
+          "suggested-terms" : [5,6,7,8],
+          "course-code" : [[ "MKS21X" ], [ "MKS22X" ]]
+        },
+        {
+          "course_name" : "2 Term Senior Year 10Tech",
+          "terms-req" : 2,
+          "suggested-terms" : [7,8],
+          "course-code" : [["TES21QCA","TQS21QVA","TMS21QWA","TDS21QAA","TMS21QCA","TAS21QPA","APS21QAP","TQS21QBA"],["TES22QCA","TQS22QVA","TMS22QWA","TDS22QAA","TMS22QCA","TAS22QPA","APS22QAP","TQS22QBA"]]
+        },
+        {
+          "track-name" : "7 Terms Music Credit",
+          "terms-req" : 7,
+          "suggested-terms" : [1,2,3,4,5,6,7,8],
+          "course-code" : [["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33","UVS11","UCS11"],["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33","UVS11","UCS11"],["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33","UVS11","UCS11"],["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33","UVS11","UCS11"],["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33","UVS11","UCS11"],["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33","UVS11","UCS11"],["UDS11Q8","UDS11Q4","UDS11Q2","UYS11","UZS32","UZS33","UVS11","UCS11"]]
+        },
+        {
+          "track-name" : "Intel Research",
+          "terms-req" : 2,
+          "suggested-terms" : [6,7],
+          "course-code" : [["SQS86QJ5","MQS86QJI"],["SQS87QJ5","MQS87QJI"]]
+        }
+        ]
+    },
+    {
+      "name": "Health",
+      "options" : [
+         {
+          "track_name" : "Health",
+          "terms-req" : 1,
+          "suggested-terms" : [5,6],
+          "course-code" : [["PHS11"]]
+        }
+      ]
+    }
+  ]
+}
