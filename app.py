@@ -302,6 +302,8 @@ def export_student_list(student_list):
     if allowed_filename(filename):
         secure_name = secure_filename(filename)
         path_to_filtered = os.path.join(app.config['DOWNLOAD_FOLDER'], secure_name)
+        if os.path.isfile(path_to_filtered):
+            os.remove(path_to_filtered)
         df.to_excel(path_to_filtered, index=False)
         # return send_from_directory(directory=app.config['DOWNLOAD_FOLDER'],
         #        filename=secure_name)
