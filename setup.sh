@@ -14,11 +14,12 @@ sudo apt-get install mysql-server
 sudo mysql_secure_installation
 sudo apt-get install python-mysqldb python-dev
 
+mysql -e 'CREATE DATABASE coursedb;'
+mysqladmin -u root password test
+
 # Install Anaconda
 wget http://repo.continuum.io/archive/Anaconda2-4.0.0-Linux-x86_64.sh
 bash Anaconda2-4.0.0-Linux-x86_64.sh
 
 source ~/.bashrc
 conda install -c anaconda mysql-connector-python pandas
-
-
