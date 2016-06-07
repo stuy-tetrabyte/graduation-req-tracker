@@ -57,6 +57,10 @@ $ git clone https://github.com/stuy-tetrabyte/graduation-req-tracker.git
 Once you have cloned the repository, run the setup instructions for the server.
 ## Setting up the server
 
+There is a script located at `setup.sh`. This will perform all the commands, but
+will not handle user prompts. You can run the script with `./setup.sh` and input
+the responses to the prompts as shown below.
+
 You will need to install a few packages to get this project up and running.
 
 ```

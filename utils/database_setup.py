@@ -82,7 +82,9 @@ def is_table_set_up():
     retval = SQLConnector.execute(query % (PROJECT_DB_NAME, COURSES_TABLE_NAME,))
     courses_setup = retval != None and len(retval) == 1
     retval = SQLConnector.execute(query % (PROJECT_DB_NAME, STUDENT_TABLE_NAME))
-    return courses_setup and (retval != None and len(retval) == 1)
+    student_setup = retval != None and len(retval) == 1
+
+    return courses_setup and student_setup
 
 def create_project_table(courses_column_names, student_column_names):
     """
@@ -104,6 +106,7 @@ def create_project_table(courses_column_names, student_column_names):
     schema = (("%s VARCHAR(64), " * len(student_column_names))[:-2]) % tuple(student_column_names)
     SQLConnector.execute(query % (STUDENT_TABLE_NAME, schema))
 
+
 def delete_project_table():
     """
     Deletes the table in MySQL that this project uses. Will do nothing if the
@@ -113,20 +116,26 @@ def delete_project_table():
     SQLConnector.execute(query % (COURSES_TABLE_NAME,))
     SQLConnector.execute(query % (STUDENT_TABLE_NAME,))
 
+
 def reset_project_table():
     """
     Resets the table for this project by calling 'delete' and 'setup'
     """
     delete_project_table()
-    create_project_table(COURSES_TABLE_COLUMNS, STUDENT_TABLE_COLUMNS)
+    for i in range(0, TOTAL_REQ_COUNT):
+        STUDENT_TABLE_COLUMNS.append("REQ%02d" % i) # grad reqs
+    create_project_table(COURSES_TABLE_COLUMNS, STUDENT_TABLE_COLUMNS,)
+    
+##todo change this to be load past courses
+##make new func for loading new courses 
 
 def load_excel_file(datafile):
     """
-    Takes a Pandas datafile and inserts the data into the project's MySQL table.
+    Takes the Pandas datafiles and inserts the data into the project's MySQL table.
     If the project's table is not yet created, this function will call 'create'.
 
     The column names are specified within COURSES_TABLE_COLUMNS and
-    STUDENT_TABLE_COLUMNS
+    STUDENT_TABLE_COLUMNS 
 
     If they are not present in the datafile, a KeyError will be raised
     """
