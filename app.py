@@ -9,6 +9,7 @@ sys.path.insert(0, './utils/')
 from database import DBManager
 from Constants import *
 from database_setup import delete_project_table, get_excel, load_excel_file
+from tools import check_json
 
 # security imports
 from werkzeug import secure_filename
@@ -264,6 +265,11 @@ def upload():
         return redirect(url_for("class_view"))
     else:
         return render_template("upload.html")
+
+@app.route('/update_reqs', methods = ['GET', 'POST'])
+@app.route('/update_reqs/', methods = ['GET', 'POST'])
+def upload_reqs():
+    pass
 
 # @app.route('/export_filtered', methods = ['POST'])
 # @app.route('/export_filtered/', methods = ['POST'])
