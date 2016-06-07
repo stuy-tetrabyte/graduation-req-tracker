@@ -19,7 +19,8 @@ from werkzeug import secure_filename
 # Authors                                                                      #
 #  Yicheng Wang                                                                #
 #  Ariel Levy                                                                  #
-#  Ethan Cheng                                                                 #
+#  Ethan Cheng
+#  Loren Maggiore                                                              #
 #                                                                              #
 # Description                                                                  #
 #  TODO                                                                        #
