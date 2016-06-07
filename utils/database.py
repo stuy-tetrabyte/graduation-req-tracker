@@ -389,7 +389,7 @@ class DBManager:
         else:
             return []
 
-    def change_db_logic(change_to):
+    def change_db_logic(self,change_to):
         """
         toggle db logic between 'AND' and 'OR'
         Args:
