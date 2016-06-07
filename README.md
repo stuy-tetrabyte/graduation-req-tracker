@@ -78,7 +78,8 @@ will be `test`, though it should be changed if it is for an official deploy.
 Upon doing `sudo mysql_secure_installation`, type in your MySQL root password
 from earlier:
 
-- Select `n` when asked to change your root password
+- Select `y` when asked to change your SQL root password, and use `test` as your
+  new password.
 - `y` when asked to remove anonymous users
 - `y` when asked to disable remote access to root
 - `y` when asked to remove test database and access to the test database
@@ -91,6 +92,8 @@ $ mysql -u root -p # Enter 'test' as your password
 mysql> CREATE DATABASE coursedb;
 ```
 
+Use `<Ctrl> + D` to exit MySQL.
+
 Installing other Python requirements:
 
 I originally installed Python Pandas via `pip`, but I ran into a multitude of
@@ -100,6 +103,11 @@ issues. The Pandas site suggested that Pandas be installed using anaconda:
 $ wget http://repo.continuum.io/archive/Anaconda2-4.0.0-Linux-x86_64.sh
 $ bash Anaconda2-4.0.0-Linux-x86_64.sh
 ```
+
+You should hit enter to accept the Anaconda terms and conditions. Press `q` to
+quit reading the Anaconda terms and conditions.
+
+For all future prompts, enter `yes` and hit enter.
 
 During the installation, it may prompt you to append the path for Anaconda in
 your `.bashrc` file. You should answer `yes` to this prompt.
