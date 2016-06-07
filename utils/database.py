@@ -389,9 +389,18 @@ class DBManager:
         else:
             return []
 
-    def switch_use_and():
+    def change_db_logic(change_to):
+        """
+        toggle db logic between 'AND' and 'OR'
+        Args:
+        change_to : string - should be either "and" or "or" and sets the db logic
+        """
         global use_and
-        use_and = not use_and
+        if (change_to == 'and'):
+            use_and = True
+        else:
+            #must be or
+            use_and = False
 
 if __name__ == '__main__':
     db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME,

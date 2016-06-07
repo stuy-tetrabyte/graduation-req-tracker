@@ -106,6 +106,8 @@ def class_view():
     if not get_req_args:
         return render_template('class.html', students = db_m.get_all_students_info())
 
+    logic = get_req_args.get( 'logic' )
+    change_db_logic(logic)
     for grade in range(9, 13):
         if get_req_args.get( 'grade-' + str( grade ) ) == 'on':
             grades.append(str( grade ))
