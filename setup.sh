@@ -23,3 +23,5 @@ bash Anaconda2-4.0.0-Linux-x86_64.sh
 
 source ~/.bashrc
 conda install -c anaconda mysql-connector-python pandas
+cd utils
+python database_setup.py -c
