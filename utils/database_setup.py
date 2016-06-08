@@ -196,7 +196,7 @@ def load_excel_file(datafile):
 
     script_path = os.path.realpath(__file__)
     script_loc = os.path.dirname(script_path)
-    reqs = json.loads(open(script_loc + '/../data/reqs.json', 'r').read())['grad_requirements']
+    reqs = json.loads(open(script_loc + '/../static/reqs.json', 'r').read())['grad_requirements']
 
     query = "SELECT DISTINCT STUDENTID FROM %s;" % (COURSES_TABLE_NAME)
 

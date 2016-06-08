@@ -3,12 +3,14 @@ from flask import Flask, render_template, request, session, redirect, url_for, s
 from functools import wraps
 import sys, os
 import pandas
+import urllib, urllib2, json
 sys.path.insert(0, './utils/')
 
 # project imports
 from database import DBManager
 from Constants import *
 from database_setup import delete_project_table, get_excel, load_excel_file
+from tools import check_json
 
 # security imports
 from werkzeug import secure_filename
@@ -19,7 +21,8 @@ from werkzeug import secure_filename
 # Authors                                                                      #
 #  Yicheng Wang                                                                #
 #  Ariel Levy                                                                  #
-#  Ethan Cheng                                                                 #
+#  Ethan Cheng
+#  Loren Maggiore                                                              #
 #                                                                              #
 # Description                                                                  #
 #  TODO                                                                        #
@@ -41,6 +44,7 @@ print "Saving files to: ", app.config['UPLOAD_FOLDER']
 print "Generating files in: ", app.config['DOWNLOAD_FOLDER']
 
 db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME, STUDENT_TABLE_NAME)
+list_of_students = []
 #}}}
 #{{{ Decorator Functions
 def login_required(f):
@@ -81,11 +85,30 @@ def login():
     Returns:
         the login page
     """
-    return render_template("login.html")
+    token = request.args.get("token")
+    if token is None:
+        return render_template("login.html")
+    else:
+        # Query Google Token Authenticator
+        URL = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="
+        api_call = urllib2.urlopen(URL + token)
+        data = json.loads(api_call.read())
+        if str(data['email_verified']) == 'true' and str(data['email']).endswith("@stuy.edu"):
+            session['logged_in'] = True
+            return redirect(url_for('class_view'))
+        else:
+            session.clear()
+            return render_template("login.html")
+
+@app.route('/logout')
+@app.route('/logout/')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
 
 @app.route('/class', methods = ['GET'])
 @app.route('/class/', methods = ['GET'])
-# @login_required
+@login_required
 def class_view():
     """
     class_view: returns the student data for all students
@@ -99,12 +122,18 @@ def class_view():
     """
     grades = []
     req_statuses = [[], [], [], [], [], [], []]
-    
+
     get_req_args = request.args
 
+    global list_of_students
+
     if not get_req_args:
+        list_of_students = db_m.get_all_students_info()
         return render_template('class.html', students = db_m.get_all_students_info())
 
+    logic = get_req_args.get( 'logic' )
+    print type( logic )
+    db_m.change_db_logic(logic)
     for grade in range(9, 13):
         if get_req_args.get( 'grade-' + str( grade ) ) == 'on':
             grades.append(str( grade ))
@@ -121,7 +150,7 @@ def class_view():
                             in db_m.get_students_such_that(req_statuses)
                             if student_info['grade'] in grades]
 
-    export_student_list(list_of_students)
+    # export_student_list(list_of_students)
 
     return render_template("class.html", students=list_of_students, boxes = dict( get_req_args ))
 
@@ -189,20 +218,24 @@ def student_view(OSIS=0):
 
             list_of_courses[i] = "None" if courses == {} else format_output(courses)
 
-            need_to_take = db_m.get_req_course_track(OSIS, i)[1]
+            data = db_m.get_req_course_track(OSIS, i)
+            track_names = data[0]
+            taken = [len(courses) for courses in data[1]]
+            need_to_take = data[2]
+
+            for j in range(len( taken )):
+                if taken[j] != 0:
+                    track_names[j] += " (Started)"
+
             for j in need_to_take:
                 if j == []: # fufilled
                     next_term_suggestions[i] = "Fufilled"
 
             if next_term_suggestions[i] == "":
-                suggestions = ""
-                for j in need_to_take:
-                    for k in j[0]:
-                        suggestions += str( k ) + ', '
-
-                suggestions = suggestions[:-2]
-
-                next_term_suggestions[i] = suggestions
+                next_term_suggestions[i] = []
+                for j in range(len(track_names)):
+                    next_term_suggestions[i].append((track_names[j],
+                        need_to_take[j][0]))
 
     return render_template("student.html", profile=student_info,
             courses=list_of_courses, suggestions = next_term_suggestions)
@@ -255,15 +288,43 @@ def upload():
             print "Removing file to save storage..."
             os.remove(path_to_uploaded)
         else:
-            print "File extension not allowed!", str(f)
+            return render_template('upload.html', redir = 'upload', err = "File extension not allowed! " + f.filename);
 
         return redirect(url_for("class_view"))
     else:
-        return render_template("upload.html")
+        return render_template("upload.html", redir = 'upload')
 
-# @app.route('/export_filtered', methods = ['POST'])
-# @app.route('/export_filtered/', methods = ['POST'])
-def export_student_list(student_list):
+@app.route('/update_reqs', methods = ['GET', 'POST'])
+@app.route('/update_reqs/', methods = ['GET', 'POST'])
+def update_graduation_requirements():
+    """
+    update_graduation_requirements: takes a .json file and sanitizes/checks it
+    and updates the backend JSON file
+
+    Returns:
+        The upload page, or a finished page
+    """
+    if request.method == 'POST':
+        f = request.files['file']
+        if f:
+            secure_name = secure_filename(f.filename)
+            path_to_uploaded = os.path.join(app.config['UPLOAD_FOLDER'],
+                    secure_name)
+            print "Saving file to: ", path_to_uploaded
+            f.save(os.path.join(path_to_uploaded))
+            if check_json(path_to_uploaded):
+                os.rename(path_to_uploaded, 'static/reqs.json')
+                db_m.reqs = json.loads(open('static/reqs.json').read())['grad_requirements']
+                return redirect(url_for("class_view"))
+            else:
+                return render_template('upload.html', redir = 'update_reqs', err = "Invalid JSON file!")
+
+    else:
+        return render_template('upload.html', redir = 'update_reqs')
+
+@app.route('/export_filtered')
+@app.route('/export_filtered/')
+def export_student_list():
     """
     Generates an excel file given a student_list (formated the same way as
     list_of_students from the class view route.
@@ -285,8 +346,9 @@ def export_student_list(student_list):
     Returns:
         An Excel file for the user to download
     """
+    global list_of_students
     data = []
-    for student in student_list:
+    for student in list_of_students:
         row = {
                 "OSIS" : student['osis'],
                 "OFF. CLASS" : student['offcl'],
@@ -302,26 +364,18 @@ def export_student_list(student_list):
     if allowed_filename(filename):
         secure_name = secure_filename(filename)
         path_to_filtered = os.path.join(app.config['DOWNLOAD_FOLDER'], secure_name)
+        if os.path.isfile(path_to_filtered):
+            os.remove(path_to_filtered)
         df.to_excel(path_to_filtered, index=False)
-        # return send_from_directory(directory=app.config['DOWNLOAD_FOLDER'],
-        #        filename=secure_name)
+        return send_from_directory(directory=app.config['DOWNLOAD_FOLDER'],
+               filename=secure_name, as_attachment=True,
+               attachment_filename=secure_name)
     else:
         return None
 
 
 #}}}
 #{{{ AJAX Calls
-@app.route('/update_reqs', methods = ['GET', 'POST'])
-@app.route('/update_reqs/', methods = ['GET', 'POST'])
-def update_graduation_requirements():
-    """
-    update_graduation_requirements: AJAX call to server that updates the
-    graduation requirements
-
-    Returns:
-        JSON status for success or failure
-    """
-    return ""
 
 @app.route('/update_db/<int:grad_year>', methods = ['GET', 'POST'])
 @app.route('/update_db/<int:grad_year>/', methods = ['GET', 'POST'])
@@ -354,5 +408,6 @@ def update_student(OSIS):
 #}}}
 
 if __name__ == "__main__":
+    app.secret_key = "Ryuu-ga, Wa-ga-te-ki-wo, Ku-ra-u. #genji"
     app.run(host = "0.0.0.0", port = 8000, debug = True)
 
