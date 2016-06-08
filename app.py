@@ -197,20 +197,24 @@ def student_view(OSIS=0):
 
             list_of_courses[i] = "None" if courses == {} else format_output(courses)
 
-            need_to_take = db_m.get_req_course_track(OSIS, i)[1]
+            data = db_m.get_req_course_track(OSIS, i)
+            track_names = data[0]
+            taken = [len(courses) for courses in data[1]]
+            need_to_take = data[2]
+
+            for j in range(len( taken )):
+                if taken[j] != 0:
+                    track_names[j] += " (Started)"
+
             for j in need_to_take:
                 if j == []: # fufilled
                     next_term_suggestions[i] = "Fufilled"
 
             if next_term_suggestions[i] == "":
-                suggestions = ""
-                for j in need_to_take:
-                    for k in j[0]:
-                        suggestions += str( k ) + ', '
-
-                suggestions = suggestions[:-2]
-
-                next_term_suggestions[i] = suggestions
+                next_term_suggestions[i] = []
+                for j in range(len(track_names)):
+                    next_term_suggestions[i].append((track_names[j],
+                        need_to_take[j][0]))
 
     return render_template("student.html", profile=student_info,
             courses=list_of_courses, suggestions = next_term_suggestions)

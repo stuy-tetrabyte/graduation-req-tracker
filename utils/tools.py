@@ -36,6 +36,10 @@ def check_json(file_path):
             return False
 
         for option in req["options"]:
+            if "track-name" not in option:
+                print "track-name not in option"
+                return False
+
             if "course-code" not in option:
                 print "course-code not in option"
                 return False
