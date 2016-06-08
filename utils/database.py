@@ -180,7 +180,7 @@ class DBManager:
                                 or mark == 'C'
                                 or mark == 'CR'
                                 or mark in ['A', 'B', 'C', 'D']
-                                or int(mark) >= 65] # . . . passing filter
+                                or (mark.isdigit() and int(mark) >= 65)] # . . . passing filter
 
         req_tracks = self.reqs[req_num]['options']
         # according to client we want to show all options, not just the track
