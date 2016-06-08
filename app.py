@@ -101,7 +101,6 @@ def login():
 
 @app.route('/logout')
 @app.route('/logout/')
-@redirect_if_logged_in
 def logout():
     session.clear()
     return redirect(url_for('login'))
@@ -399,5 +398,6 @@ def update_student(OSIS):
 #}}}
 
 if __name__ == "__main__":
-    app.run(host = "0.0.0.0", port = 7000, debug = True)
+    app.secret_key = "yuu jin no keku fure!!! #genji"
+    app.run(host = "0.0.0.0", port = 8000, debug = True)
 
