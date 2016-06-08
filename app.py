@@ -73,7 +73,7 @@ def home():
     Returns:
         the home page
     """
-    return render_template("master.html")
+    return redirect(url_for("login"))
 
 @app.route('/login', methods=["GET", "POST"])
 @app.route('/login/', methods=["GET", "POST"])
