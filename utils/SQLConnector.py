@@ -9,7 +9,7 @@ class Connection:
         """
         Sets up the MySQL connection and cursor variable
         """
-        self.conn = mysql.connector.connect(user='root', password='test', database=db_name)
+        self.conn = mysql.connector.connect(user='tetrabyte', password='test', database=db_name)
         self.cursor = self.conn.cursor(buffered=True)
 
     def execute(self, *args):
