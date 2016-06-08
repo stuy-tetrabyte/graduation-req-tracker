@@ -92,12 +92,12 @@ def login():
         URL = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="
         api_call = urllib2.urlopen(URL + token)
         data = json.loads(api_call.read())
-        if str(data['email_verified']) != 'true':
-            session.clear()
-            return render_template("login.html")
-        else:
+        if str(data['email_verified']) == 'true' and str(data['email']).endswith("@stuy.edu"):
             session['logged_in'] = True
             return redirect(url_for('class_view'))
+        else:
+            session.clear()
+            return render_template("login.html")
 
 @app.route('/logout')
 @app.route('/logout/')

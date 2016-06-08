@@ -10,6 +10,10 @@
 <link type='text/css' rel='stylesheet' href="{{ url_for('static', filename='main.css') }}"></link>
 <script>
 function onSignIn(googleUser) {
+    // Sign out once before you sign in
+
+    signOut();
+
     // Useful data for your client-side scripts:
     var profile = googleUser.getBasicProfile();
 
@@ -19,20 +23,17 @@ function onSignIn(googleUser) {
 };
 
 function signOut() {
+    gapi.load('auth2', function() {
+        gapi.auth2.init();
+    });
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
         console.log('User signed out.');
     });
     window.location.href = "/logout";
 }
-
-function onLoad() {
-    gapi.load('auth2', function() {
-        gapi.auth2.init();
-    });
-}
 </script>
-<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 {% endblock %}
 </head>
 
