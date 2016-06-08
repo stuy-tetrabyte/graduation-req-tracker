@@ -2,36 +2,57 @@
 
 <html>
 
-<head>
+  <head>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="1014092983546-o3cjr03f51polobi3h0rd1fv2e9crfou.apps.googleusercontent.com">
     {% block head %}
     <title>On Track - {% block title %}{% endblock %}</title>
     <link type='text/css' rel='stylesheet' href="{{ url_for('static', filename='main.css') }}"></link>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script>
+      function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+        window.location.href = "/login?token=" + id_token;
+      };
+
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.');
+        });
+        window.location.href = "/logout"
+      }
+    </script>
     {% endblock %}
-</head>
+  </head>
 
-<body>
+  <body>
 
-<div class="header">
-    <h1>On Track</h1>
+    <div class="header">
+      <h1>On Track</h1>
 
-    <div class="navbar">
+      <div class="navbar">
         <ul>
-            <li><a href="/class">Class View</a></li>
-            <li><a href="/data">Database</a></li>
-            <li><a href="/login">Logout</a></li>
+          <li><a href="/class"> Class View </a></li>
+          <li><a href="/data"> Database </a></li>
+          <li><a href="#" onclick="signOut();"> Logout </a></li>
         </ul>
+      </div>
     </div>
-</div>
 
-<div id="content">
-    {% block content %}
-    {% endblock %}
-</div>
+    <div id="content">
+      {% block content %}
+      {% endblock %}
+    </div>
 
-<div class="footer">
-    <p>Tetrabyte Information Systems, 2016</p>
-</div>
+    <div class="footer">
+      <p>Tetrabyte Information Systems, 2016</p>
+    </div>
 
-</body>
+  </body>
 
 </html>

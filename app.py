@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, session, redirect, url_for, s
 from functools import wraps
 import sys, os
 import pandas
-import json
+import urllib, urllib2, json
 sys.path.insert(0, './utils/')
 
 # project imports
@@ -84,11 +84,31 @@ def login():
     Returns:
         the login page
     """
-    return render_template("login.html")
+    token = request.args.get("token")
+    if token is None:
+        return render_template("login.html")
+    else:
+        # Query Google Token Authenticator
+        URL = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="
+        api_call = urllib2.urlopen(URL + token)
+        data = json.loads(api_call.read())
+        if str(data['email_verified']) != 'true':
+            session.clear()
+            return render_template("login.html")
+        else:
+            session['logged_in'] = True
+            return redirect(url_for('class_view'))
+
+@app.route('/logout')
+@app.route('/logout/')
+@redirect_if_logged_in
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
 
 @app.route('/class', methods = ['GET'])
 @app.route('/class/', methods = ['GET'])
-# @login_required
+@login_required
 def class_view():
     """
     class_view: returns the student data for all students
@@ -102,7 +122,7 @@ def class_view():
     """
     grades = []
     req_statuses = [[], [], [], [], [], [], []]
-    
+
     get_req_args = request.args
 
     if not get_req_args:
