@@ -106,7 +106,10 @@ def class_view():
     
     get_req_args = request.args
 
+    global list_of_students
+
     if not get_req_args:
+        list_of_students = db_m.get_all_students_info()
         return render_template('class.html', students = db_m.get_all_students_info())
 
     logic = get_req_args.get( 'logic' )
@@ -124,7 +127,6 @@ def class_view():
         if get_req_args.get( str( req ) + '-failed' ) == 'on':
             req_statuses[req].append(2)
 
-    global list_of_students
     list_of_students = [student_info for student_info
                             in db_m.get_students_such_that(req_statuses)
                             if student_info['grade'] in grades]

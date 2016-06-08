@@ -31,7 +31,7 @@
         <h3>Select Requirement Status:</h3>
         <input type="radio" {{ "checked='checked'" if not boxes or boxes['logic']
         == ['and'] }} name="logic" value="and">AND
-        <input type="radio" {{ "checked='checked'" if boxes['logic'] == ['or'] }} name="logic" value="or">OR
+        <input type="radio" {{ "checked='checked'" if boxes and boxes['logic'] == ['or'] }} name="logic" value="or">OR
         <table id="toggle-filters">
             <tr>
                 <th><input id="toggle-all" type="checkbox" onClick="toggleBoxes(this)" /></th>
