@@ -22,6 +22,6 @@ wget http://repo.continuum.io/archive/Anaconda2-4.0.0-Linux-x86_64.sh
 bash Anaconda2-4.0.0-Linux-x86_64.sh
 
 source ~/.bashrc
-conda install -c anaconda mysql-connector-python pandas
+conda install -c anaconda --file=requirements.txt
 cd utils
 python database_setup.py -c

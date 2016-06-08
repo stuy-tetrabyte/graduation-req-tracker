@@ -4,8 +4,12 @@
 
 {% block content %}
 <div align="center">
+    {% if redir == 'upload' %}
     <h2> Upload an Excel File: </h2>
-    <form action="/upload/" method="POST" enctype="multipart/form-data">
+    {% elif redir == 'update_reqs' %}
+    <h2> Upload a new Graduation Requirement JSON File: </h2>
+    {% endif %}
+    <form action="/{{ redir }}/" method="POST" enctype="multipart/form-data">
         <input type="file" name="file" />
         <br>
         <input type="submit"/>

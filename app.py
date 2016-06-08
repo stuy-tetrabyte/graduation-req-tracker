@@ -233,6 +233,8 @@ def allowed_filename(filename):
     """
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
+def is_json_file(filename)
+
 @app.route('/upload', methods=["GET", "POST"])
 @app.route('/upload/', methods=["GET", "POST"])
 # @login_required
@@ -264,7 +266,23 @@ def upload():
 
         return redirect(url_for("class_view"))
     else:
-        return render_template("upload.html")
+        return render_template("upload.html", redir = 'upload')
+
+@app.route('/update_reqs', methods = ['GET', 'POST'])
+@app.route('/update_reqs/', methods = ['GET', 'POST'])
+def update_graduation_requirements():
+    """
+    update_graduation_requirements: takes a .json file and sanitizes/checks it
+    and updates the backend JSON file
+
+    Returns:
+        The upload page, or a finished page
+    """
+    if request.method == 'POST':
+        f = request.files['file']
+        if f and 
+    else:
+        return render_template('upload.html', redir = 'update_reqs')
 
 @app.route('/update_reqs', methods = ['GET', 'POST'])
 @app.route('/update_reqs/', methods = ['GET', 'POST'])
@@ -323,17 +341,6 @@ def export_student_list(student_list):
 
 #}}}
 #{{{ AJAX Calls
-@app.route('/update_reqs', methods = ['GET', 'POST'])
-@app.route('/update_reqs/', methods = ['GET', 'POST'])
-def update_graduation_requirements():
-    """
-    update_graduation_requirements: AJAX call to server that updates the
-    graduation requirements
-
-    Returns:
-        JSON status for success or failure
-    """
-    return ""
 
 @app.route('/update_db/<int:grad_year>', methods = ['GET', 'POST'])
 @app.route('/update_db/<int:grad_year>/', methods = ['GET', 'POST'])
