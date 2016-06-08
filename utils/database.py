@@ -21,7 +21,7 @@ class DBManager:
         self.student_table = student_table_name
         script_path = os.path.realpath(__file__)
         script_loc = os.path.dirname(script_path)
-        self.reqs = json.loads(open(script_loc + '/../data/reqs.json', 'r').read())['grad_requirements']
+        self.reqs = json.loads(open(script_loc + '/../static/reqs.json', 'r').read())['grad_requirements']
 
     
 
@@ -139,14 +139,21 @@ class DBManager:
             req_num (int) : req to check (nums in constants.py)
 
         Returns:
-            a tuple of nested lists where the first list represents the courses
-            already taken while the second list includes list suggestions
-            for future courses. Inside each list, each corresponding
-            index represents a list of course codes. which the student has
-            taken (will need to take)
+            a tuple of length 2 where the first is metadata and the second is
+            data. The metadata contains the names of the tracks, and the data is
+            in the format of nested lists where the first list
+            represents the courses already taken while the second list includes
+            list suggestions for future courses. Inside each list, each
+            corresponding index represents a list of course codes. which the
+            student has taken (will need to take)
 
             Sample format:
-            [
+            (
+                [ # metadata
+                    "name of track 1",
+                    "name of track 2",
+                    ...
+                ],
                 [ # courses passed
                     [<courses passed in track 1],
                     [<courses passed in track 2],
@@ -155,17 +162,17 @@ class DBManager:
                 [ # courses need to take in the future
                     [
                         [<next sem courses for track 1>],
-                        [<2 next sem courses for track 2>],
+                        [<2 next sem courses for track 1>],
                         . . .
                     ],
                     [
-                        [<next sem courses for track 1>],
+                        [<next sem courses for track 2>],
                         [<2 next sem courses for track 2>],
                         . . .
                     ],
                     . . .
                 ]
-            ]
+            )
         """
         student_courses = [course for (course, name, mark)
                             in self.get_relevant_courses(OSIS, req_num)
@@ -173,17 +180,19 @@ class DBManager:
                                 or mark == 'C'
                                 or mark == 'CR'
                                 or mark in ['A', 'B', 'C', 'D']
-                                or int(mark) >= 65] # . . . passing filter
+                                or (mark.isdigit() and int(mark) >= 65)] # . . . passing filter
 
         req_tracks = self.reqs[req_num]['options']
         # according to client we want to show all options, not just the track
         # the current student is on (which is already covered by
         # 'get_relevant_courses')
 
+        tracks = []
         passed_courses = []
         need_to_take = []
 
         for option in req_tracks:
+            tracks.append(option['track-name'])
             student_courses_copy = student_courses[:] # make a copy
             taken = []
             still_need = []
@@ -202,32 +211,7 @@ class DBManager:
             passed_courses.append(taken)
             need_to_take.append(still_need)
 
-        return [passed_courses, need_to_take]
-
-    def get_next_term_course_suggestions(self, OSIS):
-        """
-        get_next_term_course_suggestions: returns the courses one can take next
-        term to fufill graduation requirements
-
-        Args:
-            OSIS (string): studentID of student in question
-
-        Returns:
-            a nested list of course codes, at the top level, each index
-            correspondes to a graduation requirement as specified in
-            data/reqs.json. Within each index, it should contain an empty list if
-            the requirement has already been fufilled, or a list of tracks to
-            fufill the requirement (this is subject to change, may not be the best
-            idea) (may also require more than a couple of helper functions)
-
-            Example
-            [
-                [["UAS11"], ["UDS11Q8", "UDS11Q8", ...], ...], # music
-                [], # art
-                ...
-            ]
-        """
-        pass
+        return [tracks, passed_courses, need_to_take]
 
     def get_all_students_failed_req(self, req_num):
         """
@@ -389,9 +373,18 @@ class DBManager:
         else:
             return []
 
-    def switch_use_and():
+    def change_db_logic(self,change_to):
+        """
+        toggle db logic between 'AND' and 'OR'
+        Args:
+        change_to : string - should be either "and" or "or" and sets the db logic
+        """
         global use_and
-        use_and = not use_and
+        if (change_to == 'and'):
+            use_and = True
+        else:
+            #must be or
+            use_and = False
 
 if __name__ == '__main__':
     db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME,

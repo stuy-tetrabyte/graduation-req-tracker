@@ -7,7 +7,7 @@ services:
     - "mysql"
 
 install:
-    - "pip install -r requirements.txt"
+    - "pip install -r req-travis.txt"
 
 before_install:
     - "sudo apt-get update"
