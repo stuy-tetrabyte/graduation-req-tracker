@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, session, redirect, url_for, s
 from functools import wraps
 import sys, os
 import pandas
+import json
 sys.path.insert(0, './utils/')
 
 # project imports
@@ -233,8 +234,6 @@ def allowed_filename(filename):
     """
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
-def is_json_file(filename)
-
 @app.route('/upload', methods=["GET", "POST"])
 @app.route('/upload/', methods=["GET", "POST"])
 # @login_required
@@ -262,7 +261,7 @@ def upload():
             print "Removing file to save storage..."
             os.remove(path_to_uploaded)
         else:
-            print "File extension not allowed!", str(f)
+            return render_template('upload.html', redir = 'upload', err = "File extension not allowed! " + f.filename);
 
         return redirect(url_for("class_view"))
     else:
@@ -280,14 +279,21 @@ def update_graduation_requirements():
     """
     if request.method == 'POST':
         f = request.files['file']
-        if f and 
+        if f:
+            secure_name = secure_filename(f.filename)
+            path_to_uploaded = os.path.join(app.config['UPLOAD_FOLDER'],
+                    secure_name)
+            print "Saving file to: ", path_to_uploaded
+            f.save(os.path.join(path_to_uploaded))
+            if check_json(path_to_uploaded):
+                os.rename(path_to_uploaded, 'static/reqs.json')
+                db_m.reqs = json.loads(open('static/reqs.json').read())['grad_requirements']
+                return redirect(url_for("class_view"))
+            else:
+                return render_template('upload.html', redir = 'update_reqs', err = "Invalid JSON file!")
+
     else:
         return render_template('upload.html', redir = 'update_reqs')
-
-@app.route('/update_reqs', methods = ['GET', 'POST'])
-@app.route('/update_reqs/', methods = ['GET', 'POST'])
-def upload_reqs():
-    pass
 
 # @app.route('/export_filtered', methods = ['POST'])
 # @app.route('/export_filtered/', methods = ['POST'])

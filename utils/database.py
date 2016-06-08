@@ -21,7 +21,7 @@ class DBManager:
         self.student_table = student_table_name
         script_path = os.path.realpath(__file__)
         script_loc = os.path.dirname(script_path)
-        self.reqs = json.loads(open(script_loc + '/../data/reqs.json', 'r').read())['grad_requirements']
+        self.reqs = json.loads(open(script_loc + '/../static/reqs.json', 'r').read())['grad_requirements']
 
     
 
