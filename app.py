@@ -156,12 +156,13 @@ def class_view():
 
 @app.route('/student', methods = ['GET'])
 @app.route('/student/', methods = ['GET'])
+@login_required
 def student_search():
     return redirect(url_for('student_view', OSIS = request.args.get('osis')))
 
 @app.route('/student/<OSIS>')
 @app.route('/student/<OSIS>/')
-# @login_required
+# @login_required TODO
 def student_view(OSIS=0):
     """
     student_view: returns the page for single-student data. By default, if
@@ -296,6 +297,7 @@ def upload():
 
 @app.route('/update_reqs', methods = ['GET', 'POST'])
 @app.route('/update_reqs/', methods = ['GET', 'POST'])
+@login_required
 def update_graduation_requirements():
     """
     update_graduation_requirements: takes a .json file and sanitizes/checks it
@@ -324,6 +326,7 @@ def update_graduation_requirements():
 
 @app.route('/export_filtered')
 @app.route('/export_filtered/')
+@login_required
 def export_student_list():
     """
     Generates an excel file given a student_list (formated the same way as
