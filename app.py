@@ -109,6 +109,22 @@ def load_student_osis_dict():
 
         return True
 
+def get_osis(email):
+    """
+    get_osis: returns the osis number based on an email supplied, return None
+    otherwise
+
+    Args:
+        email (type): TODO
+    
+    Returns:
+        osis string of the student
+    """
+    global student_osis
+    if email in student_osis:
+        return student_osis[email]
+    else:
+        return None
 #}}}
 #{{{ Pages
 @app.route("/")
