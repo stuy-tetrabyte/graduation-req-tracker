@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, session, redirect, url_for, s
 from functools import wraps
 import sys, os
 import pandas
-import json
+import urllib, urllib2, json
 sys.path.insert(0, './utils/')
 
 # project imports
@@ -85,11 +85,30 @@ def login():
     Returns:
         the login page
     """
-    return render_template("login.html")
+    token = request.args.get("token")
+    if token is None:
+        return render_template("login.html")
+    else:
+        # Query Google Token Authenticator
+        URL = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="
+        api_call = urllib2.urlopen(URL + token)
+        data = json.loads(api_call.read())
+        if str(data['email_verified']) == 'true' and str(data['email']).endswith("@stuy.edu"):
+            session['logged_in'] = True
+            return redirect(url_for('class_view'))
+        else:
+            session.clear()
+            return render_template("login.html")
+
+@app.route('/logout')
+@app.route('/logout/')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
 
 @app.route('/class', methods = ['GET'])
 @app.route('/class/', methods = ['GET'])
-# @login_required
+@login_required
 def class_view():
     """
     class_view: returns the student data for all students
@@ -103,7 +122,7 @@ def class_view():
     """
     grades = []
     req_statuses = [[], [], [], [], [], [], []]
-    
+
     get_req_args = request.args
 
     global list_of_students
@@ -389,5 +408,6 @@ def update_student(OSIS):
 #}}}
 
 if __name__ == "__main__":
+    app.secret_key = "Ryuu-ga, Wa-ga-te-ki-wo, Ku-ra-u. #genji"
     app.run(host = "0.0.0.0", port = 8000, debug = True)
 
