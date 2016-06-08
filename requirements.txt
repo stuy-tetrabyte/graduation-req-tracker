@@ -1,5 +1,0 @@
-flask
-xlrd
-pandas
-mysql-connector-python
-openpyxl
