@@ -19,12 +19,110 @@
     <col width="40%">
     <col width="40%">
     <tr><td></td><th>Courses Taken</th><th>Next Term Suggestions</th></tr>
-    <tr><th>Music</th><td>{{ courses[0] }}</td><td>{{ suggestions[0] }}</td></tr>
-    <tr><th>Art</th><td>{{ courses[1] }}</td><td>{{ suggestions[1] }}</td></tr>
-    <tr><th>Intro CS 1</th><td>{{ courses[2] }}</td><td>{{ suggestions[2] }}</td></tr>
-    <tr><th>Drafting</th><td>{{ courses[3] }}</td><td>{{ suggestions[3] }}</td></tr>
-    <tr><th>5-Tech</th><td>{{ courses[4] }}</td><td>{{ suggestions[4] }}</td></tr>
-    <tr><th>10-Tech</th><td>{{ courses[5] }}</td><td>{{ suggestions[5] }}</td></tr>
-    <tr><th>Health</th><td>{{ courses[6] }}</td><td>{{ suggestions[6] }}</td></tr>
+    <tr><th>Music</th><td>{{ courses[0] }}</td><td>
+            {% if suggestions[0] == 'Fufilled' %}
+            <b>{{ suggestions[0] }}</b>
+            {% else %}
+                {% for blah in suggestions[0] %}
+                    <b>{{ blah[0] }}</b>
+                    <br>
+                    <ul>
+                        {% for course in blah[1] %}
+                            <li>{{ course }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            {% endif %}
+    </td></tr>
+    <tr><th>Art</th><td>{{ courses[1] }}</td><td>
+            {% if suggestions[1] == 'Fufilled' %}
+            <b>{{ suggestions[1] }}</b>
+            {% else %}
+                {% for blah in suggestions[1] %}
+                    <b>{{ blah[0] }}</b>
+                    <br>
+                    <ul>
+                        {% for course in blah[1] %}
+                            <li>{{ course }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            {% endif %}
+    </td></tr>
+    <tr><th>Intro CS 1</th><td>{{ courses[2] }}</td><td>
+            {% if suggestions[2] == 'Fufilled' %}
+            <b>{{ suggestions[2] }}</b>
+            {% else %}
+                {% for blah in suggestions[2] %}
+                    <b>{{ blah[0] }}</b>
+                    <br>
+                    <ul>
+                        {% for course in blah[1] %}
+                            <li>{{ course }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            {% endif %}
+    </td></tr>
+    <tr><th>Drafting</th><td>{{ courses[3] }}</td><td>
+            {% if suggestions[3] == 'Fufilled' %}
+            <b>{{ suggestions[3] }}</b>
+            {% else %}
+                {% for blah in suggestions[3] %}
+                    <b>{{ blah[0] }}</b>
+                    <br>
+                    <ul>
+                        {% for course in blah[1] %}
+                            <li>{{ course }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            {% endif %}
+    </td></tr>
+    <tr><th>5-Tech</th><td>{{ courses[4] }}</td><td>
+            {% if suggestions[4] == 'Fufilled' %}
+            <b>{{ suggestions[4] }}</b>
+            {% else %}
+                {% for blah in suggestions[4] %}
+                    <b>{{ blah[0] }}</b>
+                    <br>
+                    <ul>
+                        {% for course in blah[1] %}
+                            <li>{{ course }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            {% endif %}
+    </td></tr>
+    <tr><th>10-Tech</th><td>{{ courses[5] }}</td><td>
+            {% if suggestions[5] == 'Fufilled' %}
+            <b>{{ suggestions[5] }}</b>
+            {% else %}
+                {% for blah in suggestions[5] %}
+                    <b>{{ blah[0] }}</b>
+                    <br>
+                    <ul>
+                        {% for course in blah[1] %}
+                            <li>{{ course }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            {% endif %}
+    </td></tr>
+    <tr><th>Health</th><td>{{ courses[6] }}</td><td>
+            {% if suggestions[6] == 'Fufilled' %}
+            <b>{{ suggestions[6] }}</b>
+            {% else %}
+                {% for blah in suggestions[6] %}
+                    <b>{{ blah[0] }}</b>
+                    <br>
+                    <ul>
+                        {% for course in blah[1] %}
+                            <li>{{ course }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            {% endif %}
+    </td></tr>
 </table>
 {% endblock %}
