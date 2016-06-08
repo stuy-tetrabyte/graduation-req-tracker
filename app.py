@@ -242,7 +242,7 @@ def student_view(OSIS=0):
 
 @app.route('/data')
 @app.route('/data/')
-# @login_required
+@login_required
 def manage_data():
     """
     manage_data: returns the page for data management
@@ -263,7 +263,7 @@ def allowed_filename(filename):
 
 @app.route('/upload', methods=["GET", "POST"])
 @app.route('/upload/', methods=["GET", "POST"])
-# @login_required
+@login_required
 def upload():
     """
     upload: takes a .xls or .xlsx file and models the database.
