@@ -45,6 +45,12 @@ print "Generating files in: ", app.config['DOWNLOAD_FOLDER']
 
 db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME, STUDENT_TABLE_NAME)
 list_of_students = []
+
+# Load in list of administrators
+ADMIN_FILE = open(app_dir + '/static/auth_users.csv', 'r')
+ADMINS = [ str(s.strip()) for s in f.readlines() if '@stuy.edu' in s ]
+ADMIN_FILE.close()
+
 #}}}
 #{{{ Decorator Functions
 def login_required(f):
@@ -61,6 +67,14 @@ def redirect_if_logged_in(f):
     def decorated_function(*args, **kwargs):
         if 'logged_in' in session and session['logged_in']:
             return redirect(url_for("class_view"))
+        return f(*args, **kwargs)
+    return decorated_function
+
+def redirect_if_student(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'logged_in' in session and session['logged_in'] and not session['admin']:
+            return redirect(url_for("student_view"))
         return f(*args, **kwargs)
     return decorated_function
 #}}}
@@ -95,6 +109,10 @@ def login():
         data = json.loads(api_call.read())
         if str(data['email_verified']) == 'true' and str(data['email']).endswith("@stuy.edu"):
             session['logged_in'] = True
+            if str(data['email']) in ADMINS:
+                session['admin'] = True
+            else:
+                session['admin'] = False
             return redirect(url_for('class_view'))
         else:
             session.clear()
@@ -109,6 +127,7 @@ def logout():
 @app.route('/class', methods = ['GET'])
 @app.route('/class/', methods = ['GET'])
 @login_required
+@redirect_if_student
 def class_view():
     """
     class_view: returns the student data for all students
@@ -157,12 +176,13 @@ def class_view():
 @app.route('/student', methods = ['GET'])
 @app.route('/student/', methods = ['GET'])
 @login_required
+@redirect_if_student
 def student_search():
     return redirect(url_for('student_view', OSIS = request.args.get('osis')))
 
 @app.route('/student/<OSIS>')
 @app.route('/student/<OSIS>/')
-# @login_required TODO
+@login_required
 def student_view(OSIS=0):
     """
     student_view: returns the page for single-student data. By default, if
@@ -244,6 +264,7 @@ def student_view(OSIS=0):
 @app.route('/data')
 @app.route('/data/')
 @login_required
+@redirect_if_student
 def manage_data():
     """
     manage_data: returns the page for data management
@@ -265,6 +286,7 @@ def allowed_filename(filename):
 @app.route('/upload', methods=["GET", "POST"])
 @app.route('/upload/', methods=["GET", "POST"])
 @login_required
+@redirect_if_student
 def upload():
     """
     upload: takes a .xls or .xlsx file and models the database.
@@ -298,6 +320,7 @@ def upload():
 @app.route('/update_reqs', methods = ['GET', 'POST'])
 @app.route('/update_reqs/', methods = ['GET', 'POST'])
 @login_required
+@redirect_if_student
 def update_graduation_requirements():
     """
     update_graduation_requirements: takes a .json file and sanitizes/checks it
@@ -327,6 +350,7 @@ def update_graduation_requirements():
 @app.route('/export_filtered')
 @app.route('/export_filtered/')
 @login_required
+@redirect_if_student
 def export_student_list():
     """
     Generates an excel file given a student_list (formated the same way as
