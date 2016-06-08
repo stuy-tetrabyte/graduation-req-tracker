@@ -44,6 +44,7 @@ print "Saving files to: ", app.config['UPLOAD_FOLDER']
 print "Generating files in: ", app.config['DOWNLOAD_FOLDER']
 
 db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME, STUDENT_TABLE_NAME)
+list_of_students = []
 #}}}
 #{{{ Decorator Functions
 def login_required(f):
@@ -123,11 +124,12 @@ def class_view():
         if get_req_args.get( str( req ) + '-failed' ) == 'on':
             req_statuses[req].append(2)
 
+    global list_of_students
     list_of_students = [student_info for student_info
                             in db_m.get_students_such_that(req_statuses)
                             if student_info['grade'] in grades]
 
-    export_student_list(list_of_students)
+    # export_student_list(list_of_students)
 
     return render_template("class.html", students=list_of_students, boxes = dict( get_req_args ))
 
@@ -295,9 +297,9 @@ def update_graduation_requirements():
     else:
         return render_template('upload.html', redir = 'update_reqs')
 
-# @app.route('/export_filtered', methods = ['POST'])
-# @app.route('/export_filtered/', methods = ['POST'])
-def export_student_list(student_list):
+@app.route('/export_filtered')
+@app.route('/export_filtered/')
+def export_student_list():
     """
     Generates an excel file given a student_list (formated the same way as
     list_of_students from the class view route.
@@ -319,8 +321,9 @@ def export_student_list(student_list):
     Returns:
         An Excel file for the user to download
     """
+    global list_of_students
     data = []
-    for student in student_list:
+    for student in list_of_students:
         row = {
                 "OSIS" : student['osis'],
                 "OFF. CLASS" : student['offcl'],
@@ -339,8 +342,9 @@ def export_student_list(student_list):
         if os.path.isfile(path_to_filtered):
             os.remove(path_to_filtered)
         df.to_excel(path_to_filtered, index=False)
-        # return send_from_directory(directory=app.config['DOWNLOAD_FOLDER'],
-        #        filename=secure_name)
+        return send_from_directory(directory=app.config['DOWNLOAD_FOLDER'],
+               filename=secure_name, as_attachment=True,
+               attachment_filename=secure_name)
     else:
         return None
 

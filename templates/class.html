@@ -104,8 +104,15 @@
         </table>
 
         <button class="submit" type="submit" name="action">Update</button>
+        <button style="width:100%;" id='export_list'>Export</button>
     </form>
 </div>
+
+<script>
+document.getElementById('export_list').addEventListener('click', function(e) {
+    window.open('/export_filtered/', '_blank');
+});
+</script>
 
 <div id="results">
     <table>
