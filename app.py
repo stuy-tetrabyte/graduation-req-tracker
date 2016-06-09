@@ -35,6 +35,7 @@ app_dir = os.path.dirname(app_path)
 
 UPLOAD_FOLDER = app_dir + '/uploaded_files/'
 DOWNLOAD_FOLDER = app_dir + '/downloadables/'
+STUDENT_LOOKUP = app_dir + '/static/users_stuyedu.csv'
 ALLOWED_EXTENSIONS = set(['xlsx', 'xls'])
 CSV_EXTENSION = 'csv'
 JSON_EXTENTION = 'json'
@@ -50,7 +51,7 @@ list_of_students = []
 
 # Load in list of administrators
 ADMIN_FILE = open(app_dir + '/static/auth_users.csv', 'r')
-ADMINS = [ str(s.strip()) for s in f.readlines() if '@stuy.edu' in s ]
+ADMINS = [ str(s.strip()) for s in ADMIN_FILE.readlines() if '@stuy.edu' in s ]
 ADMIN_FILE.close()
 
 student_osis = {}
@@ -86,7 +87,7 @@ def load_student_osis_dict():
     """
     load_student_osis_dict: loads a csv file at static/users_stuyedu.csv into
     the student_osis dictionary
-    
+
     Returns:
         True upon success, False otherwise
     """
@@ -94,14 +95,14 @@ def load_student_osis_dict():
     student_osis = {}
 
     try:
-        reader = csv.reader(open('../static/users_stuyedu.csv', 'rb'))
-    except IOException:
+        reader = csv.reader(open(STUDENT_LOOKUP, 'rb'))
+    except:
         return False
 
     for i, rows in enumerate(reader):
         if i == 0:
             continue
-        
+
         k = rows[0]
         v = rows[1]
 
@@ -116,7 +117,7 @@ def get_osis(email):
 
     Args:
         email (type): TODO
-    
+
     Returns:
         osis string of the student
     """
@@ -147,29 +148,43 @@ def login():
     Returns:
         the login page
     """
-    token = request.args.get("token")
-    if token is None:
+    token = request.args.get("t1")
+    access = request.args.get("t2")
+    if token is None or access is None:
         return render_template("login.html")
     else:
         # Query Google Token Authenticator
         URL = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="
         api_call = urllib2.urlopen(URL + token)
         data = json.loads(api_call.read())
-        if str(data['email_verified']) == 'true' and str(data['email']).endswith("@stuy.edu"):
+        print data
+        if str(data['email_verified']) == 'true' and str(data['hd']) == 'stuy.edu':
             session['logged_in'] = True
+            session['token'] = access
             if str(data['email']) in ADMINS:
                 session['admin'] = True
             else:
                 session['admin'] = False
+                session['email'] = str(data['email'])
+            print session
             return redirect(url_for('class_view'))
         else:
             session.clear()
+            print "FAILED LOGIN"
             return render_template("login.html")
 
 @app.route('/logout')
 @app.route('/logout/')
 def logout():
+    try:
+        URL = 'https://accounts.google.com/o/oauth2/revoke?token='
+        api_call = urllib2.urlopen(URL + session['token'])
+        if api_call.getcode() != 200:
+            print "Token Revoking Failed with user: " + str(session)
+    except:
+        print "Token Revoking Failed with user: " + str(session)
     session.clear()
+    print "Should be {}: " + str(session)
     return redirect(url_for('login'))
 
 @app.route('/class', methods = ['GET'])
@@ -242,6 +257,9 @@ def student_view(OSIS=0):
     Returns:
         the page with the specified student's data
     """
+
+    if not session['admin'] and session['email']:
+        OSIS = get_osis(session['email'])
 
     student_info = db_m.get_student_info(OSIS)
     list_of_courses = [""] * 7
@@ -402,7 +420,7 @@ def update_student_osis():
     """
     update_student_osis: updates the current csv file based on an uploaded csv
     file
-    
+
     Returns:
         The upload page, or the finished page
     """
@@ -516,6 +534,8 @@ def update_student(OSIS):
 #}}}
 
 if __name__ == "__main__":
+    if not load_student_osis_dict():
+        print "LOADING STUDENTS FAILED"
     app.secret_key = "Ryuu-ga, Wa-ga-te-ki-wo, Ku-ra-u. #genji"
     app.run(host = "0.0.0.0", port = 8000, debug = True)
 
