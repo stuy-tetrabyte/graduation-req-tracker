@@ -9,9 +9,6 @@
 # Make sure all the software is up-to-date
 sudo apt-get update && sudo apt-get upgrade -y
 
-# Install Cython
-sudo apt-get install Cython
-
 # Install mysql-server
 sudo apt-get install mysql-server
 sudo mysql_secure_installation
