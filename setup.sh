@@ -21,7 +21,7 @@ echo "Creating MySQL user and database, please enter root password"
 mysql -u root -p -e "CREATE USER 'tetrabyte'@'localhost' IDENTIFIED BY 'test'; CREATE DATABASE coursedb; GRANT ALL ON coursedb.* TO tetrabyte"
 
 sudo pip install --upgrade pip
-sudo pip --no-cache-dir install -r req-travis.txt
+sudo pip --no-cache-dir install --upgrade -r req-travis.txt
 
 cd utils
 python database_setup.py -c
