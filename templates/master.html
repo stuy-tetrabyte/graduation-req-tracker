@@ -10,28 +10,21 @@
 <link type='text/css' rel='stylesheet' href="{{ url_for('static', filename='main.css') }}"></link>
 <script>
 function onSignIn(googleUser) {
-    // Sign out once before you sign in
-
-    signOut();
-
     // Useful data for your client-side scripts:
     var profile = googleUser.getBasicProfile();
 
     // The ID token you need to pass to your backend:
     var id_token = googleUser.getAuthResponse().id_token;
-    window.location.href = "/login?token=" + id_token;
+    var access_token = googleUser.getAuthResponse().access_token;
+
+    googleUser.disconnect();
+    window.location.href = "/login?t1=" + id_token + "&t2=" + access_token;
 };
 
-function signOut() {
-    gapi.load('auth2', function() {
-        gapi.auth2.init();
-    });
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-        console.log('User signed out.');
-    });
-    window.location.href = "/logout";
+function signInCallback() {
+    gapi.auth.signOut();
 }
+
 </script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 {% endblock %}
@@ -46,7 +39,7 @@ function signOut() {
         <ul>
             <li><a href="/class"> Class View </a></li>
             <li><a href="/data"> Database </a></li>
-            <li><a href="#" onclick="signOut();"> Logout </a></li>
+            <li><a href="/logout"> Logout </a></li>
         </ul>
     </div>
 </div>

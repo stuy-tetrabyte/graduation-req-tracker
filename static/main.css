@@ -144,6 +144,12 @@ a.icon:hover {
 	text-align: center;
 }
 
+#login .g-signin2 {
+	margin: 0px auto 0px;
+	display: inline-block;
+	text-align: center;
+}
+
 #login input {
 	width: 96%;
 }
