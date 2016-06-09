@@ -71,7 +71,7 @@ def check_student_csv(path):
     """
     try:
         reader = csv.reader(open(path, 'rb'))
-    except IOException:
+    except IOError:
         return False
 
     for i, rows in enumerate(reader):
@@ -79,3 +79,26 @@ def check_student_csv(path):
             if "OSIS" in rows and "EMAIL" in rows:
                 return True
         return False
+
+def check_admin_csv(path):
+    """
+    check_admin_csv: returns if thefile specified at the location is a valid
+    admin csv file
+
+    Args:
+        path (string): path to file
+    
+    Returns:
+        True or False depending if specified file is a valid admin csv
+    """
+    try:
+        f = open(path, 'r').readlines()
+    except IOError:
+        return False
+
+    for i in f:
+        sides = i.split('@')
+        if len(sides) != 2 or sides[1] != 'stuy.edu':
+            return False
+
+    return True

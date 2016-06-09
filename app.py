@@ -21,7 +21,7 @@ from werkzeug import secure_filename
 # Authors                                                                      #
 #  Yicheng Wang                                                                #
 #  Ariel Levy                                                                  #
-#  Ethan Cheng
+#  Ethan Cheng                                                                 #
 #  Loren Maggiore                                                              #
 #                                                                              #
 # Description                                                                  #
@@ -96,19 +96,21 @@ def load_student_osis_dict():
 
     try:
         reader = csv.reader(open(STUDENT_LOOKUP, 'rb'))
-    except:
+    except IOError:
         return False
 
     for i, rows in enumerate(reader):
         if i == 0:
+            val_index = rows.index("OSIS")
+            key_index = rows.index("EMAIL")
             continue
-
-        k = rows[0]
-        v = rows[1]
+        
+        k = rows[key_index]
+        v = rows[val_index]
 
         student_osis[k] = v
 
-        return True
+    return True
 
 def get_osis(email):
     """
@@ -126,6 +128,17 @@ def get_osis(email):
         return student_osis[email]
     else:
         return None
+
+def allowed_filename(filename):
+    """
+    Utility function to verify a file extension
+
+    Returns:
+        True if the filename is that of an Excel file
+    """
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+
 #}}}
 #{{{ Pages
 @app.route("/")
@@ -340,15 +353,6 @@ def manage_data():
     """
     return render_template("data.html")
 
-def allowed_filename(filename):
-    """
-    Utility function to verify a file extension
-
-    Returns:
-        True if the filename is that of an Excel file
-    """
-    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
 @app.route('/upload', methods=["GET", "POST"])
 @app.route('/upload/', methods=["GET", "POST"])
 @login_required
@@ -404,8 +408,8 @@ def update_graduation_requirements():
             print "Saving file to: ", path_to_uploaded
             f.save(os.path.join(path_to_uploaded))
             if check_json(path_to_uploaded):
-                os.rename(path_to_uploaded, 'static/reqs.json')
-                db_m.reqs = json.loads(open('static/reqs.json').read())['grad_requirements']
+                os.rename(path_to_uploaded, app_dir + 'static/reqs.json')
+                db_m.reqs = json.loads(open(app_dir + 'static/reqs.json').read())['grad_requirements']
                 return redirect(url_for("class_view"))
             else:
                 return render_template('upload.html', redir = 'update_reqs', err = "Invalid JSON file!")
@@ -433,9 +437,44 @@ def update_student_osis():
             print "Saving file to: ", path_to_uploaded
             f.save(os.path.join(path_to_uploaded))
             if check_student_csv(path_to_uploaded):
-                os.rename(path_to_uploaded, 'static/reqs.json')
+                os.rename(path_to_uploaded, app_dir + 'static/users_stuyedu.csv')
                 load_student_osis_dict()
-                return redirect(url_for("login"))
+                return redirect(url_for("class_view"))
+            else:
+                return render_template('upload.html', redir = 'login', err =
+                        'Invalid CSV file!')
+        else:
+            return render_template('upload.html', redir = 'login', err =
+                        'Invalid CSV file!')
+
+    else:
+        return render_template('upload.html', redir = 'login')
+
+@app.route('/update_admins', methods = ['GET', 'POST'])
+@app.route('/update_admins/', methods = ['GET', 'POST'])
+@login_required
+def update_admin_list():
+    """
+    update_admin_list: updates the list of admins based on an uploaded csv
+    
+    Returns:
+        The class view page, or the finished page
+    """
+    if request.method == 'POST':
+        f = request.files['file']
+        if f and '.' in filename and filename.rsplit('.', 1)[1] == CSV_EXTENSION:
+            secure_name = secure_filename(f.filename)
+            path_to_uploaded = os.path.join(app.config['UPLOAD_FOLDER'],
+                    secure_name)
+            print "Saving file to: ", path_to_uploaded
+            f.save(os.path.join(path_to_uploaded))
+            if check_admin_csv(path_to_uploaded):
+                os.rename(path_to_uploaded, app_dir + 'static/auth_users.csv')
+                ADMIN_FILE = open(app_dir + '/static/auth_users.csv', 'r')
+                global ADMINS
+                ADMINS = [ str(s.strip()) for s in ADMIN_FILE.readlines() if '@stuy.edu' in s ]
+                ADMIN_FILE.close()
+                return redirect(url_for("class_view"))
             else:
                 return render_template('upload.html', redir = 'login', err =
                         'Invalid CSV file!')
