@@ -14,14 +14,11 @@ sudo apt-get install mysql-server
 sudo mysql_secure_installation
 sudo apt-get install python-mysqldb python-dev
 
-mysql -e 'CREATE DATABASE coursedb;'
-mysqladmin -u root password test
+mysql -u root -p -e "CREATE USER 'tetrabyte'@'localhost' IDENTIFIED BY 'test';"
+mysql -u root -p -e 'CREATE DATABASE coursedb;'
+mysql -u root -p -e "GRANT ALL ON coursedb.* TO tetrabyte"
 
-# Install Anaconda
-wget http://repo.continuum.io/archive/Anaconda2-4.0.0-Linux-x86_64.sh
-bash Anaconda2-4.0.0-Linux-x86_64.sh
+sudo pip install -r req-travis.txt
 
-source ~/.bashrc
-conda install -c anaconda --file=requirements.txt
 cd utils
 python database_setup.py -c

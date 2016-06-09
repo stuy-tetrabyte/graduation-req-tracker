@@ -12,6 +12,8 @@
     <h2> Upload an Excel File: </h2>
     {% elif redir == 'update_reqs' %}
     <h2> Upload a new Graduation Requirement JSON File: </h2>
+    {% elif redir == 'login' %}
+    <h2> Upload a new Student-OSIS File: </h2>
     {% endif %}
     <form action="/{{ redir }}/" method="POST" enctype="multipart/form-data">
         <input type="file" name="file" />

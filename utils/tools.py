@@ -1,4 +1,5 @@
 from json import loads
+import csv
 import Constants as c
 
 def check_json(file_path):
@@ -56,3 +57,25 @@ def check_json(file_path):
                         return False
 
     return True
+
+def check_student_csv(path):
+    """
+    check_student_csv: returns if the file specified at the location is a
+    valid student csv file
+
+    Args:
+        path (string): relative path to csv file
+    
+    Returns:
+        True or False depending on if specified file is a valid csv
+    """
+    try:
+        reader = csv.reader(open(path, 'rb'))
+    except IOException:
+        return False
+
+    for i, rows in enumerate(reader):
+        if i == 0:
+            if "OSIS" in rows and "EMAIL" in rows:
+                return True
+        return False

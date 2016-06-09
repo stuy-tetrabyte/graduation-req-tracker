@@ -15,8 +15,9 @@ before_install:
     - "sudo apt-get install python-dev"
 
 before_script:
-    - "mysql -e 'CREATE DATABASE coursedb;'" # create db
-    - "mysqladmin -u root password test" # set root password
+    - "mysql -u root -e \"CREATE USER 'tetrabyte'@'localhost' IDENTIFIED BY 'test';\""
+    - "mysql -u root -e 'CREATE DATABASE coursedb;'"
+    - "mysql -u root -e \"GRANT ALL ON coursedb.* TO tetrabyte\""
 
 script:
     - "cd utils"

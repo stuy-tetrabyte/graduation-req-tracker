@@ -21,22 +21,10 @@ prompted:
 - `y` when asked to remove test database and access to the test database
 - `y` when asked to reload the privelege table
 
-When installing Anaconda, you should hit enter to accept the Anaconda terms and
-conditions. Press `q` to quit reading the Anaconda terms and conditions.
-
-For all future prompts, enter `yes` and hit enter.
-
-During the installation, it may prompt you to append the path for Anaconda in
-your `.bashrc` file. You should answer `yes` to this prompt.
-
-This command will install Pandas, along with a whole bunch of other things,
-including `xlrd`, which Pandas uses for opening Excel files. It also installs
-Python Flask with all of the dependencies.
+WARNING: The setup script will ask for your MySQL root password several times to
+set up project things.
 
 After this you should be ready to run the database script
-
-Note that if you do not use bash, the last line of the setup script will fail.
-Therefore it is highly recommended to use bash for this project.
 
 ## Using the Database Setup Script
 

@@ -10,7 +10,7 @@ sys.path.insert(0, './utils/')
 from database import DBManager
 from Constants import *
 from database_setup import delete_project_table, get_excel, load_excel_file
-from tools import check_json
+from tools import *
 
 # security imports
 from werkzeug import secure_filename
@@ -36,6 +36,8 @@ app_dir = os.path.dirname(app_path)
 UPLOAD_FOLDER = app_dir + '/uploaded_files/'
 DOWNLOAD_FOLDER = app_dir + '/downloadables/'
 ALLOWED_EXTENSIONS = set(['xlsx', 'xls'])
+CSV_EXTENSION = 'csv'
+JSON_EXTENTION = 'json'
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
@@ -45,6 +47,13 @@ print "Generating files in: ", app.config['DOWNLOAD_FOLDER']
 
 db_m = DBManager(PROJECT_DB_NAME, COURSES_TABLE_NAME, STUDENT_TABLE_NAME)
 list_of_students = []
+
+# Load in list of administrators
+ADMIN_FILE = open(app_dir + '/static/auth_users.csv', 'r')
+ADMINS = [ str(s.strip()) for s in f.readlines() if '@stuy.edu' in s ]
+ADMIN_FILE.close()
+
+student_osis = {}
 #}}}
 #{{{ Decorator Functions
 def login_required(f):
@@ -63,6 +72,59 @@ def redirect_if_logged_in(f):
             return redirect(url_for("class_view"))
         return f(*args, **kwargs)
     return decorated_function
+
+def redirect_if_student(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'logged_in' in session and session['logged_in'] and not session['admin']:
+            return redirect(url_for("student_view"))
+        return f(*args, **kwargs)
+    return decorated_function
+#}}}
+#{{{ Tools
+def load_student_osis_dict():
+    """
+    load_student_osis_dict: loads a csv file at static/users_stuyedu.csv into
+    the student_osis dictionary
+    
+    Returns:
+        True upon success, False otherwise
+    """
+    global student_osis
+    student_osis = {}
+
+    try:
+        reader = csv.reader(open('../static/users_stuyedu.csv', 'rb'))
+    except IOException:
+        return False
+
+    for i, rows in enumerate(reader):
+        if i == 0:
+            continue
+        
+        k = rows[0]
+        v = rows[1]
+
+        student_osis[k] = v
+
+        return True
+
+def get_osis(email):
+    """
+    get_osis: returns the osis number based on an email supplied, return None
+    otherwise
+
+    Args:
+        email (type): TODO
+    
+    Returns:
+        osis string of the student
+    """
+    global student_osis
+    if email in student_osis:
+        return student_osis[email]
+    else:
+        return None
 #}}}
 #{{{ Pages
 @app.route("/")
@@ -73,7 +135,7 @@ def home():
     Returns:
         the home page
     """
-    return render_template("master.html")
+    return redirect(url_for("login"))
 
 @app.route('/login', methods=["GET", "POST"])
 @app.route('/login/', methods=["GET", "POST"])
@@ -95,6 +157,10 @@ def login():
         data = json.loads(api_call.read())
         if str(data['email_verified']) == 'true' and str(data['email']).endswith("@stuy.edu"):
             session['logged_in'] = True
+            if str(data['email']) in ADMINS:
+                session['admin'] = True
+            else:
+                session['admin'] = False
             return redirect(url_for('class_view'))
         else:
             session.clear()
@@ -109,6 +175,7 @@ def logout():
 @app.route('/class', methods = ['GET'])
 @app.route('/class/', methods = ['GET'])
 @login_required
+@redirect_if_student
 def class_view():
     """
     class_view: returns the student data for all students
@@ -156,12 +223,14 @@ def class_view():
 
 @app.route('/student', methods = ['GET'])
 @app.route('/student/', methods = ['GET'])
+@login_required
+@redirect_if_student
 def student_search():
     return redirect(url_for('student_view', OSIS = request.args.get('osis')))
 
 @app.route('/student/<OSIS>')
 @app.route('/student/<OSIS>/')
-# @login_required
+@login_required
 def student_view(OSIS=0):
     """
     student_view: returns the page for single-student data. By default, if
@@ -242,7 +311,8 @@ def student_view(OSIS=0):
 
 @app.route('/data')
 @app.route('/data/')
-# @login_required
+@login_required
+@redirect_if_student
 def manage_data():
     """
     manage_data: returns the page for data management
@@ -263,7 +333,8 @@ def allowed_filename(filename):
 
 @app.route('/upload', methods=["GET", "POST"])
 @app.route('/upload/', methods=["GET", "POST"])
-# @login_required
+@login_required
+@redirect_if_student
 def upload():
     """
     upload: takes a .xls or .xlsx file and models the database.
@@ -296,6 +367,8 @@ def upload():
 
 @app.route('/update_reqs', methods = ['GET', 'POST'])
 @app.route('/update_reqs/', methods = ['GET', 'POST'])
+@login_required
+@redirect_if_student
 def update_graduation_requirements():
     """
     update_graduation_requirements: takes a .json file and sanitizes/checks it
@@ -322,8 +395,43 @@ def update_graduation_requirements():
     else:
         return render_template('upload.html', redir = 'update_reqs')
 
+@app.route('/update_students', methods = ['GET', 'POST'])
+@app.route('/update_students/', methods = ['GET', 'POST'])
+@login_required
+def update_student_osis():
+    """
+    update_student_osis: updates the current csv file based on an uploaded csv
+    file
+    
+    Returns:
+        The upload page, or the finished page
+    """
+    if request.method == 'POST':
+        f = request.files['file']
+        if f and '.' in filename and filename.rsplit('.', 1)[1] == CSV_EXTENSION:
+            secure_name = secure_filename(f.filename)
+            path_to_uploaded = os.path.join(app.config['UPLOAD_FOLDER'],
+                    secure_name)
+            print "Saving file to: ", path_to_uploaded
+            f.save(os.path.join(path_to_uploaded))
+            if check_student_csv(path_to_uploaded):
+                os.rename(path_to_uploaded, 'static/reqs.json')
+                load_student_osis_dict()
+                return redirect(url_for("login"))
+            else:
+                return render_template('upload.html', redir = 'login', err =
+                        'Invalid CSV file!')
+        else:
+            return render_template('upload.html', redir = 'login', err =
+                        'Invalid CSV file!')
+
+    else:
+        return render_template('upload.html', redir = 'login')
+
 @app.route('/export_filtered')
 @app.route('/export_filtered/')
+@login_required
+@redirect_if_student
 def export_student_list():
     """
     Generates an excel file given a student_list (formated the same way as
