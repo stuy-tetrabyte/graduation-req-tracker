@@ -92,13 +92,20 @@ def check_admin_csv(path):
         True or False depending if specified file is a valid admin csv
     """
     try:
-        f = open(path, 'r').readlines()
+        reader = csv.reader(open(path, 'rb'))
     except IOError:
+        print "IOError"
         return False
 
-    for i in f:
-        sides = i.split('@')
+    for i, rows in enumerate(reader):
+        if len(rows) != 1:
+            print rows
+            return False
+        
+        sides = rows[0].strip().split('@')
+
         if len(sides) != 2 or sides[1] != 'stuy.edu':
+            print sides
             return False
 
     return True

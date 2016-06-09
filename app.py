@@ -51,7 +51,8 @@ list_of_students = []
 
 # Load in list of administrators
 ADMIN_FILE = open(app_dir + '/static/auth_users.csv', 'r')
-ADMINS = [ str(s.strip()) for s in ADMIN_FILE.readlines() if '@stuy.edu' in s ]
+ADMINS = [ str(s.strip('\"\n')) for s in ADMIN_FILE.readlines() if '@stuy.edu' in s ]
+print ADMINS
 ADMIN_FILE.close()
 
 student_osis = {}
@@ -78,7 +79,7 @@ def redirect_if_student(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'logged_in' in session and session['logged_in'] and not session['admin']:
-            return redirect(url_for("student_view"))
+            return redirect(url_for("student_view", OSIS=0))
         return f(*args, **kwargs)
     return decorated_function
 #}}}
@@ -420,6 +421,7 @@ def update_graduation_requirements():
 @app.route('/update_students', methods = ['GET', 'POST'])
 @app.route('/update_students/', methods = ['GET', 'POST'])
 @login_required
+@redirect_if_student
 def update_student_osis():
     """
     update_student_osis: updates the current csv file based on an uploaded csv
@@ -430,7 +432,7 @@ def update_student_osis():
     """
     if request.method == 'POST':
         f = request.files['file']
-        if f and '.' in filename and filename.rsplit('.', 1)[1] == CSV_EXTENSION:
+        if f and '.' in f.filename and f.filename.rsplit('.', 1)[1] == CSV_EXTENSION:
             secure_name = secure_filename(f.filename)
             path_to_uploaded = os.path.join(app.config['UPLOAD_FOLDER'],
                     secure_name)
@@ -441,18 +443,21 @@ def update_student_osis():
                 load_student_osis_dict()
                 return redirect(url_for("class_view"))
             else:
-                return render_template('upload.html', redir = 'login', err =
+                return render_template('upload.html', redir =
+                        'update_students', err =
                         'Invalid CSV file!')
         else:
-            return render_template('upload.html', redir = 'login', err =
-                        'Invalid CSV file!')
+            return render_template('upload.html', redir =
+                    'update_students', err =
+                    'Invalid CSV file!')
 
     else:
-        return render_template('upload.html', redir = 'login')
+        return render_template('upload.html', redir = 'update_students')
 
 @app.route('/update_admins', methods = ['GET', 'POST'])
 @app.route('/update_admins/', methods = ['GET', 'POST'])
 @login_required
+@redirect_if_student
 def update_admin_list():
     """
     update_admin_list: updates the list of admins based on an uploaded csv
@@ -462,7 +467,7 @@ def update_admin_list():
     """
     if request.method == 'POST':
         f = request.files['file']
-        if f and '.' in filename and filename.rsplit('.', 1)[1] == CSV_EXTENSION:
+        if f and '.' in f.filename and f.filename.rsplit('.', 1)[1] == CSV_EXTENSION:
             secure_name = secure_filename(f.filename)
             path_to_uploaded = os.path.join(app.config['UPLOAD_FOLDER'],
                     secure_name)
@@ -472,18 +477,19 @@ def update_admin_list():
                 os.rename(path_to_uploaded, app_dir + '/static/auth_users.csv')
                 ADMIN_FILE = open(app_dir + '/static/auth_users.csv', 'r')
                 global ADMINS
-                ADMINS = [ str(s.strip()) for s in ADMIN_FILE.readlines() if '@stuy.edu' in s ]
+                ADMINS = [ str(s.strip('\"\n')) for s in ADMIN_FILE.readlines() if '@stuy.edu' in s ]
                 ADMIN_FILE.close()
                 return redirect(url_for("class_view"))
             else:
-                return render_template('upload.html', redir = 'login', err =
+                return render_template('upload.html', redir =
+                        'update_admins', err =
                         'Invalid CSV file!')
         else:
-            return render_template('upload.html', redir = 'login', err =
+            return render_template('upload.html', redir = 'update_admins', err =
                         'Invalid CSV file!')
 
     else:
-        return render_template('upload.html', redir = 'login')
+        return render_template('upload.html', redir = 'update_admins')
 
 @app.route('/export_filtered')
 @app.route('/export_filtered/')
@@ -539,37 +545,6 @@ def export_student_list():
         return None
 
 
-#}}}
-#{{{ AJAX Calls
-
-@app.route('/update_db/<int:grad_year>', methods = ['GET', 'POST'])
-@app.route('/update_db/<int:grad_year>/', methods = ['GET', 'POST'])
-def update_db(grad_year):
-    """
-    update_db: AJAX call that updates the student info of a given graduating
-    year in the database
-
-    Args:
-        grad_year (int): the specified graduation year
-
-    Returns:
-        JSON status for success or failure
-    """
-    return ""
-
-@app.route('/update_student/<OSIS>', methods = ['GET', 'POST'])
-@app.route('/update_student/<OSIS>/', methods = ['GET', 'POST'])
-def update_student(OSIS):
-    """
-    update_student: updates the information on a single student in the database
-
-    Args:
-        OSIS (string): the OSIS for the student
-
-    Returns:
-        JSON status for success or failure
-    """
-    return ""
 #}}}
 
 if __name__ == "__main__":
