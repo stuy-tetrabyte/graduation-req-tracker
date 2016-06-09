@@ -104,7 +104,7 @@ def load_student_osis_dict():
             val_index = rows.index("OSIS")
             key_index = rows.index("EMAIL")
             continue
-        
+
         k = rows[key_index]
         v = rows[val_index]
 
@@ -408,8 +408,8 @@ def update_graduation_requirements():
             print "Saving file to: ", path_to_uploaded
             f.save(os.path.join(path_to_uploaded))
             if check_json(path_to_uploaded):
-                os.rename(path_to_uploaded, app_dir + 'static/reqs.json')
-                db_m.reqs = json.loads(open(app_dir + 'static/reqs.json').read())['grad_requirements']
+                os.rename(path_to_uploaded, app_dir + '/static/reqs.json')
+                db_m.reqs = json.loads(open(app_dir + '/static/reqs.json').read())['grad_requirements']
                 return redirect(url_for("class_view"))
             else:
                 return render_template('upload.html', redir = 'update_reqs', err = "Invalid JSON file!")
@@ -437,7 +437,7 @@ def update_student_osis():
             print "Saving file to: ", path_to_uploaded
             f.save(os.path.join(path_to_uploaded))
             if check_student_csv(path_to_uploaded):
-                os.rename(path_to_uploaded, app_dir + 'static/users_stuyedu.csv')
+                os.rename(path_to_uploaded, app_dir + '/static/users_stuyedu.csv')
                 load_student_osis_dict()
                 return redirect(url_for("class_view"))
             else:
@@ -456,7 +456,7 @@ def update_student_osis():
 def update_admin_list():
     """
     update_admin_list: updates the list of admins based on an uploaded csv
-    
+
     Returns:
         The class view page, or the finished page
     """
@@ -469,7 +469,7 @@ def update_admin_list():
             print "Saving file to: ", path_to_uploaded
             f.save(os.path.join(path_to_uploaded))
             if check_admin_csv(path_to_uploaded):
-                os.rename(path_to_uploaded, app_dir + 'static/auth_users.csv')
+                os.rename(path_to_uploaded, app_dir + '/static/auth_users.csv')
                 ADMIN_FILE = open(app_dir + '/static/auth_users.csv', 'r')
                 global ADMINS
                 ADMINS = [ str(s.strip()) for s in ADMIN_FILE.readlines() if '@stuy.edu' in s ]
