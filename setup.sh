@@ -18,6 +18,7 @@ mysql -u root -p -e "CREATE USER 'tetrabyte'@'localhost' IDENTIFIED BY 'test';"
 mysql -u root -p -e 'CREATE DATABASE coursedb;'
 mysql -u root -p -e "GRANT ALL ON coursedb.* TO tetrabyte"
 
+sudo pip install --upgrade pip
 sudo pip install -r req-travis.txt
 
 cd utils
