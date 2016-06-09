@@ -16,9 +16,9 @@ before_install:
 
 before_script:
     - "mysql -e 'CREATE DATABASE coursedb;'" # create db
-    - "mysql -u root -p -e \"CREATE USER 'tetrabyte'@'localhost' IDENTIFIED BY 'test';\""
-    - "mysql -u root -p -e 'CREATE DATABASE coursedb;'"
-    - "mysql -u root -p -e \"GRANT ALL ON coursedb.* TO tetrabyte\""
+    - "mysql -u root -e \"CREATE USER 'tetrabyte'@'localhost' IDENTIFIED BY 'test';\""
+    - "mysql -u root -e 'CREATE DATABASE coursedb;'"
+    - "mysql -u root -e \"GRANT ALL ON coursedb.* TO tetrabyte\""
 
 script:
     - "cd utils"
