@@ -6,8 +6,15 @@
 {% block content %}
 <div id="login">
   <h2>Login</h2>
-
-  <div class="g-signin2" data-callback="signInCallback" data-onsuccess="onSignIn" data-theme="dark" data-immediate=false data-approvalprompt="force"></div>
+  <br>
+  <p>
+  You must sign in with your "stuy.edu" email. If you log in with an email that
+  is NOT a Stuyvesant HS email, click the profile icon or drop down menu in the
+  top right on the consent screen and click "Add Account"
+  </p>
+  <br>
+  <br>
+  <div class="g-signin2" data-callback="signInCallback" data-onsuccess="onSignIn" data-theme="dark" data-immediate=false data-approvalprompt="force" data-hd="stuy.edu"></div>
 </div>
 {% endblock %}
 

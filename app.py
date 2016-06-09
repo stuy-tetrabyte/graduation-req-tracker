@@ -158,7 +158,7 @@ def login():
         api_call = urllib2.urlopen(URL + token)
         data = json.loads(api_call.read())
         print data
-        if str(data['email_verified']) == 'true' and str(data['hd']) == 'stuy.edu':
+        if str(data['email_verified']) == 'true' and str(data['email']).endswith("@stuy.edu"):
             session['logged_in'] = True
             session['token'] = access
             if str(data['email']) in ADMINS:
