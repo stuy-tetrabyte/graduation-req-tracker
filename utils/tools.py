@@ -1,6 +1,7 @@
 from json import loads
 import csv
 import Constants as c
+import pandas as pd
 
 def check_json(file_path):
     """
@@ -109,3 +110,24 @@ def check_admin_csv(path):
             return False
 
     return True
+
+def check_transcript_excel(path):
+    """
+    check_transcript_excel: checks if the file at the specified path is a
+    valid transcript excel file
+
+    Args:
+        path (string): path to file
+    
+    Returns:
+        True or False as to if the file is valid
+    """
+    try:
+        df = pd.read_excel(path)
+    except LookupError:
+        return False
+
+    col_names = [str(s).strip().upper().replace(" ", "_")
+                    for s in df.columns]
+
+    return col_names == ["STUDENTID", "LASTNAME", 'FIRSTNAME', 'GRADE', 'OFFCLASS', 'SCHOOL', 'YEAR', 'TERM', 'COURSE', 'COURSE_TITLE', 'INSTRUCTIONAL_LEVEL', 'MARK', 'CREDITS']
