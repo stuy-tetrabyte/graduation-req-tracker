@@ -569,6 +569,5 @@ if __name__ == "__main__":
     if not load_student_osis_dict():
         print "LOADING STUDENTS FAILED"
     app.secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for i in range(32))
-    # app.run(host = "0.0.0.0", port = 8000, debug = True)
-    app.run()
-
+    app.debug = True
+    app.run(host = "0.0.0.0", port = 8000)
