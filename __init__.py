@@ -569,5 +569,6 @@ if __name__ == "__main__":
     if not load_student_osis_dict():
         print "LOADING STUDENTS FAILED"
     app.secret_key = "Ryuu-ga, Wa-ga-te-ki-wo, Ku-ra-u. #genji"
-    app.run(host = "0.0.0.0", port = 8000, debug = True)
+    # app.run(host = "0.0.0.0", port = 8000, debug = True)
+    app.run()
 
