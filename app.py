@@ -388,12 +388,17 @@ def upload():
             path_to_uploaded = os.path.join(app.config['UPLOAD_FOLDER'], secure_name)
             print "Saving file to: ", path_to_uploaded
             f.save(os.path.join(path_to_uploaded))
-            print "Deleting database to clean state..."
-            delete_project_table()
-            print "Loading database..."
-            load_excel_file(get_excel(path_to_uploaded))
-            print "Removing file to save storage..."
-            os.remove(path_to_uploaded)
+            if check_transcript_excel(path_to_uploaded):
+                print "Deleting database to clean state..."
+                delete_project_table()
+                print "Loading database..."
+                load_excel_file(get_excel(path_to_uploaded))
+                print "Removing file to save storage..."
+                os.remove(path_to_uploaded)
+            else:
+                return render_template('upload.html', redir = 'upload', err =
+                        "Invalid Excel spreadsheet");
+
         else:
             return render_template('upload.html', redir = 'upload', err = "File extension not allowed! " + f.filename);
 
