@@ -1,7 +1,7 @@
 # core dependencies
 from flask import Flask, render_template, request, session, redirect, url_for, send_from_directory
 from functools import wraps
-import sys, os
+import sys, os, string, random
 import pandas
 import urllib, urllib2, json
 sys.path.insert(0, './utils/')
@@ -568,7 +568,7 @@ def export_student_list():
 if __name__ == "__main__":
     if not load_student_osis_dict():
         print "LOADING STUDENTS FAILED"
-    app.secret_key = "Ryuu-ga, Wa-ga-te-ki-wo, Ku-ra-u. #genji"
+    app.secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for i in range(32))
     # app.run(host = "0.0.0.0", port = 8000, debug = True)
     app.run()
 
