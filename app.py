@@ -152,6 +152,18 @@ def home():
     """
     return redirect(url_for("login"))
 
+@app.route("/about")
+@app.route("/about/")
+@login_required
+def about():
+    """
+    about: returns the about page
+
+    Returns:
+        the about page
+    """
+    return render_template("about.html")
+
 @app.route('/login', methods=["GET", "POST"])
 @app.route('/login/', methods=["GET", "POST"])
 @redirect_if_logged_in
