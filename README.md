@@ -24,6 +24,11 @@ prompted:
 WARNING: The setup script will ask for your MySQL root password several times to
 set up project things.
 
+Note that when installing Pandas, it requires quite a bit of memory (about 500
+MB), if that memory is not present, gcc will crash. To fix this problem, follow
+[ this ]( http://ze.phyr.us/pandas-memory-crash/ ) guide and create more memory
+from swap.
+
 After this you should be ready to run the database script
 
 ## Using the Database Setup Script

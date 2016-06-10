@@ -1,0 +1,68 @@
+{% extends "master.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+<h2>About</h2>
+<p>This tool is used to check if students are on track for graduation. It can be
+used by both administrators and students. The administrators can check if a
+student can graduate as well as filter classes based on their graduation status.
+They can also see which courses each of the students can take to fulfill those
+requirements, while the students can see where they themselves are with respect
+to graduation and see which courses they can take next semester. The site also
+uses Google authentication with @stuy.edu emails.</p>
+
+<h3>Administrator Setup</h3>
+<p>Before using the database, the administrator has to setup a few things first.
+Note that all setup links are guarded by email authentication, so the
+administrator will have to login first.  In the <a href='/data'>Manage
+    Database</a> link on the top right, the administrator should upload two
+files: a list of student email and OSIS as well as a list of administrator
+emails. The list of student email and OSIS should be a csv file with the
+following column names (in this order, case sensitive): OSIS, LAST, FIRST,
+GENDER, EMAIL, CLASS. <a href="{{ url_for('static',
+filename='student_data_sample.csv') }}">here</a> is an example. The list of
+administrator emails should have one column of valid administrator emails.  <a
+    href="{{ url_for('static', filename='admin_data_sample.csv') }}">here</a> is
+an example of that.</p>
+
+<p>Those two files are what controls the user informations. The administrator
+also has to load the student transcript and graduation requirement files into
+the database. Those are also in the <a href='/data'>Manage Database</a> link.
+The transcript should be an excel file (xls, xlsx) with the following column
+names (in this order, case sensitive): StudentID, LastName, FirstName, Grade,
+OffClass, School, Year, Term, Course, Course Title, Instructional Level, Mark,
+Credits. An example is provided <a href="{{ url_for('static',
+    filename='trans_sample.xlsx') }}">here</a>. The graduation requirement file
+is in JSON format. It can be downloaded from Manage Database and the format
+should be pretty self-explanatory. To add a track for graduation simply add
+another "option" to the graduation requirement in the format of other options.
+The "course-code" entry is a nested list of courses one can take to complete the
+track organized by semesters, where each entry is the list of courses one can
+take that semester to fulfill the requirement.</p>
+
+<h3>Class View Functionalities</h3>
+<p>Class view is the view for administrators to see the progress of the entire
+school. Here a few filters are present. Firstly the administrator can search
+students by ID, which will give out the student page of the student with the
+specific ID. The administrator can also select which grade(s) are displayed. The
+administrator can also search by graduation requirement status. Here the
+administrator can select the status of each of the requirements. Note that the
+selection within each requirement are disjunctive (i.e. If in "Art Appreciation"
+both "Fulfilled" and "Missing" are checked, all the students who have either
+fulfilled or are missing the requirement will show up once you hit the "Update"
+button). The relationship between the requirements are toggled by the "AND" and
+"OR" selectors on top. When AND is selected, the filter will only return
+students who have satisfied conditions specified in all of the requirements.
+(i.e. If "Fulfilled" is the only checked box in all requirement fields and the
+"AND" selector is on, then the resulting list of students have fulfilled all
+requirements). The OR selector will return students who have satisfied at least
+one condition specified in the requirement selector. (i.e. If "Failed" is the
+only checked box in all requirement fields and the "OR" selector is on, then the
+resulting list of students have failed at least one requirement and have not
+successfully retaken the class). Each row (the requirements) and column
+(Fulfilled, Missing, Failed) can be clicked to select/deselect the row/column
+and the box on the top left selects/deselects the entire grid. The list of
+students is updated when one clicks on "Update" and can be downloaded as an
+Excel Spreadsheet if one clicks on "Export".</p>
+{% endblock %}

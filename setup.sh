@@ -14,11 +14,11 @@ sudo apt-get install mysql-server
 sudo mysql_secure_installation
 sudo apt-get install python-mysqldb python-dev
 
-mysql -u root -p -e "CREATE USER 'tetrabyte'@'localhost' IDENTIFIED BY 'test';"
-mysql -u root -p -e 'CREATE DATABASE coursedb;'
-mysql -u root -p -e "GRANT ALL ON coursedb.* TO tetrabyte"
+echo "Creating MySQL user and database, please enter root password"
+mysql -u root -p -e "CREATE USER 'tetrabyte'@'localhost' IDENTIFIED BY 'test'; CREATE DATABASE coursedb; GRANT ALL ON coursedb.* TO tetrabyte"
 
-sudo pip install -r req-travis.txt
+sudo pip install --upgrade pip
+sudo pip --no-cache-dir install --upgrade -r req-travis.txt
 
 cd utils
 python database_setup.py -c
