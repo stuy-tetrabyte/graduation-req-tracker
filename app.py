@@ -337,6 +337,7 @@ def student_view(OSIS=0):
             need_to_take = data[2]
 
             for j in range(len( taken )):
+                track_names[j] += " (%d Terms Left)" % len(need_to_take[j])
                 if taken[j] != 0:
                     track_names[j] += " (Started)"
 
