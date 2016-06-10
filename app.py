@@ -52,7 +52,6 @@ list_of_students = []
 # Load in list of administrators
 ADMIN_FILE = open(app_dir + '/static/auth_users.csv', 'r')
 ADMINS = [ str(s.strip('\"\n')) for s in ADMIN_FILE.readlines() if '@stuy.edu' in s ]
-print ADMINS
 ADMIN_FILE.close()
 
 student_osis = {}
@@ -154,7 +153,6 @@ def home():
 
 @app.route("/about")
 @app.route("/about/")
-@login_required
 def about():
     """
     about: returns the about page
@@ -162,7 +160,10 @@ def about():
     Returns:
         the about page
     """
-    return render_template("about.html")
+    if 'admin' in session:
+        return render_template("about.html", admin=session['admin'])
+    else:
+        return render_template('about.html')
 
 @app.route('/login', methods=["GET", "POST"])
 @app.route('/login/', methods=["GET", "POST"])
@@ -183,7 +184,7 @@ def login():
         URL = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="
         api_call = urllib2.urlopen(URL + token)
         data = json.loads(api_call.read())
-        print data
+        #print data
         if str(data['email_verified']) == 'true' and str(data['email']).endswith("@stuy.edu"):
             session['logged_in'] = True
             session['token'] = access
@@ -192,7 +193,7 @@ def login():
             else:
                 session['admin'] = False
                 session['email'] = str(data['email'])
-            print session
+            #print session
             return redirect(url_for('class_view'))
         else:
             session.clear()
@@ -240,7 +241,6 @@ def class_view():
         return render_template('class.html', students = db_m.get_all_students_info())
 
     logic = get_req_args.get( 'logic' )
-    print type( logic )
     db_m.change_db_logic(logic)
     for grade in range(9, 13):
         if get_req_args.get( 'grade-' + str( grade ) ) == 'on':
@@ -542,7 +542,7 @@ def export_student_list():
         }
         data.append(row)
     df = pandas.DataFrame(data)
-    print df
+    #print df
 
     filename = "filtered.xlsx" # TODO: Make the filename the filter options
     if allowed_filename(filename):

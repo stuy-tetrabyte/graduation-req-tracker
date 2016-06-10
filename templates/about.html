@@ -12,6 +12,7 @@ requirements, while the students can see where they themselves are with respect
 to graduation and see which courses they can take next semester. The site also
 uses Google authentication with @stuy.edu emails.</p>
 
+{% if admin %}
 <h3>Administrator Setup</h3>
 <p>Before using the database, the administrator has to setup a few things first.
 Note that all setup links are guarded by email authentication, so the
@@ -65,4 +66,10 @@ successfully retaken the class). Each row (the requirements) and column
 and the box on the top left selects/deselects the entire grid. The list of
 students is updated when one clicks on "Update" and can be downloaded as an
 Excel Spreadsheet if one clicks on "Export".</p>
+{% else %}
+<p>For students the process is pretty simple, one just log in with his/her
+@stuy.edu email and will be redirected to his/her page. Click on any of the
+links on top (apart from About) and you will be redirected to a login page. For
+administrators, a more detailed manual will appear here once you log in.</p>
+{% endif %}
 {% endblock %}
