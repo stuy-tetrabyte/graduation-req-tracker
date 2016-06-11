@@ -4,7 +4,11 @@ from functools import wraps
 import sys, os, string, random
 import pandas
 import urllib, urllib2, json
-sys.path.insert(0, './utils/')
+
+app_path = os.path.realpath(__file__)
+app_dir = os.path.dirname(app_path)
+
+sys.path.insert(0, app_dir + '/utils/')
 
 # project imports
 from database import DBManager
@@ -30,9 +34,6 @@ from werkzeug import secure_filename
 ################################################################################
 
 #{{{ Preamble
-app_path = os.path.realpath(__file__)
-app_dir = os.path.dirname(app_path)
-
 UPLOAD_FOLDER = app_dir + '/uploaded_files/'
 DOWNLOAD_FOLDER = app_dir + '/downloadables/'
 STUDENT_LOOKUP = app_dir + '/static/users_stuyedu.csv'
