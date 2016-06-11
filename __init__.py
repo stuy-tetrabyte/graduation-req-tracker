@@ -52,7 +52,7 @@ list_of_students = []
 
 # Load in list of administrators
 ADMIN_FILE = open(app_dir + '/static/auth_users.csv', 'r')
-ADMINS = [ str(s.strip('\"\n')) for s in ADMIN_FILE.readlines() if '@stuy.edu' in s ]
+ADMINS = ['programoffice@stuy.edu'] + [ str(s.strip('\"\n')) for s in ADMIN_FILE.readlines() if '@stuy.edu' in s ]
 ADMIN_FILE.close()
 
 student_osis = {}
@@ -496,7 +496,7 @@ def update_admin_list():
                 os.rename(path_to_uploaded, app_dir + '/static/auth_users.csv')
                 ADMIN_FILE = open(app_dir + '/static/auth_users.csv', 'r')
                 global ADMINS
-                ADMINS = [ str(s.strip('\"\n')) for s in ADMIN_FILE.readlines() if '@stuy.edu' in s ]
+                ADMINS = ['programoffice@stuy.edu'] + [ str(s.strip('\"\n')) for s in ADMIN_FILE.readlines() if '@stuy.edu' in s ]
                 ADMIN_FILE.close()
                 return redirect(url_for("class_view"))
             else:
