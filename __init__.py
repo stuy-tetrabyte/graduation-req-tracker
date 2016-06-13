@@ -566,9 +566,10 @@ def export_student_list():
 
 #}}}
 
+if not load_student_osis_dict():
+    print "LOADING STUDENTS FAILED"
+app.secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for i in range(32))
+app.debug = True
+
 if __name__ == "__main__":
-    if not load_student_osis_dict():
-        print "LOADING STUDENTS FAILED"
-    app.secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for i in range(32))
-    app.debug = True
     app.run(host = "0.0.0.0", port = 8000)
