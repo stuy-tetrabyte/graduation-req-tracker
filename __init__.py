@@ -5,9 +5,8 @@ import sys, os, string, random
 import pandas
 import urllib, urllib2, json
 
-app_path = os.path.realpath(__file__)
-app_dir = os.path.dirname(app_path)
-
+app = Flask(__name__)
+app_dir = app.root_path
 sys.path.insert(0, app_dir + '/utils/')
 
 # project imports
@@ -34,13 +33,13 @@ from werkzeug import secure_filename
 ################################################################################
 
 #{{{ Preamble
+print app_dir
 UPLOAD_FOLDER = app_dir + '/uploaded_files/'
 DOWNLOAD_FOLDER = app_dir + '/downloadables/'
 STUDENT_LOOKUP = app_dir + '/static/users_stuyedu.csv'
 ALLOWED_EXTENSIONS = set(['xlsx', 'xls'])
 CSV_EXTENSION = 'csv'
 JSON_EXTENTION = 'json'
-app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
 
